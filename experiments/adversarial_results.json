@@ -1,0 +1,104 @@
+{
+ "seller_attacks": [
+  {
+   "attack": "A1 empty items: markers present, item content stripped",
+   "passed_all_checks": false,
+   "checks_passed": "4/5",
+   "failed_checks": [
+    "logo_concepts"
+   ],
+   "note": "Tests whether min_items counts bare markers."
+  },
+  {
+   "attack": "A2 word stuffing: length from a single repeated word",
+   "passed_all_checks": false,
+   "checks_passed": "4/5",
+   "failed_checks": [
+    "guide_length"
+   ],
+   "note": "Tests the anti stuffing screen on the length check."
+  },
+  {
+   "attack": "A2b sentence rotation stuffing",
+   "passed_all_checks": false,
+   "checks_passed": "4/5",
+   "failed_checks": [
+    "guide_length"
+   ],
+   "note": "Tests the screen against rotated sentence padding."
+  },
+  {
+   "attack": "A2c honest front, stuffed tail",
+   "passed_all_checks": false,
+   "checks_passed": "4/5",
+   "failed_checks": [
+    "guide_length"
+   ],
+   "note": "Tests the screen on a hybrid: real work up front, stuffing behind it."
+  },
+  {
+   "attack": "A3 needle echo: poor work plus bare section words",
+   "passed_all_checks": false,
+   "checks_passed": "2/5",
+   "failed_checks": [
+    "logo_concepts",
+    "color_palette",
+    "guide_length"
+   ],
+   "note": "Tests whether contains checks can be passed by echo alone."
+  },
+  {
+   "attack": "A4 honest work minus one concept",
+   "passed_all_checks": false,
+   "checks_passed": "4/5",
+   "failed_checks": [
+    "logo_concepts"
+   ],
+   "note": "Control case: a real shortfall must fail."
+  },
+  {
+   "attack": "A5 hashtag stuffing alone against the social pack spec",
+   "passed_all_checks": false,
+   "checks_passed": "1/5",
+   "failed_checks": [
+    "post_count",
+    "pack_length",
+    "brand_named",
+    "launch_named"
+   ],
+   "note": "One gamed check must not settle a deal on its own."
+  }
+ ],
+ "api_attacks": [
+  {
+   "attack": "B1 verify before delivery",
+   "blocked": true,
+   "detail": "verify returned 409"
+  },
+  {
+   "attack": "B2 second payment on the same deal",
+   "blocked": true,
+   "detail": "second pay returned 409"
+  },
+  {
+   "attack": "B3 deliver after refund",
+   "blocked": true,
+   "detail": "deliver returned 409, deal state refunded"
+  },
+  {
+   "attack": "B4 passing work cannot be refunded by re-verifying",
+   "blocked": true,
+   "detail": "re-verify returned 409, deal state released"
+  },
+  {
+   "attack": "B5 zero percent bond accepted",
+   "blocked": true,
+   "detail": "create returned 400"
+  },
+  {
+   "attack": "B6 negative buyer ceiling accepted",
+   "blocked": true,
+   "detail": "create returned 400"
+  }
+ ]
+}

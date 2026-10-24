@@ -1,0 +1,769 @@
+{
+  "title": "T (part 1): extended verifier battery",
+  "seed": 20261023,
+  "method": "Each of the 14 scenarios is settled once via new_deal(scen, scen['default_buyer_max'], scen['default_seller_floor'], 20.0) followed by run_negotiation, exactly the experiments/adversarial.py pattern. Deliveries are built with build_delivery(scen, spec, quality=...) for quality in auto (honest; unavailable for cheat_attempt, whose seller_behavior is 'cheat'), cheat, poor, and weak (only the 7 scenarios shipping a weak builder; the other 7 are recorded honestly instead of faked). Every seller-side mutation family (A1 empty markers, A2 single-word stuffing, A2b sentence rotation, A2c honest front plus stuffed tail, A3 needle echo, A4 dropped concept control, A5 hashtag-only) is generalized from adversarial.py to each scenario's own delivery text and settled spec, in multiple honest parameter variants per family. Every delivery is judged with pact/verifier.py verify_delivery(spec, text). Expected verdicts: honest -> all checks pass; cheat, poor, and every mutation -> fail (not all checks pass). Weak deliveries carry no expectation and are reported as an observed distribution. Buyer/API families B1..B6 are run once via the in-process TestClient in demo mode against a throwaway SQLite DB (no live money, no live server) and reported as blocked/not-blocked. Demo mode forced by popping PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, LLM_API_KEY before import; PACT_DB_PATH points at a temp dir. Frozen E1..E4 numbers in experiments/run_experiments.py were not touched.",
+  "total_deliveries": 314,
+  "total_judged_checks": 1570,
+  "checks_per_delivery": 5.0,
+  "check_level_confusion_matrix": {
+    "TP": 65,
+    "TN": 139,
+    "FP": 1,
+    "FN": 0
+  },
+  "check_level_accuracy": 0.9951219512195122,
+  "check_level_note": "Expected per-check verdicts are deterministic: honest expected pass on every check; cheat and poor expected fail on every check. Weak deliveries carry no expectation and are excluded.",
+  "delivery_level_confusion_matrix": {
+    "TP": 13,
+    "TN": 265,
+    "FP": 29,
+    "FN": 0
+  },
+  "delivery_level_accuracy": 0.9055374592833876,
+  "delivery_level_note": "Expected delivery verdicts: honest -> all_passed True; cheat, poor, and every mutation family -> all_passed False. Weak deliveries carry no expectation and are excluded.",
+  "per_label_delivery_accuracy": {
+    "honest": {
+      "n": 13,
+      "correct": 13,
+      "accuracy": 1.0
+    },
+    "cheat": {
+      "n": 14,
+      "correct": 14,
+      "accuracy": 1.0
+    },
+    "poor": {
+      "n": 14,
+      "correct": 14,
+      "accuracy": 1.0
+    },
+    "A1": {
+      "n": 28,
+      "correct": 28,
+      "accuracy": 1.0
+    },
+    "A2": {
+      "n": 42,
+      "correct": 38,
+      "accuracy": 0.9047619047619048
+    },
+    "A2b": {
+      "n": 42,
+      "correct": 39,
+      "accuracy": 0.9285714285714286
+    },
+    "A2c": {
+      "n": 42,
+      "correct": 20,
+      "accuracy": 0.47619047619047616
+    },
+    "A3": {
+      "n": 28,
+      "correct": 28,
+      "accuracy": 1.0
+    },
+    "A4": {
+      "n": 42,
+      "correct": 42,
+      "accuracy": 1.0
+    },
+    "A5": {
+      "n": 42,
+      "correct": 42,
+      "accuracy": 1.0
+    }
+  },
+  "per_scenario_accuracy": {
+    "logo_brand_kit": {
+      "n": 22,
+      "correct": 21,
+      "accuracy": 0.9545454545454546,
+      "honest_builder_available": true,
+      "weak_builder_available": false,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 0,
+        "mutations": 19
+      },
+      "checks_judged": 110
+    },
+    "landing_page_copy": {
+      "n": 22,
+      "correct": 22,
+      "accuracy": 1.0,
+      "honest_builder_available": true,
+      "weak_builder_available": false,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 0,
+        "mutations": 19
+      },
+      "checks_judged": 110
+    },
+    "cheat_attempt": {
+      "n": 21,
+      "correct": 21,
+      "accuracy": 1.0,
+      "honest_builder_available": false,
+      "weak_builder_available": false,
+      "counts": {
+        "honest": 0,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 0,
+        "mutations": 19
+      },
+      "checks_judged": 105
+    },
+    "code_task": {
+      "n": 22,
+      "correct": 22,
+      "accuracy": 1.0,
+      "honest_builder_available": true,
+      "weak_builder_available": false,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 0,
+        "mutations": 19
+      },
+      "checks_judged": 110
+    },
+    "research_brief": {
+      "n": 22,
+      "correct": 21,
+      "accuracy": 0.9545454545454546,
+      "honest_builder_available": true,
+      "weak_builder_available": false,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 0,
+        "mutations": 19
+      },
+      "checks_judged": 110
+    },
+    "amazon_listing": {
+      "n": 22,
+      "correct": 22,
+      "accuracy": 1.0,
+      "honest_builder_available": true,
+      "weak_builder_available": false,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 0,
+        "mutations": 19
+      },
+      "checks_judged": 110
+    },
+    "procurement": {
+      "n": 22,
+      "correct": 20,
+      "accuracy": 0.9090909090909091,
+      "honest_builder_available": true,
+      "weak_builder_available": false,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 0,
+        "mutations": 19
+      },
+      "checks_judged": 110
+    },
+    "data_labeling_batch": {
+      "n": 22,
+      "correct": 20,
+      "accuracy": 0.9090909090909091,
+      "honest_builder_available": true,
+      "weak_builder_available": true,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 1,
+        "mutations": 19
+      },
+      "checks_judged": 115
+    },
+    "podcast_edit_package": {
+      "n": 22,
+      "correct": 19,
+      "accuracy": 0.8636363636363636,
+      "honest_builder_available": true,
+      "weak_builder_available": true,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 1,
+        "mutations": 19
+      },
+      "checks_judged": 115
+    },
+    "newsletter_issue": {
+      "n": 22,
+      "correct": 19,
+      "accuracy": 0.8636363636363636,
+      "honest_builder_available": true,
+      "weak_builder_available": true,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 1,
+        "mutations": 19
+      },
+      "checks_judged": 115
+    },
+    "product_photo_set": {
+      "n": 22,
+      "correct": 20,
+      "accuracy": 0.9090909090909091,
+      "honest_builder_available": true,
+      "weak_builder_available": true,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 1,
+        "mutations": 19
+      },
+      "checks_judged": 115
+    },
+    "book_cover_design": {
+      "n": 22,
+      "correct": 13,
+      "accuracy": 0.5909090909090909,
+      "honest_builder_available": true,
+      "weak_builder_available": true,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 1,
+        "mutations": 19
+      },
+      "checks_judged": 115
+    },
+    "api_integration_task": {
+      "n": 22,
+      "correct": 19,
+      "accuracy": 0.8636363636363636,
+      "honest_builder_available": true,
+      "weak_builder_available": true,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 1,
+        "mutations": 19
+      },
+      "checks_judged": 115
+    },
+    "spreadsheet_cleanup_report": {
+      "n": 22,
+      "correct": 19,
+      "accuracy": 0.8636363636363636,
+      "honest_builder_available": true,
+      "weak_builder_available": true,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 1,
+        "mutations": 19
+      },
+      "checks_judged": 115
+    }
+  },
+  "per_scenario_counts": {
+    "logo_brand_kit": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 0,
+      "mutations": 19,
+      "checks_judged": 110,
+      "spec_check_count": 5
+    },
+    "landing_page_copy": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 0,
+      "mutations": 19,
+      "checks_judged": 110,
+      "spec_check_count": 5
+    },
+    "cheat_attempt": {
+      "honest": 0,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 0,
+      "mutations": 19,
+      "checks_judged": 105,
+      "spec_check_count": 5
+    },
+    "code_task": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 0,
+      "mutations": 19,
+      "checks_judged": 110,
+      "spec_check_count": 5
+    },
+    "research_brief": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 0,
+      "mutations": 19,
+      "checks_judged": 110,
+      "spec_check_count": 5
+    },
+    "amazon_listing": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 0,
+      "mutations": 19,
+      "checks_judged": 110,
+      "spec_check_count": 5
+    },
+    "procurement": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 0,
+      "mutations": 19,
+      "checks_judged": 110,
+      "spec_check_count": 5
+    },
+    "data_labeling_batch": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 1,
+      "mutations": 19,
+      "checks_judged": 115,
+      "spec_check_count": 5
+    },
+    "podcast_edit_package": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 1,
+      "mutations": 19,
+      "checks_judged": 115,
+      "spec_check_count": 5
+    },
+    "newsletter_issue": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 1,
+      "mutations": 19,
+      "checks_judged": 115,
+      "spec_check_count": 5
+    },
+    "product_photo_set": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 1,
+      "mutations": 19,
+      "checks_judged": 115,
+      "spec_check_count": 5
+    },
+    "book_cover_design": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 1,
+      "mutations": 19,
+      "checks_judged": 115,
+      "spec_check_count": 5
+    },
+    "api_integration_task": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 1,
+      "mutations": 19,
+      "checks_judged": 115,
+      "spec_check_count": 5
+    },
+    "spreadsheet_cleanup_report": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 1,
+      "mutations": 19,
+      "checks_judged": 115,
+      "spec_check_count": 5
+    }
+  },
+  "per_family_block_rates": {
+    "A1": {
+      "n": 28,
+      "blocked": 28,
+      "block_rate": 1.0
+    },
+    "A2": {
+      "n": 42,
+      "blocked": 38,
+      "block_rate": 0.9047619047619048
+    },
+    "A2b": {
+      "n": 42,
+      "blocked": 39,
+      "block_rate": 0.9285714285714286
+    },
+    "A2c": {
+      "n": 42,
+      "blocked": 20,
+      "block_rate": 0.47619047619047616
+    },
+    "A3": {
+      "n": 28,
+      "blocked": 28,
+      "block_rate": 1.0
+    },
+    "A4": {
+      "n": 42,
+      "blocked": 42,
+      "block_rate": 1.0
+    },
+    "A5": {
+      "n": 42,
+      "blocked": 42,
+      "block_rate": 1.0
+    }
+  },
+  "family_block_rate_note": "Block rate = share of deliveries in the family that failed at least one check (all_passed False), i.e. the verifier stopped the attack from settling.",
+  "weak_distribution": {
+    "logo_brand_kit": {
+      "weak_builder": "not shipped",
+      "note": "recorded honestly; not faked"
+    },
+    "landing_page_copy": {
+      "weak_builder": "not shipped",
+      "note": "recorded honestly; not faked"
+    },
+    "cheat_attempt": {
+      "weak_builder": "not shipped",
+      "note": "recorded honestly; not faked"
+    },
+    "code_task": {
+      "weak_builder": "not shipped",
+      "note": "recorded honestly; not faked"
+    },
+    "research_brief": {
+      "weak_builder": "not shipped",
+      "note": "recorded honestly; not faked"
+    },
+    "amazon_listing": {
+      "weak_builder": "not shipped",
+      "note": "recorded honestly; not faked"
+    },
+    "procurement": {
+      "weak_builder": "not shipped",
+      "note": "recorded honestly; not faked"
+    },
+    "data_labeling_batch": {
+      "all_passed": false,
+      "passed_count": 3,
+      "total_count": 5,
+      "failed_check_ids": [
+        "labeled_rows",
+        "flagged_rows"
+      ]
+    },
+    "podcast_edit_package": {
+      "all_passed": false,
+      "passed_count": 2,
+      "total_count": 5,
+      "failed_check_ids": [
+        "chapters",
+        "timestamps",
+        "package_words"
+      ]
+    },
+    "newsletter_issue": {
+      "all_passed": false,
+      "passed_count": 1,
+      "total_count": 5,
+      "failed_check_ids": [
+        "sections",
+        "cta_count",
+        "unsubscribe",
+        "issue_words"
+      ]
+    },
+    "product_photo_set": {
+      "all_passed": false,
+      "passed_count": 2,
+      "total_count": 5,
+      "failed_check_ids": [
+        "photos",
+        "usage_license",
+        "manifest_words"
+      ]
+    },
+    "book_cover_design": {
+      "all_passed": false,
+      "passed_count": 2,
+      "total_count": 5,
+      "failed_check_ids": [
+        "concepts",
+        "back_cover",
+        "palette"
+      ]
+    },
+    "api_integration_task": {
+      "all_passed": false,
+      "passed_count": 2,
+      "total_count": 5,
+      "failed_check_ids": [
+        "endpoints",
+        "error_handling",
+        "usage_examples"
+      ]
+    },
+    "spreadsheet_cleanup_report": {
+      "all_passed": false,
+      "passed_count": 2,
+      "total_count": 5,
+      "failed_check_ids": [
+        "cleaned_columns",
+        "findings",
+        "report_words"
+      ]
+    }
+  },
+  "api_attack_families": [
+    {
+      "attack": "B1 verify before delivery",
+      "blocked": true,
+      "detail": "verify returned 409"
+    },
+    {
+      "attack": "B2 second payment on the same deal",
+      "blocked": true,
+      "detail": "second pay returned 409"
+    },
+    {
+      "attack": "B3 deliver after refund",
+      "blocked": true,
+      "detail": "deliver returned 409, deal state refunded"
+    },
+    {
+      "attack": "B4 passing work cannot be refunded by re-verifying",
+      "blocked": true,
+      "detail": "re-verify returned 409, deal state released"
+    },
+    {
+      "attack": "B5 zero percent bond accepted",
+      "blocked": true,
+      "detail": "create returned 400"
+    },
+    {
+      "attack": "B6 negative buyer ceiling accepted",
+      "blocked": true,
+      "detail": "create returned 400"
+    }
+  ],
+  "weak_check_findings": [
+    {
+      "scenario_id": "logo_brand_kit",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "cheat_attempt",
+      "label": "cheat",
+      "check_id": "launch_named",
+      "finding": "cheat delivery passed a check it was expected to fail"
+    },
+    {
+      "scenario_id": "research_brief",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "procurement",
+      "label": "A2v0",
+      "finding": "mutation A2 variant 0 passed ALL checks (beats the system)",
+      "note": "honest front + 100x single-word stuffing"
+    },
+    {
+      "scenario_id": "procurement",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "data_labeling_batch",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "data_labeling_batch",
+      "label": "A2cv1",
+      "finding": "mutation A2c variant 1 passed ALL checks (beats the system)",
+      "note": "full honest text + 200x single-word tail"
+    },
+    {
+      "scenario_id": "podcast_edit_package",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "podcast_edit_package",
+      "label": "A2cv1",
+      "finding": "mutation A2c variant 1 passed ALL checks (beats the system)",
+      "note": "full honest text + 200x single-word tail"
+    },
+    {
+      "scenario_id": "podcast_edit_package",
+      "label": "A2cv2",
+      "finding": "mutation A2c variant 2 passed ALL checks (beats the system)",
+      "note": "full honest text + 400x single-word tail"
+    },
+    {
+      "scenario_id": "newsletter_issue",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "newsletter_issue",
+      "label": "A2cv1",
+      "finding": "mutation A2c variant 1 passed ALL checks (beats the system)",
+      "note": "full honest text + 200x single-word tail"
+    },
+    {
+      "scenario_id": "newsletter_issue",
+      "label": "A2cv2",
+      "finding": "mutation A2c variant 2 passed ALL checks (beats the system)",
+      "note": "full honest text + 400x single-word tail"
+    },
+    {
+      "scenario_id": "product_photo_set",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "product_photo_set",
+      "label": "A2cv1",
+      "finding": "mutation A2c variant 1 passed ALL checks (beats the system)",
+      "note": "full honest text + 200x single-word tail"
+    },
+    {
+      "scenario_id": "book_cover_design",
+      "label": "A2v0",
+      "finding": "mutation A2 variant 0 passed ALL checks (beats the system)",
+      "note": "honest front + 100x single-word stuffing"
+    },
+    {
+      "scenario_id": "book_cover_design",
+      "label": "A2v1",
+      "finding": "mutation A2 variant 1 passed ALL checks (beats the system)",
+      "note": "honest front + 320x single-word stuffing"
+    },
+    {
+      "scenario_id": "book_cover_design",
+      "label": "A2v2",
+      "finding": "mutation A2 variant 2 passed ALL checks (beats the system)",
+      "note": "honest front + 600x single-word stuffing"
+    },
+    {
+      "scenario_id": "book_cover_design",
+      "label": "A2bv0",
+      "finding": "mutation A2b variant 0 passed ALL checks (beats the system)",
+      "note": "honest front + 2-sentence rotation to ~450 words"
+    },
+    {
+      "scenario_id": "book_cover_design",
+      "label": "A2bv1",
+      "finding": "mutation A2b variant 1 passed ALL checks (beats the system)",
+      "note": "honest front + 3-sentence rotation to ~450 words"
+    },
+    {
+      "scenario_id": "book_cover_design",
+      "label": "A2bv2",
+      "finding": "mutation A2b variant 2 passed ALL checks (beats the system)",
+      "note": "honest front + 5-sentence rotation to ~450 words"
+    },
+    {
+      "scenario_id": "book_cover_design",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "book_cover_design",
+      "label": "A2cv1",
+      "finding": "mutation A2c variant 1 passed ALL checks (beats the system)",
+      "note": "full honest text + 200x single-word tail"
+    },
+    {
+      "scenario_id": "book_cover_design",
+      "label": "A2cv2",
+      "finding": "mutation A2c variant 2 passed ALL checks (beats the system)",
+      "note": "full honest text + 400x single-word tail"
+    },
+    {
+      "scenario_id": "api_integration_task",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "api_integration_task",
+      "label": "A2cv1",
+      "finding": "mutation A2c variant 1 passed ALL checks (beats the system)",
+      "note": "full honest text + 200x single-word tail"
+    },
+    {
+      "scenario_id": "api_integration_task",
+      "label": "A2cv2",
+      "finding": "mutation A2c variant 2 passed ALL checks (beats the system)",
+      "note": "full honest text + 400x single-word tail"
+    },
+    {
+      "scenario_id": "spreadsheet_cleanup_report",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "spreadsheet_cleanup_report",
+      "label": "A2cv1",
+      "finding": "mutation A2c variant 1 passed ALL checks (beats the system)",
+      "note": "full honest text + 200x single-word tail"
+    },
+    {
+      "scenario_id": "spreadsheet_cleanup_report",
+      "label": "A2cv2",
+      "finding": "mutation A2c variant 2 passed ALL checks (beats the system)",
+      "note": "full honest text + 400x single-word tail"
+    }
+  ],
+  "runtime_seconds": 0.67
+}

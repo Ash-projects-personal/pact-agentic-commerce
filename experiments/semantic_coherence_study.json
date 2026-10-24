@@ -1,0 +1,618 @@
+{
+ "generated_at": "2026-10-23T10:17:25.856320+00:00",
+ "seed": 20261023,
+ "model": "sentence-transformers/all-MiniLM-L6-v2 (local)",
+ "embedding_dim": 384,
+ "signal": "score = 0.5 * mean cosine(sentence, brief) + 0.5 * mean cosine(consecutive sentences)",
+ "adoption_rule": "ADOPT iff min(careful) >= 1.15 * max(scrambled, word_salad, keyword_dump) and zero careful samples below the gate threshold; decided before measuring.",
+ "classes": {
+  "careful": "honest builder output over the settled grid",
+  "scrambled": "careful text with sentences permuted",
+  "word_salad": "careful text with all words shuffled",
+  "keyword_dump": "brief content words as grammar-free sentences, carrying every check needle"
+ },
+ "deterministic_pass_rates": {
+  "careful": {
+   "n": 15,
+   "deterministic_pass": 15
+  },
+  "scrambled": {
+   "n": 15,
+   "deterministic_pass": 15
+  },
+  "word_salad": {
+   "n": 15,
+   "deterministic_pass": 0
+  },
+  "keyword_dump": {
+   "n": 15,
+   "deterministic_pass": 15
+  }
+ },
+ "class_summary": {
+  "careful": {
+   "n": 15,
+   "score_min": 0.1701,
+   "score_max": 0.3655,
+   "score_mean": 0.2588,
+   "brief_sim_mean": 0.246,
+   "sent_coherence_mean": 0.2715
+  },
+  "scrambled": {
+   "n": 15,
+   "score_min": 0.133,
+   "score_max": 0.3813,
+   "score_mean": 0.2412,
+   "brief_sim_mean": 0.246,
+   "sent_coherence_mean": 0.2365
+  },
+  "word_salad": {
+   "n": 15,
+   "score_min": 0.1236,
+   "score_max": 0.3306,
+   "score_mean": 0.2069,
+   "brief_sim_mean": 0.205,
+   "sent_coherence_mean": 0.2087
+  },
+  "keyword_dump": {
+   "n": 15,
+   "score_min": 0.249,
+   "score_max": 0.4316,
+   "score_mean": 0.3226,
+   "brief_sim_mean": 0.3245,
+   "sent_coherence_mean": 0.3206
+  }
+ },
+ "careful_min": 0.1701,
+ "attack_max": 0.4316,
+ "margin_ratio": 0.3941,
+ "gate_threshold": 0.3009,
+ "careful_below_threshold": 10,
+ "decision": "DO NOT ADOPT",
+ "decision_reason": "Keep the deterministic verifier as the only signal. the margin does not hold: worst careful 0.1701 vs best attack 0.4316 (keyword_dump) is only 0.39x, below the 1.15x bar. The signal cannot separate honest work from scrambled or dumped text cleanly. 10 careful deliveries fall below the gate threshold 0.3009: the signal would false-fail honest work.",
+ "samples": [
+  {
+   "scenario": "logo_brand_kit",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 26,
+   "brief_sim": 0.1844,
+   "sent_coherence": 0.216,
+   "score": 0.2002
+  },
+  {
+   "scenario": "logo_brand_kit",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 26,
+   "brief_sim": 0.1844,
+   "sent_coherence": 0.1539,
+   "score": 0.1692
+  },
+  {
+   "scenario": "logo_brand_kit",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 48,
+   "brief_sim": 0.1269,
+   "sent_coherence": 0.178,
+   "score": 0.1525
+  },
+  {
+   "scenario": "logo_brand_kit",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 31,
+   "brief_sim": 0.2593,
+   "sent_coherence": 0.286,
+   "score": 0.2726
+  },
+  {
+   "scenario": "landing_page_copy",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 33,
+   "brief_sim": 0.166,
+   "sent_coherence": 0.2126,
+   "score": 0.1893
+  },
+  {
+   "scenario": "landing_page_copy",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 33,
+   "brief_sim": 0.166,
+   "sent_coherence": 0.1912,
+   "score": 0.1786
+  },
+  {
+   "scenario": "landing_page_copy",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 61,
+   "brief_sim": 0.1155,
+   "sent_coherence": 0.191,
+   "score": 0.1533
+  },
+  {
+   "scenario": "landing_page_copy",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 41,
+   "brief_sim": 0.2669,
+   "sent_coherence": 0.2549,
+   "score": 0.2609
+  },
+  {
+   "scenario": "code_task",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 21,
+   "brief_sim": 0.2921,
+   "sent_coherence": 0.3098,
+   "score": 0.3009
+  },
+  {
+   "scenario": "code_task",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 21,
+   "brief_sim": 0.2921,
+   "sent_coherence": 0.3382,
+   "score": 0.3152
+  },
+  {
+   "scenario": "code_task",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 40,
+   "brief_sim": 0.2274,
+   "sent_coherence": 0.1924,
+   "score": 0.2099
+  },
+  {
+   "scenario": "code_task",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 33,
+   "brief_sim": 0.2933,
+   "sent_coherence": 0.3105,
+   "score": 0.3019
+  },
+  {
+   "scenario": "research_brief",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 36,
+   "brief_sim": 0.1821,
+   "sent_coherence": 0.2462,
+   "score": 0.2141
+  },
+  {
+   "scenario": "research_brief",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 36,
+   "brief_sim": 0.1821,
+   "sent_coherence": 0.2048,
+   "score": 0.1934
+  },
+  {
+   "scenario": "research_brief",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 69,
+   "brief_sim": 0.1314,
+   "sent_coherence": 0.1574,
+   "score": 0.1444
+  },
+  {
+   "scenario": "research_brief",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 45,
+   "brief_sim": 0.2524,
+   "sent_coherence": 0.2844,
+   "score": 0.2684
+  },
+  {
+   "scenario": "amazon_listing",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 37,
+   "brief_sim": 0.1248,
+   "sent_coherence": 0.2209,
+   "score": 0.1729
+  },
+  {
+   "scenario": "amazon_listing",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 37,
+   "brief_sim": 0.1248,
+   "sent_coherence": 0.1412,
+   "score": 0.133
+  },
+  {
+   "scenario": "amazon_listing",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 74,
+   "brief_sim": 0.0817,
+   "sent_coherence": 0.1656,
+   "score": 0.1236
+  },
+  {
+   "scenario": "amazon_listing",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 55,
+   "brief_sim": 0.2135,
+   "sent_coherence": 0.293,
+   "score": 0.2533
+  },
+  {
+   "scenario": "procurement",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 9,
+   "brief_sim": 0.4192,
+   "sent_coherence": 0.3114,
+   "score": 0.3653
+  },
+  {
+   "scenario": "procurement",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 9,
+   "brief_sim": 0.4192,
+   "sent_coherence": 0.317,
+   "score": 0.3681
+  },
+  {
+   "scenario": "procurement",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 18,
+   "brief_sim": 0.3853,
+   "sent_coherence": 0.2335,
+   "score": 0.3094
+  },
+  {
+   "scenario": "procurement",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 18,
+   "brief_sim": 0.4691,
+   "sent_coherence": 0.343,
+   "score": 0.406
+  },
+  {
+   "scenario": "procurement",
+   "scale": 0.8,
+   "class": "careful",
+   "n_sentences": 9,
+   "brief_sim": 0.4196,
+   "sent_coherence": 0.3113,
+   "score": 0.3655
+  },
+  {
+   "scenario": "procurement",
+   "scale": 0.8,
+   "class": "scrambled",
+   "n_sentences": 9,
+   "brief_sim": 0.4196,
+   "sent_coherence": 0.343,
+   "score": 0.3813
+  },
+  {
+   "scenario": "procurement",
+   "scale": 0.8,
+   "class": "word_salad",
+   "n_sentences": 18,
+   "brief_sim": 0.3723,
+   "sent_coherence": 0.2529,
+   "score": 0.3126
+  },
+  {
+   "scenario": "procurement",
+   "scale": 0.8,
+   "class": "keyword_dump",
+   "n_sentences": 18,
+   "brief_sim": 0.4723,
+   "sent_coherence": 0.3556,
+   "score": 0.4139
+  },
+  {
+   "scenario": "procurement",
+   "scale": 1.2,
+   "class": "careful",
+   "n_sentences": 9,
+   "brief_sim": 0.4195,
+   "sent_coherence": 0.3115,
+   "score": 0.3655
+  },
+  {
+   "scenario": "procurement",
+   "scale": 1.2,
+   "class": "scrambled",
+   "n_sentences": 9,
+   "brief_sim": 0.4195,
+   "sent_coherence": 0.3207,
+   "score": 0.3701
+  },
+  {
+   "scenario": "procurement",
+   "scale": 1.2,
+   "class": "word_salad",
+   "n_sentences": 17,
+   "brief_sim": 0.3583,
+   "sent_coherence": 0.2128,
+   "score": 0.2856
+  },
+  {
+   "scenario": "procurement",
+   "scale": 1.2,
+   "class": "keyword_dump",
+   "n_sentences": 18,
+   "brief_sim": 0.4891,
+   "sent_coherence": 0.374,
+   "score": 0.4316
+  },
+  {
+   "scenario": "data_labeling_batch",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 18,
+   "brief_sim": 0.2102,
+   "sent_coherence": 0.4823,
+   "score": 0.3463
+  },
+  {
+   "scenario": "data_labeling_batch",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 18,
+   "brief_sim": 0.2102,
+   "sent_coherence": 0.2922,
+   "score": 0.2512
+  },
+  {
+   "scenario": "data_labeling_batch",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 36,
+   "brief_sim": 0.2413,
+   "sent_coherence": 0.4199,
+   "score": 0.3306
+  },
+  {
+   "scenario": "data_labeling_batch",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 168,
+   "brief_sim": 0.2676,
+   "sent_coherence": 0.4554,
+   "score": 0.3615
+  },
+  {
+   "scenario": "podcast_edit_package",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 135,
+   "brief_sim": 0.127,
+   "sent_coherence": 0.2131,
+   "score": 0.1701
+  },
+  {
+   "scenario": "podcast_edit_package",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 135,
+   "brief_sim": 0.127,
+   "sent_coherence": 0.1782,
+   "score": 0.1526
+  },
+  {
+   "scenario": "podcast_edit_package",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 257,
+   "brief_sim": 0.1118,
+   "sent_coherence": 0.161,
+   "score": 0.1364
+  },
+  {
+   "scenario": "podcast_edit_package",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 123,
+   "brief_sim": 0.2248,
+   "sent_coherence": 0.2731,
+   "score": 0.249
+  },
+  {
+   "scenario": "newsletter_issue",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 43,
+   "brief_sim": 0.1897,
+   "sent_coherence": 0.2146,
+   "score": 0.2021
+  },
+  {
+   "scenario": "newsletter_issue",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 43,
+   "brief_sim": 0.1897,
+   "sent_coherence": 0.1829,
+   "score": 0.1863
+  },
+  {
+   "scenario": "newsletter_issue",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 83,
+   "brief_sim": 0.1396,
+   "sent_coherence": 0.1591,
+   "score": 0.1493
+  },
+  {
+   "scenario": "newsletter_issue",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 57,
+   "brief_sim": 0.2774,
+   "sent_coherence": 0.2456,
+   "score": 0.2615
+  },
+  {
+   "scenario": "product_photo_set",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 28,
+   "brief_sim": 0.1981,
+   "sent_coherence": 0.3466,
+   "score": 0.2724
+  },
+  {
+   "scenario": "product_photo_set",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 28,
+   "brief_sim": 0.1981,
+   "sent_coherence": 0.2821,
+   "score": 0.2401
+  },
+  {
+   "scenario": "product_photo_set",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 53,
+   "brief_sim": 0.1959,
+   "sent_coherence": 0.2415,
+   "score": 0.2187
+  },
+  {
+   "scenario": "product_photo_set",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 44,
+   "brief_sim": 0.3371,
+   "sent_coherence": 0.3528,
+   "score": 0.345
+  },
+  {
+   "scenario": "book_cover_design",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 10,
+   "brief_sim": 0.3203,
+   "sent_coherence": 0.198,
+   "score": 0.2592
+  },
+  {
+   "scenario": "book_cover_design",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 10,
+   "brief_sim": 0.3203,
+   "sent_coherence": 0.241,
+   "score": 0.2806
+  },
+  {
+   "scenario": "book_cover_design",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 19,
+   "brief_sim": 0.2406,
+   "sent_coherence": 0.2208,
+   "score": 0.2307
+  },
+  {
+   "scenario": "book_cover_design",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 22,
+   "brief_sim": 0.4276,
+   "sent_coherence": 0.389,
+   "score": 0.4083
+  },
+  {
+   "scenario": "api_integration_task",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 24,
+   "brief_sim": 0.2347,
+   "sent_coherence": 0.2375,
+   "score": 0.2361
+  },
+  {
+   "scenario": "api_integration_task",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 24,
+   "brief_sim": 0.2347,
+   "sent_coherence": 0.186,
+   "score": 0.2103
+  },
+  {
+   "scenario": "api_integration_task",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 46,
+   "brief_sim": 0.1873,
+   "sent_coherence": 0.1771,
+   "score": 0.1822
+  },
+  {
+   "scenario": "api_integration_task",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 23,
+   "brief_sim": 0.3002,
+   "sent_coherence": 0.274,
+   "score": 0.2871
+  },
+  {
+   "scenario": "spreadsheet_cleanup_report",
+   "scale": 1.0,
+   "class": "careful",
+   "n_sentences": 38,
+   "brief_sim": 0.2023,
+   "sent_coherence": 0.2405,
+   "score": 0.2214
+  },
+  {
+   "scenario": "spreadsheet_cleanup_report",
+   "scale": 1.0,
+   "class": "scrambled",
+   "n_sentences": 38,
+   "brief_sim": 0.2023,
+   "sent_coherence": 0.1745,
+   "score": 0.1884
+  },
+  {
+   "scenario": "spreadsheet_cleanup_report",
+   "scale": 1.0,
+   "class": "word_salad",
+   "n_sentences": 73,
+   "brief_sim": 0.1601,
+   "sent_coherence": 0.1679,
+   "score": 0.164
+  },
+  {
+   "scenario": "spreadsheet_cleanup_report",
+   "scale": 1.0,
+   "class": "keyword_dump",
+   "n_sentences": 50,
+   "brief_sim": 0.3174,
+   "sent_coherence": 0.3173,
+   "score": 0.3174
+  }
+ ],
+ "notes": [
+  "cheat_attempt excluded from the careful class: its builder returns the cheat seller's recycled copy, not an honest delivery."
+ ]
+}

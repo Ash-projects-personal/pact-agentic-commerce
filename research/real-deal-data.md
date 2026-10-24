@@ -1,0 +1,161 @@
+# Pact research brief: real deal shapes, cheating today, and what protection exists
+
+Researched 2026-10-22. Every price and statistic below names its source. Where a number could not be tied to a named source, I say so instead of filling the gap.
+
+## PART 1: Real deal shapes
+
+### 1. Logo design and brand kit (Fiverr)
+- Price found: Fiverr's own cost guide, quoted by Pro Reviewer (October 2026): beginner designers $5 to $75, mid level $75 to $350, pro $400 to $2,200. GigBuyerGuide checked live logo gigs on 29 September 2026 and found a median starting price of $27.50. A business ready Standard package runs about $60 to $130, and a logo plus small brand kit about $130 to $420.
+- Typical deliverables: 2 to 3 logo concepts, 1 to 3 revision rounds, vector source files (AI, EPS, SVG), transparent PNG and JPG, commercial use rights, and at higher tiers a social media kit and a short brand guide.
+- Source: https://www.pro-reviewer.cyou/2026/10/fiverr-logo-maker-pricing.html and https://medium.com/@hamdiarij/how-to-hire-a-logo-designer-on-fiverr-2026-prices-checklist-e42cb22e7ea1
+
+### 2. Landing page and website copy (Upwork)
+- Price found: Upwork's own copywriter hire page lists a single web or product page at $100 to $600 per project and a landing or sales page at $1,000 to $5,000. Upwork's website copywriting page lists single landing page copy at $500 to $1,000. Live Upwork catalog listings sit lower: one charges $70, $100 and $150 for 500, 700 and 1,000 words; another charges $400, $900 and $1,500 by tier.
+- Typical deliverables: headline plus subheadline, benefit sections, call to action text and variations, a set word count, competitor and audience research at higher tiers, and a set number of revisions.
+- Source: https://www.upwork.com/hire/copywriters/ and https://www.upwork.com/en-gb/hire/website-copywriting-freelancers/
+
+### 3. Social media content pack (Upwork and Fiverr)
+- Price found: a live Upwork catalog project charges $100 for 10 posts, $150 for 20 posts and $200 for 30 posts. Another charges $250, $400 and $650 for 12, 20 and 30 posts with hashtag research included. On Fiverr, one Instagram template gig charges $240 for 12 templates, $360 for 18 and $600 for 30.
+- Typical deliverables: a fixed number of posts or templates, captions with calls to action, researched hashtag sets (3 to 20 keywords depending on tier), custom graphics, editable Canva links plus PNG exports, and a set number of revisions.
+- Source: https://www.upwork.com/services/product/marketing-a-set-of-social-media-posts-for-your-business-1367768473927467008 and https://www.fiverr.com/mk600mk/create-your-social-media-strategy-action-plan-content
+
+### 4. Small coding task: Python bug fix or script (Fiverr and Upwork)
+- Price found: live Fiverr gigs list Python bug fixing at $25 to $70, $15 to $95 and $5 to $25. Upwork catalog projects list $15, $50 and $120 tiers, and another at $29 to $109.
+- Typical deliverables: the fixed source code, a bug investigation, a written explanation of what caused the bug, fix documentation, and delivery in 1 to 3 days.
+- Source: https://www.fiverr.com/tehreem_7fatima/fix-bugs-or-errors-in-your-python-code-or-project and https://www.upwork.com/services/product/development-it-me-to-fix-bugs-in-your-python-script-html-css-or-javascript-code-2014052907843153973
+
+### 5. Market research and competitor brief (Upwork)
+- Price found: live Upwork catalog listings charge $10, $20 and $45 for 4, 6 and 10 page reports; $45, $85 and $145 for summary reports; $250, $500 and $1,000 for 3 to 8 page briefs with SWOT and TAM; and $200, $550 and $1,800 at the top end.
+- Typical deliverables: a report of a set page count, a competitor comparison table (features, prices, languages, support), competitor profiles, an executive summary, market trends, a SWOT analysis, and a TAM calculation at higher tiers.
+- Source: https://www.upwork.com/services/product/marketing-a-competitive-analysis-brief-on-a-competitor-of-your-choice-1886679124522480875 and https://www.upwork.com/services/product/marketing-comprehensive-market-research-and-competitor-analysis-1714981447720542208
+
+### 6. Resume writing (Fiverr and Upwork)
+- Price found: Resume Optimizer Pro compiled published rate cards and listings in August 2026 and put the freelance marketplace tier (Fiverr, Upwork) at $85 to $200 for one resume with one or two revisions. A second 2026 pricing guide puts marketplace basics at $10 to $50, rising to about $100 to $150 for premium packages. IGotAnOffer lists Fiverr resume writing at $15 to $350 and Upwork at $15 to $700.
+- Typical deliverables: one resume in Word and PDF, ATS friendly formatting, one or two revision rounds, with a cover letter and a LinkedIn profile rewrite sold as upgrades.
+- Source: https://resumeoptimizerpro.com/blog/resume-writing-service-review and https://igotanoffer.com/blogs/tech/resume-service-cost
+
+### 7. Amazon product listing copy (Upwork)
+- Price found: live Upwork catalog listings charge $40 to $120 per listing. Common tiers: $50, $80 and $120, or a flat $80 to $99 per listing.
+- Typical deliverables: an SEO title, 5 benefit bullet points, a description of up to 2,000 characters (400 to 600 words in most packages), 5 to 20 optimized keywords, backend search terms within 250 characters, and competitor research at higher tiers.
+- Source: https://www.upwork.com/services/product/marketing-amazon-listing-optimization-and-fba-product-descriptions-with-seo-1786748791140274875
+
+### 8. Translation, priced per 1,000 words (Fiverr)
+- Price found: one live Fiverr gig charges $5 for 500 words, $10 for 1,000 words and $20 for 2,000 words. General translation on Fiverr averages $0.05 to $0.15 per word, and specialized work such as legal or medical runs $0.15 to $0.30 per word.
+- Typical deliverables: translation of a stated word count for a named language pair, sold as manual rather than machine translation, proofread before delivery, in the buyer's file format.
+- Source: https://www.fiverr.com/raoahtesham1009/do-a-translation-accurately and https://fiverrpromotion.net/blog/how-much-can-people-make-translating-on-fiverr/
+
+### 10. Data labeling batch (Upwork and Fiverr)
+- Price found: a live Upwork catalog project charges $10, $50 and $100 tiers for image and video annotation batches (Starter/Standard/Advanced, 1 to 5 day delivery). Fiverr data entry guides put standard projects at $15 to $72 depending on scope. Pact models a text labeling batch of 120 to 200 rows in the $40 to $90 band.
+- Typical deliverables: labeled rows with one category each, a labeling guide defining every category, a label distribution summary, and flagged ambiguous rows for buyer review.
+- Source: https://www.upwork.com/services/product/development-it-fast-accurate-data-annotation-1-000-images-in-1-day-for-10-1885001540710707931 and https://aonews.fr/fiverr-data-entry-mastery-for-beginners-and-buyers/
+
+### 11. Podcast episode edit package (Upwork)
+- Price found: Upwork's podcasting hire page lists a single episode edit and production at $100 to $465 per project; a full-service audio episode (edited, mastered, show notes) at $300 to $930. Live Upwork catalog listings charge $66, $88 and $120 tiers, and $70, $105 and $140 by episode length (30/60/90 minutes). A 2026 rate guide puts full post (edit plus show notes, chapters, hosting upload) at $80 to $300 per episode. Pact models one edited episode with chapters, transcript, and show notes in the $80 to $220 band.
+- Typical deliverables: edited audio, chapter markers, timestamps, cleaned transcript, show notes, ID3 tags.
+- Source: https://www.upwork.com/hire/podcasting-freelancers/ and https://www.jobbers.io/podcast-production-freelancing-equipment-rates-client-guide-2026/
+
+### 12. Email newsletter issue (Upwork)
+- Price found: live Upwork catalog listings charge $10, $30 and $40 per email by tier; $40, $80 and $120 for 1, 3 and 5 emails; $150, $225 and $300 for 500, 1,000 and 1,500 word newsletters; and $190, $320 and $635 for a curated weekly newsletter. Pact models one written issue in the $70 to $160 band.
+- Typical deliverables: subject line, full sections, calls to action, footer with unsubscribe line, 1 to 2 revision rounds.
+- Source: https://www.upwork.com/en-gb/services/product/writing-translation-written-sales-email-cold-email-sales-letter-newsletter-1737851827451445248 and https://www.upwork.com/en-gb/services/product/writing-translation-a-compelling-email-newsletter-to-engage-your-customers-1366803948416421888
+
+### 13. Product photography set (Upwork)
+- Price found: live Upwork catalog listings charge $55, $90 and $150 (1 to 5 products, 2 photos each); $100, $150 and $175 (3 to 4 photos of one product); $125, $240 and $450 (5, 10 and 25 photos); $50, $75 and $100 (1 to 2 photos); a flat $100 (3 products, 2 photos each); and $450, $550 and $650 at the pro end. Pact models a 8 to 12 photo set of one product in the $90 to $220 band.
+- Typical deliverables: a set number of finished photos, one hero shot, resolution and background recorded per photo, retouching, and a usage license.
+- Source: https://www.upwork.com/services/product/design-an-incredible-photographic-kit-of-your-product-1760388309574463488 and https://www.upwork.com/services/product/design-professional-product-photography-for-your-e-commerce-business-1560295530695368704
+
+### 14. Book cover design package (Fiverr)
+- Price found: a live Fiverr gig charges $20 basic (ebook front cover), $50 standard (paperback front/back/spine plus 3D mockup), $90 premium (plus source file and 1 day delivery). Other live Fiverr gigs list $10 to $100, $15 to $100, and $45 to $150 ranges. GigBuyerGuide's October 2026 buyer guide puts typical book cover design at $30 to $400. Pact models a cover package (concepts, spine, back cover, palette, typography) in the $50 to $140 band.
+- Typical deliverables: cover concepts, spine design, back cover layout, color palette, typography pairing, print-ready files.
+- Source: https://www.fiverr.com/remex_atelier/design-professional-book-cover-42a5 and https://gigbuyerguide.com/
+
+### 15. API integration task (Upwork)
+- Price found: live Upwork catalog listings charge $100, $300 and $500 (1, 2 to 10, and 11+ endpoints); $80, $180 and $300 (basic to complex projects); $225, $525 and $975 (1 to 5 endpoints in a React app); $129, $249 and $479; and $50, $80 and $150. Pact models a scoped integration of 4 to 6 endpoints with auth, error handling, examples, and a README in the $120 to $320 band.
+- Typical deliverables: wrapped endpoints, authentication section, error handling, worked examples, README, source code.
+- Source: https://www.upwork.com/services/product/development-it-api-development-integration-services-management-1773389732326850560 and https://www.upwork.com/services/product/development-it-any-api-integration-for-your-website-or-api-automation-1913617270324597651
+
+### 16. Spreadsheet cleanup and report (Fiverr and Upwork)
+- Price found: live Fiverr gigs list $15 to $55, $75 to $250, and $15 to $40 for Excel cleanup. Live Upwork listings charge $8, $35 and $98; $20, $45 and $90; $15, $25 and $50; and $5 to $30. Pact models a cleanup with a per-column change log and a findings report in the $40 to $110 band.
+- Typical deliverables: cleaned columns with fixes recorded, findings report, methodology, duplicate removal count, exceptions list.
+- Source: https://www.fiverr.com/nomikastudio/clean-format-fix-and-organize-your-microsoft-excel-spreadsheet and https://www.upwork.com/services/product/development-it-a-clean-csv-or-spreadsheet-in-hours-2059488355577354459
+
+### 9. Procurement of a physical retail product (Channel3, captured 2026-10-22)
+- Price found: a live Channel3 API search for "Sony WH-1000XM5 wireless noise cancelling headphones", captured 2026-10-22 and shipped in the repo at pact/fixtures/channel3_procurement_search.json, returned 5 offers: $239.97 (skybygramophone.com), $298.00 (Adorama), $298.00 (Best Buy), $299.95 (Focus Camera), $336.99 (CDW). Median $298.00. An honest broker buy on this market pays at or near the lowest offer; a padded invoice near the top of the range is the classic overbilling cheat.
+- Pact use (case added to experiments/real_cases.py 2026-10-23): buyer ceiling set at the median offer, seller floor at the lowest offer. The chosen offer's product title, retailer, buy link, and a price ceiling at the agreed price become contract checks, so overpaying fails verification. Negotiated $270.52, 5 of 5 checks, released.
+- Source: the fixture itself (live API capture, labeled cached with its capture date in the ledger).
+
+### 17. Podcast edit package price check (live listing sweep 2026-10-24)
+- Price seen: a live listing sweep on 2026-10-24 found Upwork podcast editing tiers at $66, $88, $120 (Starter/Standard/Advanced, 60 minute episodes); $70, $105, $140 by episode length (30/60/90 minutes); $90, $140, $170 for edit plus show notes within 24 hours; $30, $60, $90 by length on one more listing. This matches Part 11's 2026-10-23 band ($66 to $140 catalog tiers, Pact model $80 to $220). Pact use (case added to experiments/real_cases.py 2026-10-24): one edited episode with chapters, transcript, and show notes, multi-issue negotiated (12 days, 3 revisions, 23.54 percent bond), honest seller.
+- Source: https://www.upwork.com/en-gb/services/product/video-audio-a-detailed-and-professional-editing-of-your-podcast-episode-s-1314582373052915712, https://www.upwork.com/services/product/video-audio-a-professionally-edited-podcast-1349715537147318272, https://www.upwork.com/services/product/video-audio-an-edited-podcast-episode-and-show-notes-within-24-hours-1641114201231822848, and https://www.upwork.com/services/product/video-audio-a-clean-and-professional-edit-of-your-podcast-1404537888211787776
+
+## PART 2: How people get cheated today
+
+### Non payment and late payment (the seller side getting cheated)
+- 71 percent of freelancers had trouble getting paid at some point in their career, and 50 percent had trouble in 2014 alone. Source: Freelancers Union study, 2014, reported at https://www.invoiceberry.com/blog/stiffed-last-time-ensuring-get-paid-freelancer/
+- Freelancers lose on average about $6,000 a year to clients who do not pay, roughly 13 percent of annual income. Source: Freelancers Union nonpayment research, same page above.
+- 74 percent of freelancers reported late or non payment, and only 28 percent consistently work under a written contract. Source: Upwork and Freelancers Union study, 2019, reported by the National Writers Union at https://nwu.org/freelance-still-isnt-free/
+- 62 percent of New York freelancers surveyed had experienced non payment; 91 percent had been paid late at least once; 54 percent had waited 3 months or longer; under 1 percent used the legal system to recover money. New York City's Freelance Isn't Free Act had recovered $2,144,198 in owed pay by 2022. Source: Freelancers Union New York survey, 2022, at https://nwu.org/survey-shows-that-62-of-ny-freelancers-experience-non-payment-need-freelance-isnt-free-law-statewide/
+- 85 percent of freelancers experience late payment at least some of the time, and 21 percent are paid late or not at all more than half the time. Source: Remote, State of Freelance Work 2025, cited secondhand at https://kotakmdshahil.medium.com/why-50-of-freelancers-get-paid-late-and-the-one-clause-that-fixes-it-ae41d52157a7 (flagged as secondhand because I could not open Remote's own report in this pass).
+
+### Platform dispute rates: an honest gap
+Neither Upwork nor Fiverr publishes a dispute rate or a non delivery rate. I found one comparison table claiming 18 percent for Upwork and 22 percent for Fiverr (digitalmarket.world), but it names no primary source or method, so I did not use it. Any deck or paper for Pact should say platform dispute rates are not publicly reported rather than quote that table.
+
+### The workaround people use, and its price
+The standard workaround is escrow plus milestones: the buyer funds the work up front and releases money piece by piece. On Upwork this works until the parties disagree. After Upwork's non binding mediation, the only binding step is third party arbitration, and Upwork's own Fixed Price Escrow Instructions set the fee at $675 for claims under $20,000, split as $337.50 per party, with an optional $450 live hearing. Upwork says arbitration typically wraps in about 30 days. On a $150 logo job, the fee to get a binding decision is more than four times the value of the job. Sources: https://upwork.pactsafe.io/versions/6a5e9845c7e0638288dcd50b.pdf and https://www.upwork.com/resources/upwork-dispute-process
+
+### Chargebacks (the buyer side weapon, and the merchant cost)
+- Global chargeback volume is expected to grow 24 percent from 2025 to 2028, reaching 324 million transactions a year. Source: Mastercard, 2025 State of Chargebacks report, research by Datos Insights, at https://www.mastercard.com/my/en/news-and-trends/Insights/2025/what-s-the-true-cost-of-a-chargeback-in-2025.html
+- The average chargeback rate across Sift's network rose from 0.17 percent in Q1 2025 to 0.26 percent in Q3 2025, and US merchants lose an estimated $4.61 for every $1 lost to chargebacks. Source: Sift, Q4 2025 Digital Trust Index, at https://sift.com/index-reports-disputes-q4-2025/
+- The average disputed transaction was $84, and Chargebacks911 estimates chargebacks cost US merchants over $170 billion a year. Source: Chargebacks911, 2025 Cardholder Dispute Index, reported at https://www.digitaltransactions.net/chargebacks-are-costing-merchants-more-as-consumers-look-to-their-bank-first-to-resolve-disputes/
+- PayPal reported about $1.3 billion in transaction losses in 2025, covering fraud, chargebacks and protection program payouts. Source: Chargebacks911's summary of PayPal's reported figures, at https://chargebacks911.com/paypal-statistics/
+
+### AI agent commerce fraud
+- AI agent traffic rose 450 percent between January and December 2025, and malicious bot attacks grew 59 percent globally. Source: LexisNexis Risk Solutions, 2026 Cybercrime Report (over 116 billion transactions analyzed), reported at https://www.computerweekly.com/news/366640815/Agentic-bots-and-synthetic-identities-fuel-surge-in-fraud
+- 47.9 percent of all AI bot traffic on Akamai's network from July to December 2025 was in the commerce vertical, and Akamai documents agent hijacking used to abuse stored payment credentials. Source: Akamai, State of the Internet report, July 2026, at https://www.akamai.com/newsroom/press-release/akamai-research-commerce-becomes-the-epicenter-for-ai-bot-attacks-and-agentic-fraud-in-2026
+- 55 percent of consumers are not comfortable letting an AI agent make purchases for them, 53.9 percent believe AI could increase fraud risk, and 50.8 percent say the AI platform should be responsible for unauthorized purchases. Source: Riskified, Q1 2026 Agentic Commerce Pulse, at https://www.riskified.com/press/riskified-agentic-commerce-pulse/
+- Retailers with heavy AI referred order volume saw a 37 percent increase in fraudulent traffic between Q2 and Q3 2025, and 69 percent of retailers experienced AI enabled fraud in the past year. Source: Deloitte Canada retail fraud survey, at https://www.deloitte.com/ca/en/Industries/consumer/perspectives/agentic-ai-fraud-retail.html
+- Honest gap: I found no published statistics on agent to agent service deals failing (an agent paying another agent and getting nothing or getting junk). The category is too new. The fraud data above is about agents as buyers and bots as attackers, not about delivery quality between agents. That gap is itself a finding: nobody is measuring the exact failure Pact is built to catch.
+
+## PART 3: What protection exists today
+
+### Upwork escrow and milestones
+- Protects: the client's money sits in escrow before work starts (minimum $5 per milestone). The freelancer sees the money is real before working. The client has 14 days to review a submission; silence means auto release. The milestone description is the evidence base if there is a dispute.
+- Who judges: first the client alone. Then an Upwork dispute specialist gives a non binding recommendation (the other party has 5 calendar days to respond; the recommendation typically lands within 2 days). If that fails, binding arbitration by a third party company, BRIEF.
+- Settlement time: instant on approval, 14 days on silence, and about 30 days if it goes to arbitration.
+- Does not protect: quality beyond what the milestone text says; any dispute over funds already released must start within 30 days; and arbitration at $675 total is not usable for the small jobs that fill the marketplace, which is exactly the $50 to $500 band in Part 1.
+- Source: https://support.upwork.com/hc/en-us/articles/360000990428-Fixed-price-job-offer-deposits and https://www.upwork.com/resources/upwork-dispute-process
+
+### Fiverr and its Resolution Center
+- Protects: the buyer pays Fiverr up front and Fiverr holds the money. The buyer can request revisions, and can ask to cancel through the Resolution Center. The seller has 48 hours to accept or decline a cancellation; no response means Fiverr cancels automatically. The buyer can cancel without the seller's approval if delivery is more than 24 hours overdue. Sellers wait out a clearance period before they can withdraw (14 days for most sellers, 7 days for Top Rated), which leaves room for disputes to land.
+- Who judges: the two parties first, then Fiverr's own support team. There is no outside arbitrator and no published fee for escalation.
+- Settlement time: refunds to a Fiverr balance are fast; refunds to the original payment method depend on the provider. A seller's money is typically locked for about 2 to 3 weeks from completion to bank account.
+- Does not protect: subjective quality once the buyer has accepted delivery and the review window closes, although support can still reverse funds after completion if they rule for the buyer. Fiverr takes a 20 percent commission from the seller and a 5.5 percent service fee plus a $3.50 small order fee (on orders under $200) from the buyer.
+- Source: Fiverr Help Center glossary, https://help.fiverr.com/hc/en-us/articles/360010452397-Glossary-of-Fiverr-terms and https://fiverrtutorials.com/fiverr-payment-process
+
+### PayPal Purchase Protection
+- Protects: two claim types only, Item Not Received and Significantly Not as Described. The buyer must open a dispute within 180 days of payment, try the seller for up to 20 days, then escalate; PayPal staff decide, typically within about 30 days of escalation, and a win refunds the full purchase price plus original shipping.
+- Who judges: PayPal staff, from evidence both sides upload.
+- Does not protect: this is the key gap for Pact. PayPal's own page lists services and intangible items as not covered, and custom made goods are excluded too. Some intangibles such as event tickets are eligible, but a freelance service bought with a plain PayPal payment is largely outside the program. There is no escrow, no milestone, no seller bond, and no check of delivery against agreed acceptance criteria. Seller Protection leans on shipping proof, which a service delivery does not produce.
+- Source: https://www.paypal.com/us/digital-wallet/buyer-purchase-protection and PayPal's coverage page at https://qwac.paypal.com/ad/webapps/mpp/paypal-safety-and-security
+
+### Agent payment systems (what exists for agents)
+- PayPal Agent Toolkit (launched April 2025): gives an agent tools to create and pay orders, create and send invoices, issue refunds and list disputes. It moves money on a human's account. It does not hold funds against delivery, does not check what was delivered, and has no seller bond. Source: https://developer.paypal.com/community/blog/quickstart-guide-agent-toolkit/
+- OpenAI and Stripe Agentic Commerce Protocol, with Stripe Shared Payment Tokens (live September 29, 2025): an agent checks out at a merchant inside ChatGPT using a single use, amount limited token. The merchant still handles fulfillment and returns. Built for retail goods, not for judging a delivered service. Source: https://www.splunk.com/en_us/blog/artificial-intelligence/the-agent-economy-when-ais-pay-each-other.html
+- Google AP2, Agent Payments Protocol (September 16, 2025, 60 plus partners including PayPal and Mastercard): signed mandates prove a human authorized the agent to spend, with an audit trail. It authorizes payment; it does not settle it and does not judge delivery. Source: same Splunk piece above.
+- Coinbase x402 (May 2025): a server answers with HTTP 402, the agent pays in USDC stablecoin and retries. Settlement is instant and final, which means no built in refund path at all. One vendor, AgentPay, sells an escrow add on for x402 agent to agent deals and claims dispute resolution is built in; that is a vendor claim on its own site, not independently verified. Sources: https://paypedia.org/encyclopedia/agentic-payments-the-fundamentals and https://www.x402-agent-pay.com/partner-portal.html
+- Skyfire: agent to agent payments in USDC aimed at micropayments. Listed in the agent wallet comparison at https://agentwallet.md/products/guide-agent-payments.html
+- Visa Intelligent Commerce and Mastercard Agent Pay: tokenized credentials so an agent can pay on card rails with the user's limits attached. These inherit the card chargeback system, with the costs in Part 2, and neither checks delivery quality.
+- The pattern across all of them: authorization and settlement are being built fast. Delivery verification against negotiated checks, and a seller bond that makes cheating expensive, exist in none of them. That is the open slot Pact sits in.
+
+### Note on the PayPal business angle (from the original ask)
+Only sourced figures, no invented fees: PayPal already charges merchants a $15 dispute fee per PayPal dispute, $30 for high dispute rate merchants, and a $20 chargeback fee on card payments outside a PayPal account, and it absorbed about $1.3 billion in transaction losses in 2025 across fraud, chargebacks and protection payouts (source: https://chargebacks911.com/paypal-statistics/). A verification layer that kills disputes before they become claims cuts that loss line, and the bond gives PayPal a funded source to make the buyer whole instead of PayPal's own balance. Those two facts are the business case; anything beyond them would need PayPal's own fee schedule, which I did not pull in this pass.
+
+## The 5 best deal shapes for testing Pact
+
+1. **Amazon product listing copy.** The tightest natural acceptance checks in real commerce: a title, exactly 5 bullet points, a description capped at 2,000 characters, backend search terms capped at 250 characters, a named keyword count. A verifier can check every one of them mechanically, and sellers shorting the keyword count is a real, common cheat.
+2. **Logo and brand kit.** The most documented price band ($60 to $130 for the tier Pact already models), deliverables that are countable (number of concepts, file formats present, source files included), and a classic cheat to test against: a template or a single JPG sold as a full kit with vector files.
+3. **Social media content pack.** Pure counting work: 10, 20 or 30 posts, a set number of hashtags researched, captions present or missing. Under delivery is the most common failure in this category and the easiest for a verifier to catch. Real prices ($100 to $650) sit right in Pact's bond friendly range.
+4. **Python bug fix or small script.** The strongest test of the verifier itself, because checks can be near objective: the script runs, the error is gone, the fix is documented, the explanation names the cause. If Pact's checks work anywhere perfectly, it is here, and it is the best case for showing judges a clean pass and a clean fail.
+5. **Translation per 1,000 words.** Word count, language pair and file format are all checkable, and it exposes the honest limit of automated verification: the standard cheat in this market is raw machine translation sold as manual work, which counting cannot catch. Testing it forces Pact to show what its verifier can and cannot prove, which makes the whole test suite more credible.
+
+Two honorable mentions: resume writing (cheap, common, but quality is hard to check mechanically) and market research briefs (page counts and SWOT sections are checkable, but judging whether the research is real needs a smarter verifier than counting).

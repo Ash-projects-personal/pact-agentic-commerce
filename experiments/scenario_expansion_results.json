@@ -1,0 +1,800 @@
+{
+  "data_labeling_batch": {
+    "settled_values": {
+      "labeled_rows": 160,
+      "category_guide": "Labeling guide",
+      "label_summary": "Label distribution",
+      "flagged_rows": 6,
+      "batch_notes": 330
+    },
+    "honest": {
+      "passed": "5/5",
+      "checks": [
+        {
+          "check_id": "labeled_rows",
+          "passed": true,
+          "measured": 160,
+          "required": 160
+        },
+        {
+          "check_id": "category_guide",
+          "passed": true,
+          "measured": 1,
+          "required": "Labeling guide"
+        },
+        {
+          "check_id": "label_summary",
+          "passed": true,
+          "measured": 1,
+          "required": "Label distribution"
+        },
+        {
+          "check_id": "flagged_rows",
+          "passed": true,
+          "measured": 6,
+          "required": 6
+        },
+        {
+          "check_id": "batch_notes",
+          "passed": true,
+          "measured": 1472,
+          "required": 330
+        }
+      ]
+    },
+    "weak": {
+      "passed": "3/5",
+      "checks": [
+        {
+          "check_id": "labeled_rows",
+          "passed": false,
+          "measured": 120,
+          "required": 160
+        },
+        {
+          "check_id": "category_guide",
+          "passed": true,
+          "measured": 1,
+          "required": "Labeling guide"
+        },
+        {
+          "check_id": "label_summary",
+          "passed": true,
+          "measured": 1,
+          "required": "Label distribution"
+        },
+        {
+          "check_id": "flagged_rows",
+          "passed": false,
+          "measured": 0,
+          "required": 6
+        },
+        {
+          "check_id": "batch_notes",
+          "passed": true,
+          "measured": 1025,
+          "required": 330
+        }
+      ]
+    },
+    "cheat": {
+      "passed": "0/5",
+      "checks": [
+        {
+          "check_id": "labeled_rows",
+          "passed": false,
+          "measured": 0,
+          "required": 160
+        },
+        {
+          "check_id": "category_guide",
+          "passed": false,
+          "measured": 0,
+          "required": "Labeling guide"
+        },
+        {
+          "check_id": "label_summary",
+          "passed": false,
+          "measured": 0,
+          "required": "Label distribution"
+        },
+        {
+          "check_id": "flagged_rows",
+          "passed": false,
+          "measured": 0,
+          "required": 6
+        },
+        {
+          "check_id": "batch_notes",
+          "passed": false,
+          "measured": 48,
+          "required": 330
+        }
+      ]
+    }
+  },
+  "podcast_edit_package": {
+    "settled_values": {
+      "chapters": 7,
+      "timestamps": 10,
+      "transcript_section": "Transcript",
+      "show_notes": "Show notes",
+      "package_words": 1300
+    },
+    "honest": {
+      "passed": "5/5",
+      "checks": [
+        {
+          "check_id": "chapters",
+          "passed": true,
+          "measured": 7,
+          "required": 7
+        },
+        {
+          "check_id": "timestamps",
+          "passed": true,
+          "measured": 10,
+          "required": 10
+        },
+        {
+          "check_id": "transcript_section",
+          "passed": true,
+          "measured": 1,
+          "required": "Transcript"
+        },
+        {
+          "check_id": "show_notes",
+          "passed": true,
+          "measured": 1,
+          "required": "Show notes"
+        },
+        {
+          "check_id": "package_words",
+          "passed": true,
+          "measured": 1370,
+          "required": 1300
+        }
+      ]
+    },
+    "weak": {
+      "passed": "2/5",
+      "checks": [
+        {
+          "check_id": "chapters",
+          "passed": false,
+          "measured": 5,
+          "required": 7
+        },
+        {
+          "check_id": "timestamps",
+          "passed": false,
+          "measured": 0,
+          "required": 10
+        },
+        {
+          "check_id": "transcript_section",
+          "passed": true,
+          "measured": 1,
+          "required": "Transcript"
+        },
+        {
+          "check_id": "show_notes",
+          "passed": true,
+          "measured": 1,
+          "required": "Show notes"
+        },
+        {
+          "check_id": "package_words",
+          "passed": false,
+          "measured": 135,
+          "required": 1300
+        }
+      ]
+    },
+    "cheat": {
+      "passed": "0/5",
+      "checks": [
+        {
+          "check_id": "chapters",
+          "passed": false,
+          "measured": 0,
+          "required": 7
+        },
+        {
+          "check_id": "timestamps",
+          "passed": false,
+          "measured": 0,
+          "required": 10
+        },
+        {
+          "check_id": "transcript_section",
+          "passed": false,
+          "measured": 0,
+          "required": "Transcript"
+        },
+        {
+          "check_id": "show_notes",
+          "passed": false,
+          "measured": 0,
+          "required": "Show notes"
+        },
+        {
+          "check_id": "package_words",
+          "passed": false,
+          "measured": 48,
+          "required": 1300
+        }
+      ]
+    }
+  },
+  "newsletter_issue": {
+    "settled_values": {
+      "sections": 4,
+      "subject_line": "Subject:",
+      "cta_count": 2,
+      "unsubscribe": "Unsubscribe",
+      "issue_words": 575
+    },
+    "honest": {
+      "passed": "5/5",
+      "checks": [
+        {
+          "check_id": "sections",
+          "passed": true,
+          "measured": 4,
+          "required": 4
+        },
+        {
+          "check_id": "subject_line",
+          "passed": true,
+          "measured": 1,
+          "required": "Subject:"
+        },
+        {
+          "check_id": "cta_count",
+          "passed": true,
+          "measured": 2,
+          "required": 2
+        },
+        {
+          "check_id": "unsubscribe",
+          "passed": true,
+          "measured": 1,
+          "required": "Unsubscribe"
+        },
+        {
+          "check_id": "issue_words",
+          "passed": true,
+          "measured": 644,
+          "required": 575
+        }
+      ]
+    },
+    "weak": {
+      "passed": "1/5",
+      "checks": [
+        {
+          "check_id": "sections",
+          "passed": false,
+          "measured": 2,
+          "required": 4
+        },
+        {
+          "check_id": "subject_line",
+          "passed": true,
+          "measured": 1,
+          "required": "Subject:"
+        },
+        {
+          "check_id": "cta_count",
+          "passed": false,
+          "measured": 1,
+          "required": 2
+        },
+        {
+          "check_id": "unsubscribe",
+          "passed": false,
+          "measured": 0,
+          "required": "Unsubscribe"
+        },
+        {
+          "check_id": "issue_words",
+          "passed": false,
+          "measured": 44,
+          "required": 575
+        }
+      ]
+    },
+    "cheat": {
+      "passed": "0/5",
+      "checks": [
+        {
+          "check_id": "sections",
+          "passed": false,
+          "measured": 0,
+          "required": 4
+        },
+        {
+          "check_id": "subject_line",
+          "passed": false,
+          "measured": 0,
+          "required": "Subject:"
+        },
+        {
+          "check_id": "cta_count",
+          "passed": false,
+          "measured": 0,
+          "required": 2
+        },
+        {
+          "check_id": "unsubscribe",
+          "passed": false,
+          "measured": 0,
+          "required": "Unsubscribe"
+        },
+        {
+          "check_id": "issue_words",
+          "passed": false,
+          "measured": 44,
+          "required": 575
+        }
+      ]
+    }
+  },
+  "product_photo_set": {
+    "settled_values": {
+      "photos": 10,
+      "hero_shot": "hero",
+      "usage_license": "License",
+      "retouch_note": "Retouched",
+      "manifest_words": 375
+    },
+    "honest": {
+      "passed": "5/5",
+      "checks": [
+        {
+          "check_id": "photos",
+          "passed": true,
+          "measured": 10,
+          "required": 10
+        },
+        {
+          "check_id": "hero_shot",
+          "passed": true,
+          "measured": 1,
+          "required": "hero"
+        },
+        {
+          "check_id": "usage_license",
+          "passed": true,
+          "measured": 1,
+          "required": "License"
+        },
+        {
+          "check_id": "retouch_note",
+          "passed": true,
+          "measured": 1,
+          "required": "Retouched"
+        },
+        {
+          "check_id": "manifest_words",
+          "passed": true,
+          "measured": 447,
+          "required": 375
+        }
+      ]
+    },
+    "weak": {
+      "passed": "2/5",
+      "checks": [
+        {
+          "check_id": "photos",
+          "passed": false,
+          "measured": 7,
+          "required": 10
+        },
+        {
+          "check_id": "hero_shot",
+          "passed": true,
+          "measured": 1,
+          "required": "hero"
+        },
+        {
+          "check_id": "usage_license",
+          "passed": false,
+          "measured": 0,
+          "required": "License"
+        },
+        {
+          "check_id": "retouch_note",
+          "passed": true,
+          "measured": 1,
+          "required": "Retouched"
+        },
+        {
+          "check_id": "manifest_words",
+          "passed": false,
+          "measured": 103,
+          "required": 375
+        }
+      ]
+    },
+    "cheat": {
+      "passed": "0/5",
+      "checks": [
+        {
+          "check_id": "photos",
+          "passed": false,
+          "measured": 0,
+          "required": 10
+        },
+        {
+          "check_id": "hero_shot",
+          "passed": false,
+          "measured": 0,
+          "required": "hero"
+        },
+        {
+          "check_id": "usage_license",
+          "passed": false,
+          "measured": 0,
+          "required": "License"
+        },
+        {
+          "check_id": "retouch_note",
+          "passed": false,
+          "measured": 0,
+          "required": "Retouched"
+        },
+        {
+          "check_id": "manifest_words",
+          "passed": false,
+          "measured": 41,
+          "required": 375
+        }
+      ]
+    }
+  },
+  "book_cover_design": {
+    "settled_values": {
+      "concepts": 3,
+      "spine_section": "Spine",
+      "back_cover": "Back cover",
+      "palette": 5,
+      "typography": "Typography"
+    },
+    "honest": {
+      "passed": "5/5",
+      "checks": [
+        {
+          "check_id": "concepts",
+          "passed": true,
+          "measured": 3,
+          "required": 3
+        },
+        {
+          "check_id": "spine_section",
+          "passed": true,
+          "measured": 1,
+          "required": "Spine"
+        },
+        {
+          "check_id": "back_cover",
+          "passed": true,
+          "measured": 1,
+          "required": "Back cover"
+        },
+        {
+          "check_id": "palette",
+          "passed": true,
+          "measured": 6,
+          "required": 5
+        },
+        {
+          "check_id": "typography",
+          "passed": true,
+          "measured": 1,
+          "required": "Typography"
+        }
+      ]
+    },
+    "weak": {
+      "passed": "2/5",
+      "checks": [
+        {
+          "check_id": "concepts",
+          "passed": false,
+          "measured": 1,
+          "required": 3
+        },
+        {
+          "check_id": "spine_section",
+          "passed": true,
+          "measured": 1,
+          "required": "Spine"
+        },
+        {
+          "check_id": "back_cover",
+          "passed": false,
+          "measured": 0,
+          "required": "Back cover"
+        },
+        {
+          "check_id": "palette",
+          "passed": false,
+          "measured": 2,
+          "required": 5
+        },
+        {
+          "check_id": "typography",
+          "passed": true,
+          "measured": 1,
+          "required": "Typography"
+        }
+      ]
+    },
+    "cheat": {
+      "passed": "0/5",
+      "checks": [
+        {
+          "check_id": "concepts",
+          "passed": false,
+          "measured": 0,
+          "required": 3
+        },
+        {
+          "check_id": "spine_section",
+          "passed": false,
+          "measured": 0,
+          "required": "Spine"
+        },
+        {
+          "check_id": "back_cover",
+          "passed": false,
+          "measured": 0,
+          "required": "Back cover"
+        },
+        {
+          "check_id": "palette",
+          "passed": false,
+          "measured": 0,
+          "required": 5
+        },
+        {
+          "check_id": "typography",
+          "passed": false,
+          "measured": 0,
+          "required": "Typography"
+        }
+      ]
+    }
+  },
+  "api_integration_task": {
+    "settled_values": {
+      "endpoints": 5,
+      "auth_section": "Authentication",
+      "error_handling": "Error handling",
+      "usage_examples": 3,
+      "readme_section": "README"
+    },
+    "honest": {
+      "passed": "5/5",
+      "checks": [
+        {
+          "check_id": "endpoints",
+          "passed": true,
+          "measured": 5,
+          "required": 5
+        },
+        {
+          "check_id": "auth_section",
+          "passed": true,
+          "measured": 1,
+          "required": "Authentication"
+        },
+        {
+          "check_id": "error_handling",
+          "passed": true,
+          "measured": 1,
+          "required": "Error handling"
+        },
+        {
+          "check_id": "usage_examples",
+          "passed": true,
+          "measured": 3,
+          "required": 3
+        },
+        {
+          "check_id": "readme_section",
+          "passed": true,
+          "measured": 1,
+          "required": "README"
+        }
+      ]
+    },
+    "weak": {
+      "passed": "2/5",
+      "checks": [
+        {
+          "check_id": "endpoints",
+          "passed": false,
+          "measured": 3,
+          "required": 5
+        },
+        {
+          "check_id": "auth_section",
+          "passed": true,
+          "measured": 1,
+          "required": "Authentication"
+        },
+        {
+          "check_id": "error_handling",
+          "passed": false,
+          "measured": 0,
+          "required": "Error handling"
+        },
+        {
+          "check_id": "usage_examples",
+          "passed": false,
+          "measured": 1,
+          "required": 3
+        },
+        {
+          "check_id": "readme_section",
+          "passed": true,
+          "measured": 1,
+          "required": "README"
+        }
+      ]
+    },
+    "cheat": {
+      "passed": "0/5",
+      "checks": [
+        {
+          "check_id": "endpoints",
+          "passed": false,
+          "measured": 0,
+          "required": 5
+        },
+        {
+          "check_id": "auth_section",
+          "passed": false,
+          "measured": 0,
+          "required": "Authentication"
+        },
+        {
+          "check_id": "error_handling",
+          "passed": false,
+          "measured": 0,
+          "required": "Error handling"
+        },
+        {
+          "check_id": "usage_examples",
+          "passed": false,
+          "measured": 0,
+          "required": 3
+        },
+        {
+          "check_id": "readme_section",
+          "passed": false,
+          "measured": 0,
+          "required": "README"
+        }
+      ]
+    }
+  },
+  "spreadsheet_cleanup_report": {
+    "settled_values": {
+      "cleaned_columns": 8,
+      "findings": 4,
+      "methodology": "Methodology",
+      "duplicates_line": "Duplicates removed",
+      "report_words": 450
+    },
+    "honest": {
+      "passed": "5/5",
+      "checks": [
+        {
+          "check_id": "cleaned_columns",
+          "passed": true,
+          "measured": 8,
+          "required": 8
+        },
+        {
+          "check_id": "findings",
+          "passed": true,
+          "measured": 4,
+          "required": 4
+        },
+        {
+          "check_id": "methodology",
+          "passed": true,
+          "measured": 1,
+          "required": "Methodology"
+        },
+        {
+          "check_id": "duplicates_line",
+          "passed": true,
+          "measured": 1,
+          "required": "Duplicates removed"
+        },
+        {
+          "check_id": "report_words",
+          "passed": true,
+          "measured": 518,
+          "required": 450
+        }
+      ]
+    },
+    "weak": {
+      "passed": "2/5",
+      "checks": [
+        {
+          "check_id": "cleaned_columns",
+          "passed": false,
+          "measured": 5,
+          "required": 8
+        },
+        {
+          "check_id": "findings",
+          "passed": false,
+          "measured": 2,
+          "required": 4
+        },
+        {
+          "check_id": "methodology",
+          "passed": true,
+          "measured": 1,
+          "required": "Methodology"
+        },
+        {
+          "check_id": "duplicates_line",
+          "passed": true,
+          "measured": 1,
+          "required": "Duplicates removed"
+        },
+        {
+          "check_id": "report_words",
+          "passed": false,
+          "measured": 77,
+          "required": 450
+        }
+      ]
+    },
+    "cheat": {
+      "passed": "0/5",
+      "checks": [
+        {
+          "check_id": "cleaned_columns",
+          "passed": false,
+          "measured": 0,
+          "required": 8
+        },
+        {
+          "check_id": "findings",
+          "passed": false,
+          "measured": 0,
+          "required": 4
+        },
+        {
+          "check_id": "methodology",
+          "passed": false,
+          "measured": 0,
+          "required": "Methodology"
+        },
+        {
+          "check_id": "duplicates_line",
+          "passed": false,
+          "measured": 0,
+          "required": "Duplicates removed"
+        },
+        {
+          "check_id": "report_words",
+          "passed": false,
+          "measured": 36,
+          "required": 450
+        }
+      ]
+    }
+  }
+}

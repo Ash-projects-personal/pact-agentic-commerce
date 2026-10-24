@@ -1,0 +1,294 @@
+{
+ "E1_verifier_accuracy": {
+  "deliveries": 55,
+  "delivery_level_accuracy": 1.0,
+  "checks_judged": 275,
+  "confusion": {
+   "tp": 207,
+   "fp": 0,
+   "tn": 68,
+   "fn": 0
+  },
+  "check_level_accuracy": 1.0,
+  "trap_cases": 4,
+  "trap_cases_right": 4
+ },
+ "E2_negotiation_sweep": {
+  "runs": 196,
+  "agreement_rate_in_zone": 1.0,
+  "walk_away_correct_rate": 1.0,
+  "mean_price_moves_in_zone": 2.7884615384615383,
+  "mean_price_position": 0.377646456582633,
+  "by_rate": {
+   "0.2": {
+    "agreement_rate_in_zone": 1.0,
+    "mean_price_moves": 4.205128205128205
+   },
+   "0.35": {
+    "agreement_rate_in_zone": 1.0,
+    "mean_price_moves": 2.769230769230769
+   },
+   "0.45": {
+    "agreement_rate_in_zone": 1.0,
+    "mean_price_moves": 2.3076923076923075
+   },
+   "0.6": {
+    "agreement_rate_in_zone": 1.0,
+    "mean_price_moves": 1.8717948717948718
+   }
+  }
+ },
+ "E3_settlement_oracle": {
+  "paths": 10,
+  "paths_matching_oracle": 10,
+  "detail": [
+   {
+    "path": "logo honest",
+    "expected": [
+     "released",
+     "released",
+     "returned",
+     6,
+     3
+    ],
+    "got": [
+     "released",
+     "released",
+     "returned",
+     6,
+     3
+    ],
+    "match": true,
+    "ledger_events": 34
+   },
+   {
+    "path": "landing honest",
+    "expected": [
+     "released",
+     "released",
+     "returned",
+     6,
+     3
+    ],
+    "got": [
+     "released",
+     "released",
+     "returned",
+     6,
+     3
+    ],
+    "match": true,
+    "ledger_events": 34
+   },
+   {
+    "path": "code task honest",
+    "expected": [
+     "released",
+     "released",
+     "returned",
+     6,
+     3
+    ],
+    "got": [
+     "released",
+     "released",
+     "returned",
+     6,
+     3
+    ],
+    "match": true,
+    "ledger_events": 33
+   },
+   {
+    "path": "research brief honest",
+    "expected": [
+     "released",
+     "released",
+     "returned",
+     6,
+     3
+    ],
+    "got": [
+     "released",
+     "released",
+     "returned",
+     6,
+     3
+    ],
+    "match": true,
+    "ledger_events": 34
+   },
+   {
+    "path": "listing honest",
+    "expected": [
+     "released",
+     "released",
+     "returned",
+     6,
+     3
+    ],
+    "got": [
+     "released",
+     "released",
+     "returned",
+     6,
+     3
+    ],
+    "match": true,
+    "ledger_events": 34
+   },
+   {
+    "path": "logo poor",
+    "expected": [
+     "refunded",
+     "refunded",
+     "slashed",
+     -32,
+     1
+    ],
+    "got": [
+     "refunded",
+     "refunded",
+     "slashed",
+     -32,
+     1
+    ],
+    "match": true,
+    "ledger_events": 36
+   },
+   {
+    "path": "landing poor",
+    "expected": [
+     "refunded",
+     "refunded",
+     "slashed",
+     -32,
+     1
+    ],
+    "got": [
+     "refunded",
+     "refunded",
+     "slashed",
+     -32,
+     1
+    ],
+    "match": true,
+    "ledger_events": 36
+   },
+   {
+    "path": "cheat recycled twice",
+    "expected": [
+     "refunded",
+     "refunded",
+     "slashed",
+     -35,
+     1
+    ],
+    "got": [
+     "refunded",
+     "refunded",
+     "slashed",
+     -35,
+     1
+    ],
+    "match": true,
+    "ledger_events": 46
+   },
+   {
+    "path": "cheat poor",
+    "expected": [
+     "refunded",
+     "refunded",
+     "slashed",
+     -32,
+     1
+    ],
+    "got": [
+     "refunded",
+     "refunded",
+     "slashed",
+     -32,
+     1
+    ],
+    "match": true,
+    "ledger_events": 37
+   },
+   {
+    "path": "walk away",
+    "expected": [
+     "failed",
+     "not_started",
+     "not_posted"
+    ],
+    "got": [
+     "failed",
+     "not_started",
+     "not_posted"
+    ],
+    "match": true,
+    "ledger_events": 7
+   }
+  ],
+  "total_ledger_events": 331
+ },
+ "E4_live_sandbox_evidence": {
+  "date": "2026-10-22",
+  "environment": "PayPal sandbox, api-m.sandbox.paypal.com",
+  "deals": [
+   {
+    "deal": "deal-0001",
+    "scenario": "logo_brand_kit",
+    "price": 222.17,
+    "bond": 44.43,
+    "outcome": "released",
+    "checks": "5/5",
+    "payment_capture": "2XX57477S7535341X",
+    "bond_capture": "76U34250RE4380745",
+    "payout": "DZNF5GE6AEUHN",
+    "bond_return_payout": "Y4BT2Q3N8QR7J",
+    "refund": null
+   },
+   {
+    "deal": "deal-0002",
+    "scenario": "landing_page_copy",
+    "price": 324.21,
+    "bond": 64.84,
+    "outcome": "released",
+    "checks": "5/5",
+    "payment_capture": "5V6374204C639882V",
+    "bond_capture": "0FJ792206C854335V",
+    "payout": "A2EXK2WL4D4BG",
+    "bond_return_payout": "L35MAUZEMNY92",
+    "refund": null
+   },
+   {
+    "deal": "deal-0003",
+    "scenario": "logo_brand_kit, poor delivery",
+    "price": 222.17,
+    "bond": 44.43,
+    "outcome": "refunded, bond slashed",
+    "checks": "0/5",
+    "payment_capture": "0X9062287L385133Y",
+    "bond_capture": "3AP59378SU264272M",
+    "payout": null,
+    "bond_return_payout": null,
+    "refund": "02S348440D980433R",
+    "slash_payout": "PWMV585KHNEM6"
+   },
+   {
+    "deal": "deal-0004",
+    "scenario": "cheat_attempt",
+    "price": 180.96,
+    "bond": 36.19,
+    "outcome": "refunded, bond slashed",
+    "checks": "1/5 then 1/5",
+    "payment_capture": "60E66083JP1219234",
+    "bond_capture": "4P1624176C9319628",
+    "payout": null,
+    "bond_return_payout": null,
+    "refund": "9VH98649B6022315A",
+    "slash_payout": "X3BT5KNKEF8CL"
+   }
+  ]
+ }
+}

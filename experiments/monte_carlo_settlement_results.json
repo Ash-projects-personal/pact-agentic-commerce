@@ -1,0 +1,60 @@
+{
+  "seed": 20261023,
+  "n_deals": 10000,
+  "deals_run": 10000,
+  "invariant_a_violations": 0,
+  "invariant_a_details": [],
+  "invariant_b_violations": 0,
+  "invariant_b_details": [],
+  "error_deals": [],
+  "leg_failure_selected": {
+    "price_payout": 2138,
+    "bond_return": 2115,
+    "price_refund": 2125,
+    "bond_slash": 2093
+  },
+  "leg_failure_fired": {
+    "price_payout": 973,
+    "bond_return": 995,
+    "price_refund": 1093,
+    "bond_slash": 1102
+  },
+  "terminal_state_histogram": {
+    "released": 4591,
+    "refunded": 5237,
+    "failed": 172
+  },
+  "scenario_histogram": {
+    "code_task": 755,
+    "research_brief": 730,
+    "landing_page_copy": 738,
+    "amazon_listing": 663,
+    "data_labeling_batch": 714,
+    "spreadsheet_cleanup_report": 713,
+    "procurement": 725,
+    "newsletter_issue": 684,
+    "api_integration_task": 681,
+    "product_photo_set": 676,
+    "podcast_edit_package": 690,
+    "logo_brand_kit": 722,
+    "cheat_attempt": 771,
+    "book_cover_design": 738
+  },
+  "quality_histogram": {
+    "auto": 5063,
+    "weak": 1428,
+    "cheat": 1539,
+    "poor": 1970
+  },
+  "money_totals_cents": {
+    "captured": 207016221,
+    "paid_to_seller": 80590524,
+    "refunded_to_buyer": 91991166,
+    "bond_returned": 16028038,
+    "bond_slashed": 18406493,
+    "platform_fees": 0,
+    "residual_unaccounted": 0
+  },
+  "runtime_seconds": 293.38,
+  "method": "10,000 deals driven end to end through the real settlement engine via fastapi TestClient against pact.main:app in a single shared session (context manager shares one event loop portal). Demo mode forced by popping PAYPAL_CLIENT_ID/PAYPAL_CLIENT_SECRET/LLM_API_KEY/PAYPAL_WEBHOOK_ID/CHANNEL3_API_KEY before import; PACT_DB_PATH set to a temp dir (dev DB at data/pact.db untouched). Lifecycle per deal: POST /api/deals, negotiate/run, pay (demo captures instantly to paid_held; no pay/confirm needed), deliver, verify, with resume loops through injected 502s (deal stays 'verifying') and revision rounds (re-deliver then verify again) until a terminal state. Failure injection: get_agent_payment_service monkeypatched per deal with a fail-once stub in the shape of tests/hardening_test.py PART I (FailLegStub): 0-2 randomly chosen legs raise PaymentError on the first send under the deterministic idempotency key, before the simulator records anything; the resume re-sends under the same key and succeeds. Money audit in integer cents from the amounts on the stub's successful payout/refund calls, cross-checked against each leg's recorded status (done => exactly one money call). persistence.save_all was patched to a no-op for speed; the in-memory store is what the API reads/writes, so settlement logic is unaffected. Negotiation concession behavior was randomized via buyer_max/seller_floor draws inside each scenario's price band (plus a 2% adversarial floor>ceiling walkaway); bond percents 10-30; delivery qualities auto/weak/cheat/poor at 50/15/15/20. Deal records were deleted from the in-memory store after auditing to bound memory; only violating deals would have been kept (none)."
+}

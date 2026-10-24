@@ -1,0 +1,436 @@
+{
+  "n_deals": 50,
+  "seed": 20261023,
+  "concurrency": 10,
+  "server": {
+    "mode": "demo",
+    "orders_rail": "demo_simulator",
+    "scratch_port": 43875,
+    "scratch_db": true
+  },
+  "scenario_order": [
+    "logo_brand_kit",
+    "landing_page_copy",
+    "cheat_attempt",
+    "code_task",
+    "research_brief",
+    "amazon_listing",
+    "procurement",
+    "data_labeling_batch",
+    "podcast_edit_package",
+    "newsletter_issue",
+    "product_photo_set",
+    "book_cover_design",
+    "api_integration_task",
+    "spreadsheet_cleanup_report"
+  ],
+  "per_operation_latency_ms": {
+    "create": {
+      "count": 50,
+      "mean": 280.474,
+      "p50": 220.878,
+      "p95": 862.287,
+      "p99": 917.448,
+      "max": 930.339
+    },
+    "negotiate": {
+      "count": 50,
+      "mean": 181.932,
+      "p50": 134.874,
+      "p95": 460.153,
+      "p99": 628.942,
+      "max": 698.627
+    },
+    "pay": {
+      "count": 50,
+      "mean": 184.869,
+      "p50": 146.847,
+      "p95": 420.235,
+      "p99": 457.604,
+      "max": 461.105
+    },
+    "deliver": {
+      "count": 54,
+      "mean": 267.61,
+      "p50": 227.713,
+      "p95": 565.366,
+      "p99": 740.559,
+      "max": 904.163
+    },
+    "verify": {
+      "count": 54,
+      "mean": 189.409,
+      "p50": 164.246,
+      "p95": 488.543,
+      "p99": 532.119,
+      "max": 553.559
+    }
+  },
+  "end_to_end_latency_ms": {
+    "count": 50,
+    "mean": 2636.735,
+    "p50": 2010.144,
+    "p95": 5836.347,
+    "p99": 5925.226,
+    "max": 5925.511
+  },
+  "terminal_states": {
+    "released": 46,
+    "refunded": 4
+  },
+  "failures": [],
+  "total_wall_time_s": 6.24,
+  "deals": [
+    {
+      "index": 0,
+      "deal_id": "deal-0001",
+      "scenario_id": "logo_brand_kit",
+      "state": "released",
+      "e2e_ms": 379.588
+    },
+    {
+      "index": 1,
+      "deal_id": "deal-0002",
+      "scenario_id": "landing_page_copy",
+      "state": "released",
+      "e2e_ms": 377.346
+    },
+    {
+      "index": 2,
+      "deal_id": "deal-0003",
+      "scenario_id": "cheat_attempt",
+      "state": "refunded",
+      "e2e_ms": 570.023
+    },
+    {
+      "index": 3,
+      "deal_id": "deal-0004",
+      "scenario_id": "code_task",
+      "state": "released",
+      "e2e_ms": 412.571
+    },
+    {
+      "index": 4,
+      "deal_id": "deal-0005",
+      "scenario_id": "research_brief",
+      "state": "released",
+      "e2e_ms": 432.977
+    },
+    {
+      "index": 5,
+      "deal_id": "deal-0006",
+      "scenario_id": "amazon_listing",
+      "state": "released",
+      "e2e_ms": 432.132
+    },
+    {
+      "index": 6,
+      "deal_id": "deal-0007",
+      "scenario_id": "procurement",
+      "state": "released",
+      "e2e_ms": 419.7
+    },
+    {
+      "index": 7,
+      "deal_id": "deal-0008",
+      "scenario_id": "data_labeling_batch",
+      "state": "released",
+      "e2e_ms": 445.101
+    },
+    {
+      "index": 8,
+      "deal_id": "deal-0009",
+      "scenario_id": "podcast_edit_package",
+      "state": "released",
+      "e2e_ms": 467.743
+    },
+    {
+      "index": 9,
+      "deal_id": "deal-0010",
+      "scenario_id": "newsletter_issue",
+      "state": "released",
+      "e2e_ms": 465.986
+    },
+    {
+      "index": 10,
+      "deal_id": "deal-0011",
+      "scenario_id": "product_photo_set",
+      "state": "released",
+      "e2e_ms": 885.93
+    },
+    {
+      "index": 11,
+      "deal_id": "deal-0012",
+      "scenario_id": "book_cover_design",
+      "state": "released",
+      "e2e_ms": 960.334
+    },
+    {
+      "index": 12,
+      "deal_id": "deal-0013",
+      "scenario_id": "api_integration_task",
+      "state": "released",
+      "e2e_ms": 986.56
+    },
+    {
+      "index": 13,
+      "deal_id": "deal-0014",
+      "scenario_id": "spreadsheet_cleanup_report",
+      "state": "released",
+      "e2e_ms": 1019.283
+    },
+    {
+      "index": 14,
+      "deal_id": "deal-0015",
+      "scenario_id": "logo_brand_kit",
+      "state": "released",
+      "e2e_ms": 1128.547
+    },
+    {
+      "index": 15,
+      "deal_id": "deal-0016",
+      "scenario_id": "landing_page_copy",
+      "state": "released",
+      "e2e_ms": 1140.375
+    },
+    {
+      "index": 16,
+      "deal_id": "deal-0017",
+      "scenario_id": "cheat_attempt",
+      "state": "refunded",
+      "e2e_ms": 1559.778
+    },
+    {
+      "index": 17,
+      "deal_id": "deal-0018",
+      "scenario_id": "code_task",
+      "state": "released",
+      "e2e_ms": 1172.566
+    },
+    {
+      "index": 18,
+      "deal_id": "deal-0019",
+      "scenario_id": "research_brief",
+      "state": "released",
+      "e2e_ms": 1246.87
+    },
+    {
+      "index": 19,
+      "deal_id": "deal-0020",
+      "scenario_id": "amazon_listing",
+      "state": "released",
+      "e2e_ms": 1376.537
+    },
+    {
+      "index": 20,
+      "deal_id": "deal-0021",
+      "scenario_id": "procurement",
+      "state": "released",
+      "e2e_ms": 1824.735
+    },
+    {
+      "index": 21,
+      "deal_id": "deal-0022",
+      "scenario_id": "data_labeling_batch",
+      "state": "released",
+      "e2e_ms": 1845.668
+    },
+    {
+      "index": 22,
+      "deal_id": "deal-0023",
+      "scenario_id": "podcast_edit_package",
+      "state": "released",
+      "e2e_ms": 1889.256
+    },
+    {
+      "index": 23,
+      "deal_id": "deal-0024",
+      "scenario_id": "newsletter_issue",
+      "state": "released",
+      "e2e_ms": 1938.316
+    },
+    {
+      "index": 24,
+      "deal_id": "deal-0025",
+      "scenario_id": "product_photo_set",
+      "state": "released",
+      "e2e_ms": 1976.458
+    },
+    {
+      "index": 25,
+      "deal_id": "deal-0026",
+      "scenario_id": "book_cover_design",
+      "state": "released",
+      "e2e_ms": 2043.831
+    },
+    {
+      "index": 26,
+      "deal_id": "deal-0027",
+      "scenario_id": "api_integration_task",
+      "state": "released",
+      "e2e_ms": 2114.653
+    },
+    {
+      "index": 27,
+      "deal_id": "deal-0028",
+      "scenario_id": "spreadsheet_cleanup_report",
+      "state": "released",
+      "e2e_ms": 2223.538
+    },
+    {
+      "index": 28,
+      "deal_id": "deal-0029",
+      "scenario_id": "logo_brand_kit",
+      "state": "released",
+      "e2e_ms": 2226.049
+    },
+    {
+      "index": 29,
+      "deal_id": "deal-0030",
+      "scenario_id": "landing_page_copy",
+      "state": "released",
+      "e2e_ms": 2589.242
+    },
+    {
+      "index": 30,
+      "deal_id": "deal-0031",
+      "scenario_id": "cheat_attempt",
+      "state": "refunded",
+      "e2e_ms": 3872.612
+    },
+    {
+      "index": 31,
+      "deal_id": "deal-0032",
+      "scenario_id": "code_task",
+      "state": "released",
+      "e2e_ms": 3351.601
+    },
+    {
+      "index": 32,
+      "deal_id": "deal-0033",
+      "scenario_id": "research_brief",
+      "state": "released",
+      "e2e_ms": 3353.123
+    },
+    {
+      "index": 33,
+      "deal_id": "deal-0034",
+      "scenario_id": "amazon_listing",
+      "state": "released",
+      "e2e_ms": 3407.207
+    },
+    {
+      "index": 34,
+      "deal_id": "deal-0036",
+      "scenario_id": "procurement",
+      "state": "released",
+      "e2e_ms": 3637.645
+    },
+    {
+      "index": 35,
+      "deal_id": "deal-0035",
+      "scenario_id": "data_labeling_batch",
+      "state": "released",
+      "e2e_ms": 3663.144
+    },
+    {
+      "index": 36,
+      "deal_id": "deal-0037",
+      "scenario_id": "podcast_edit_package",
+      "state": "released",
+      "e2e_ms": 3730.511
+    },
+    {
+      "index": 37,
+      "deal_id": "deal-0038",
+      "scenario_id": "newsletter_issue",
+      "state": "released",
+      "e2e_ms": 4061.503
+    },
+    {
+      "index": 38,
+      "deal_id": "deal-0039",
+      "scenario_id": "product_photo_set",
+      "state": "released",
+      "e2e_ms": 4093.596
+    },
+    {
+      "index": 39,
+      "deal_id": "deal-0040",
+      "scenario_id": "book_cover_design",
+      "state": "released",
+      "e2e_ms": 4933.456
+    },
+    {
+      "index": 40,
+      "deal_id": "deal-0041",
+      "scenario_id": "api_integration_task",
+      "state": "released",
+      "e2e_ms": 5424.585
+    },
+    {
+      "index": 41,
+      "deal_id": "deal-0042",
+      "scenario_id": "spreadsheet_cleanup_report",
+      "state": "released",
+      "e2e_ms": 5422.582
+    },
+    {
+      "index": 42,
+      "deal_id": "deal-0043",
+      "scenario_id": "logo_brand_kit",
+      "state": "released",
+      "e2e_ms": 5540.365
+    },
+    {
+      "index": 43,
+      "deal_id": "deal-0044",
+      "scenario_id": "landing_page_copy",
+      "state": "released",
+      "e2e_ms": 5753.702
+    },
+    {
+      "index": 44,
+      "deal_id": "deal-0045",
+      "scenario_id": "cheat_attempt",
+      "state": "refunded",
+      "e2e_ms": 5924.929
+    },
+    {
+      "index": 45,
+      "deal_id": "deal-0046",
+      "scenario_id": "code_task",
+      "state": "released",
+      "e2e_ms": 5754.215
+    },
+    {
+      "index": 46,
+      "deal_id": "deal-0047",
+      "scenario_id": "research_brief",
+      "state": "released",
+      "e2e_ms": 5762.158
+    },
+    {
+      "index": 47,
+      "deal_id": "deal-0048",
+      "scenario_id": "amazon_listing",
+      "state": "released",
+      "e2e_ms": 5835.963
+    },
+    {
+      "index": 48,
+      "deal_id": "deal-0049",
+      "scenario_id": "procurement",
+      "state": "released",
+      "e2e_ms": 5836.662
+    },
+    {
+      "index": 49,
+      "deal_id": "deal-0050",
+      "scenario_id": "data_labeling_batch",
+      "state": "released",
+      "e2e_ms": 5925.511
+    }
+  ],
+  "method": "Scratch uvicorn server on a free port with a throwaway SQLite DB (PACT_DB_PATH), PayPal client id/secret and the LLM key popped from the server env so the app boots in demo mode (verified via /api/health mode=demo). 50 deals driven concurrently (semaphore 10) with asyncio + httpx through create, negotiate/run, pay, deliver, verify, repeating deliver/verify on revision rounds until a terminal state (released/refunded). Latency measured client-side with time.perf_counter around each HTTP op; percentiles are linear-interpolation over the measured values. Deal params from random.Random(seed): scenario cycles the 14 ids, buyer_max = default * U(0.7,1.3), seller_floor = default * U(0.7,1.1) (buyer_max floored at 1.2x floor so negotiation converges), bond_percent = U(5,40); the procurement scenario keeps its market-grounded defaults. The live dev server and data/pact.db were not touched."
+}

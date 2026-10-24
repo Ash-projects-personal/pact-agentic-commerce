@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Pact: two AI agents negotiate a deal, write the acceptance checks themselves, and settle through PayPal with a seller performance bond. Every step lands in an audit ledger.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b5fff'/%3E%3Ctext x='32' y='45' font-family='Arial, sans-serif' font-size='36' font-weight='700' fill='%23ffffff' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+<title>Pact: Agent to Agent Commerce with Verified Settlement</title>
+<link rel="stylesheet" href="/static/styles.css">
+<link rel="stylesheet" href="/static/vendor/ag-grid.css">
+<link rel="stylesheet" href="/static/vendor/ag-theme-quartz.css">
+<script src="/static/vendor/ag-grid-community.min.js"></script>
+<script src="/static/vendor/ag-charts-community.min.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <h1>Pact</h1>
+    <p class="tagline">Agent to agent commerce with verified settlement</p>
+  </div>
+  <div class="badges">
+    <span id="modeBadge" class="badge badge-mode">Loading mode</span>
+    <span id="llmBadge" class="badge">LLM off</span>
+  </div>
+</header>
+
+<main class="layout">
+  <section class="column">
+    <div class="card">
+      <h2>Deal setup</h2>
+      <label for="scenarioSelect">Scenario</label>
+      <select id="scenarioSelect"></select>
+      <p id="scenarioSummary" class="muted"></p>
+      <div class="row">
+        <div>
+          <label for="buyerMax">Buyer max budget (USD)</label>
+          <input id="buyerMax" type="number" min="1" step="1">
+        </div>
+        <div>
+          <label for="sellerFloor">Seller floor (USD)</label>
+          <input id="sellerFloor" type="number" min="1" step="1">
+        </div>
+      </div>
+      <p class="muted">On agreement the seller also posts a performance bond of <span id="bondPct">20</span> percent of the price through the same payment flow.</p>
+      <button id="createBtn" class="primary">Start a deal</button>
+      <div class="actions">
+        <button id="negotiateBtn" disabled>Run negotiation</button>
+        <button id="payBtn" disabled>Pay and post bond</button>
+        <button id="deliverBtn" disabled>Produce delivery</button>
+        <button id="verifyBtn" disabled>Verify delivery</button>
+      </div>
+      <div id="approvalPanel" class="approval-panel" hidden>
+        <p><strong>Approval needed.</strong> PayPal asks the account holder to approve each wallet payment before it can be captured. The agents prepared both orders; a person approves them, then Pact captures.</p>
+        <p><a id="approvePayLink" href="#" target="_blank" rel="noopener">Approve the payment as the buyer</a></p>
+        <p><a id="approveBondLink" href="#" target="_blank" rel="noopener">Approve the bond as the seller</a></p>
+        <button id="confirmPayBtn" class="primary">Both approved: capture the payments</button>
+      </div>
+      <p id="stateLine" class="state-line">No deal yet</p>
+      <p class="muted" id="disputePacketRow" hidden><a id="disputePacketLink" href="#" download>Download the dispute evidence packet</a>: the full transcript, frozen contract, every check verdict, and every PayPal transaction id for this deal in one file.</p>
+    </div>
+
+    <div class="card">
+      <h2>Agents and reputation</h2>
+      <div id="agentList"></div>
+      <p class="muted">Completed deals raise reputation. A revision costs a little. A refund costs more. A slashed bond cuts it hard.</p>
+    </div>
+
+    <div class="card">
+      <h2>Payment timeline</h2>
+      <ol id="timeline" class="timeline"></ol>
+    </div>
+
+    <div class="card">
+      <h2>Where this fits</h2>
+      <p class="muted">Freelance marketplaces: checks written before payment, a computed verdict, and a bond that makes recycled work cost the seller money.</p>
+      <p class="muted">Agents buying from agents: a contract the buyer can verify in code, settled without a human on a support call.</p>
+      <p class="muted">Small businesses: bond backed protection for digital services, without a procurement department.</p>
+    </div>
+  </section>
+
+  <section class="column wide">
+    <div class="card">
+      <h2>Negotiation thread</h2>
+      <div id="thread" class="thread"><p class="muted">Start a deal, then run the negotiation. Watch the agents settle a price and then write the contract checks themselves.</p></div>
+    </div>
+
+    <div class="card">
+      <h2>Deal spec</h2>
+      <div id="specCard"><p class="muted">The frozen contract appears here after negotiation, including the acceptance checks the agents agreed.</p></div>
+    </div>
+
+    <div class="card">
+      <h2>Deliverable</h2>
+      <pre id="deliverable" class="deliverable">Nothing delivered yet.</pre>
+    </div>
+
+    <div class="card">
+      <h2>Verification checklist</h2>
+      <div id="verification"><p class="muted">The verifier judges the delivery against the negotiated checks only.</p></div>
+    </div>
+
+    <div class="card">
+      <h2>Audit ledger</h2>
+      <div class="ledger-dash">
+        <div id="ledgerKpis" class="kpi-strip"></div>
+        <div id="repChart" class="rep-chart"></div>
+      </div>
+      <div class="ledger-tools">
+        <input id="ledgerFilter" type="text" placeholder="Filter the ledger: try refund, bond, verification">
+        <button id="exportCsvBtn" type="button">Export CSV</button>
+        <button id="resetViewBtn" type="button">Reset view</button>
+      </div>
+      <div id="ledgerGrid" class="ag-theme-quartz" style="height: 420px; width: 100%;"></div>
+    </div>
+  </section>
+<section class="column wide" id="evidenceSection">
+  <h2>Evidence (PactBench)</h2>
+  <p class="muted">Every number on this page was generated by a run, not typed by hand. The frozen studies never change retroactively.</p>
+  <div class="evidence-grid">
+    <div class="evidence-card"><h3>E1 verifier accuracy (frozen)</h3><p class="muted">55 deliveries, 275 checks judged</p><p>check accuracy 100.0%, delivery accuracy 100.0%, traps 4/4</p><p class="muted evidence-src">experiments/results.json</p></div>
+    <div class="evidence-card"><h3>PactBench verifier battery (extended)</h3><p class="muted">314 deliveries across all 14 scenarios, 1570 checks judged, seed 20261023</p><p>check accuracy 99.5% (TP 65 TN 139 FP 1 FN 0); delivery accuracy 90.6% (TP 13 TN 265 FP 29 FN 0)</p><p class="muted evidence-src">experiments/verifier_battery_results.json</p></div>
+    <div class="evidence-card"><h3>E2 negotiation sweep (frozen)</h3><p class="muted">196 runs on the buyer ceiling by seller floor grid</p><p>in-zone agreement 100.0%, walk away correct 100.0%, mean price position 0.3776</p><p class="muted evidence-src">experiments/results.json</p></div>
+    <div class="evidence-card"><h3>Multi-issue negotiation sweep</h3><p class="muted">196 runs, seed fixed in the sweep script</p><p>agreement in zone 100.0%, match vs single-issue twins 100.0%, walk away correct 100.0%, bond consistent 100.0%, cap hits 0.0%, mean 25.0 terms moves, settled terms 12 days / 3 rounds / 23.54% bond</p><p class="muted evidence-src">experiments/results_multi_issue.json</p></div>
+    <div class="evidence-card"><h3>E3 settlement oracle (frozen)</h3><p class="muted">10 end-to-end deal paths</p><p>10/10 match the rules oracle, 331 ledger events total</p><p class="muted evidence-src">experiments/results.json</p></div>
+    <div class="evidence-card"><h3>Monte Carlo settlement integrity</h3><p class="muted">10,000 simulated deals, seed 20261023, randomized prices, bond percents, delivery qualities, injected leg failures</p><p>verdict-state violations 0, money conservation violations 0, terminal states released 4,591 / refunded 5,237 / failed 172</p><p class="muted evidence-src">experiments/monte_carlo_settlement_results.json</p></div>
+    <div class="evidence-card"><h3>Property tests (randomized API)</h3><p class="muted">342 randomized cases, 4935 checks, seed 20261023</p><p>end-to-end deals across scenarios and qualities, illegal transitions rejected, malformed bodies fuzzed, state machine invariants hold</p><p class="muted evidence-src">tests/pactbench_property_test.py</p></div>
+    <div class="evidence-card"><h3>Chaos suite</h3><p class="muted">8 cases, 107 checks</p><p>every settlement leg killed and resumed to the right terminal state, duplicate webhooks idempotent, out-of-order webhooks handled, replayed pay/pay-confirm on terminal deals rejected with 409</p><p class="muted evidence-src">tests/pactbench_chaos_test.py</p></div>
+    <div class="evidence-card"><h3>Load check</h3><p class="muted">50 parallel deals settled in demo mode, concurrency 10, seed 20261023</p><p>end-to-end p50 2915 ms / p95 6273 ms / p99 6335 ms, total wall time 6.5 s, 46 released / 4 refunded, zero failures</p><p class="muted evidence-src">experiments/pactbench_load_results.json</p></div>
+    <div class="evidence-card"><h3>E4 live sandbox deals (frozen)</h3><p class="muted">4 deals settled on PayPal sandbox, api-m.sandbox.paypal.com on 2026-10-22</p><p>price payouts, bond returns, refund plus bond slash all executed with real sandbox transaction ids, recorded in the paper table</p><p class="muted evidence-src">experiments/results.json</p></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <p>Pact demo. Money moves only on the PayPal sandbox when credentials are configured. With no credentials the app runs a clearly labeled demo mode with a local payment simulator.</p>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

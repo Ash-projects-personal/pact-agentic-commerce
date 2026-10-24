@@ -1,0 +1,128 @@
+{
+ "cases": [
+  {
+   "case": "Amazon listing copy, honest seller",
+   "market_reference": "Upwork catalog listings charge $40 to $120 per listing; common tiers $50, $80, $120 (research/real-deal-data.md, Part 1.7)",
+   "negotiated_price": 74.06,
+   "bond": 14.81,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "On Fiverr the seller loses 20 percent commission and waits about 14 days to withdraw. A quality fight goes to a support queue. On a plain PayPal payment, services sit outside Purchase Protection."
+  },
+  {
+   "case": "Amazon listing copy, under delivered then abandoned",
+   "market_reference": "Same listing market as above. The seller delivered 3 of the agreed bullets, no keyword set, and a short description, then sent a thin draft again on the revision round.",
+   "negotiated_price": 74.06,
+   "bond": 14.81,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 53,
+   "same_deal_today": "On Upwork, a binding decision on this $80 job costs $675 in arbitration fees split between the parties, about 30 days. Most buyers write the money off instead."
+  },
+  {
+   "case": "Social pack, recycled copy cheat",
+   "market_reference": "Upwork catalog: $150 for a 20 post pack; $250 to $650 tiers with hashtag research (Part 1.3)",
+   "negotiated_price": 137.09,
+   "bond": 27.42,
+   "checks": "1/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 29,
+   "same_deal_today": "The buyer argues with the seller and a support team over whether recycled posts count as delivery. The seller risks nothing but the refund itself."
+  },
+  {
+   "case": "Logo and brand kit, honest studio",
+   "market_reference": "Fiverr: standard logo packages $60 to $130; logo plus small brand kit $130 to $420 (Part 1.1)",
+   "negotiated_price": 120.64,
+   "bond": 24.13,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "Escrow on a marketplace, release on the buyer's word or after 14 days of silence, quality judged by the buyer alone."
+  },
+  {
+   "case": "Python script task at bug fix prices",
+   "market_reference": "Fiverr Python bug fixing $5 to $95; Upwork catalog tiers $15, $50, $120 (Part 1.4)",
+   "negotiated_price": 49.22,
+   "bond": 9.84,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "Same escrow and support queue pattern, on a job worth less than one hour of a dispute specialist's time."
+  },
+  {
+   "case": "Market research brief, honest shop",
+   "market_reference": "Upwork catalog: $45, $85, $145 for summary research reports (Part 1.5)",
+   "negotiated_price": 78.52,
+   "bond": 15.7,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "A brief with no sources is a judgment call for a support agent. Here the source count is a contract check, so it is arithmetic."
+  },
+  {
+   "case": "Market research brief, weak first draft rescued on revision",
+   "market_reference": "Upwork catalog: $45, $85, $145 for summary research reports (Part 1.5). First delivery passed 2 of 5 checks, revision round honest.",
+   "negotiated_price": 65.44,
+   "bond": 13.09,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 91,
+   "same_deal_today": "On a marketplace a weak first draft goes back and forth in messages with no enforcement. Here the revision round is contractual: the second delivery is re-verified against the same frozen checks, and only then is the seller paid."
+  },
+  {
+   "case": "Procurement: Sony WH-1000XM5, honest buyer and seller",
+   "market_reference": "Channel3 live API capture 2026-10-22 (Part 1.9): 5 offers $239.97 to $336.99, median $298.00. Buyer ceiling at the median, seller floor at the lowest offer; the chosen offer's product, retailer, buy link, and a price ceiling became contract checks.",
+   "negotiated_price": 270.52,
+   "bond": 54.1,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "No bonded escrow exists today for an agent buying a physical product on your behalf: it pays first and you hope. Here overpaying fails verification and costs the seller its bond."
+  },
+  {
+   "case": "Podcast edit package, multi-issue negotiated, honest editor",
+   "market_reference": "Live listing sweep 2026-10-24 (Part 1.17): Upwork catalog tiers $66/$88/$120, $70/$105/$140 by episode length, $90/$140/$170 for edit plus show notes. Buyer max $220, seller floor $80. Price, delivery window, revision rounds, and bond percent all negotiated.",
+   "negotiated_price": 120.0,
+   "bond": 28.25,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "A podcast edit dispute over chapters or show notes today goes to a support queue with no written spec. Here the frozen spec counts the chapters, timestamps, and words, and the negotiated terms are written into the same frozen contract.",
+   "date": "2026-10-24"
+  }
+ ],
+ "limit_case": {
+  "case": "Translation, 1,000 words at the $10 Fiverr tier",
+  "market_reference": "Fiverr gig: $10 per 1,000 words (Part 1.8). The standard cheat in this market is raw machine output sold as manual translation. The two samples here are built from the same varied source text: one intact, one with the word order inside every sentence scrambled, which is what word for word machine output does to a text.",
+  "results": {
+   "careful translation sample": {
+    "words": 1150,
+    "passed_all_checks": true
+   },
+   "word for word machine style sample": {
+    "words": 1150,
+    "passed_all_checks": true
+   }
+  },
+  "finding": "Both samples pass every check, including the anti stuffing screen: scrambled word order keeps natural text statistics, because varied words in the wrong order are still varied words. Counting proves length and term presence; it cannot judge translation quality. This is the honest limit of the rule based verifier, and it is why the paper frames the checks as proof of delivery shape, not proof of craft."
+ }
+}

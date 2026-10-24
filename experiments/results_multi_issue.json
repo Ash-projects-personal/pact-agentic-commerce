@@ -1,0 +1,32 @@
+{
+  "mode": "multi-issue",
+  "scenario": "logo_brand_kit",
+  "runs": 196,
+  "agreement_rate_in_zone": 1.0,
+  "agreement_match_vs_single_issue": 1.0,
+  "walk_away_correct_rate": 1.0,
+  "mean_price_moves_in_zone": 2.7884615384615383,
+  "mean_terms_moves_in_zone": 25.0,
+  "bond_consistent_rate": 1.0,
+  "cap_hit_rate": 0.0,
+  "mean_settled_terms": {
+    "delivery_days": 12.0,
+    "revision_rounds": 3.0,
+    "bond_percent": 23.54
+  },
+  "settled_terms_ranges": {
+    "delivery_days": {
+      "min": 12,
+      "max": 12
+    },
+    "revision_rounds": {
+      "min": 3,
+      "max": 3
+    },
+    "bond_percent": {
+      "min": 23.54,
+      "max": 23.54
+    }
+  },
+  "note": "The terms phase runs after the price is locked and cannot undo a price agreement: agreement_match_vs_single_issue must be 1.0. The frozen single-issue E2 sweep in results.json stays the headline until this file exists."
+}
