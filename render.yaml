@@ -26,3 +26,5 @@ services:
         value: gpt-4o-mini
       - key: BOND_PERCENT
         value: "20"
+      - key: PYTHON_VERSION
+        value: 3.13.0
