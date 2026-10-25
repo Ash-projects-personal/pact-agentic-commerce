@@ -96,7 +96,17 @@ class ToolkitOrders:
                 "item_total": money.dollars(amount),
             }],
         }
-        raw = await asyncio.to_thread(self._api.run, "create_order", params)
+        # The toolkit dispatch core raises its own exceptions (for
+        # example RuntimeError when PayPal rejects the credentials),
+        # not PaymentError. Convert any of them so the app returns a
+        # clean payment error instead of a 500. Found live 2026-10-24:
+        # a wrong client secret on Render surfaced as INTERNAL_ERROR.
+        try:
+            raw = await asyncio.to_thread(self._api.run, "create_order", params)
+        except Exception as exc:
+            raise PaymentError(
+                f"Toolkit create_order failed: {type(exc).__name__}: {exc}"
+            ) from exc
         data = json.loads(raw)
         if not data.get("id"):
             raise PaymentError(f"Toolkit create_order returned no order id: {raw}")
@@ -113,8 +123,16 @@ class ToolkitOrders:
     async def capture_order(self, order_id, request_id=None):
         # request_id accepted for interface parity; the toolkit dispatch
         # core exposes no idempotency parameter for pay_order.
-        raw = await asyncio.to_thread(self._api.run, "pay_order",
-                                      {"order_id": order_id})
+        # Same conversion as create_order: the toolkit raises its own
+        # exceptions, and the app must answer with a clean payment
+        # error, never a 500.
+        try:
+            raw = await asyncio.to_thread(self._api.run, "pay_order",
+                                          {"order_id": order_id})
+        except Exception as exc:
+            raise PaymentError(
+                f"Toolkit pay_order failed: {type(exc).__name__}: {exc}"
+            ) from exc
         data = json.loads(raw)
         capture = {}
         try:
@@ -133,8 +151,14 @@ class ToolkitOrders:
                 "demo": False, "rail": "agent_toolkit"}
 
     async def get_order_details(self, order_id):
-        raw = await asyncio.to_thread(self._api.run, "get_order_details",
-                                      {"order_id": order_id})
+        try:
+            raw = await asyncio.to_thread(self._api.run, "get_order_details",
+                                          {"order_id": order_id})
+        except Exception as exc:
+            raise PaymentError(
+                f"Toolkit get_order_details failed: "
+                f"{type(exc).__name__}: {exc}"
+            ) from exc
         return json.loads(raw)
 
 
