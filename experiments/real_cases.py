@@ -14,7 +14,10 @@ the same dispute would cost on today's rails: Upwork binding
 arbitration is $675 in total ($337.50 per party) and takes about 30
 days; Fiverr takes 20 percent from the seller and lets its support
 team judge; a plain PayPal payment excludes services from Purchase
-Protection entirely.
+Protection entirely. Three later cases use fresh listing sweeps: the
+podcast edit package (Part 1.17) and the data labeling batch (Part
+1.18) from 2026-10-24, and the email newsletter issue (Part 1.19)
+from 2026-10-25.
 
 The translation case is a verifier level limit case on purpose: it
 shows a cheat that counting checks cannot catch, recorded as such.
@@ -277,6 +280,29 @@ def run_cases():
         "the verdict is arithmetic.",
         date="2026-10-24"))
 
+    # The eleventh case, and the third new scenario covered by a real
+    # market case: one written newsletter issue (subject line, four
+    # sections, calls to action, unsubscribe footer), honest seller.
+    # The checks count sections and calls to action, require the
+    # subject line and the unsubscribe line, and require a minimum
+    # word count, so a two-paragraph generic blurb fails on its own
+    # terms.
+    deal = run_deal("newsletter_issue")
+    cases.append(summarize(
+        "Email newsletter issue, honest writer",
+        "Live listing sweep 2026-10-25 (Part 1.19): Upwork "
+        "newsletter catalog tiers $10/$30/$40 for single emails, "
+        "$50/$150/$300 for a designed newsletter with copy, "
+        "$190/$320/$635 for a curated weekly newsletter. Buyer max "
+        "$160, seller floor $70, the scenario defaults.",
+        deal,
+        "A newsletter dispute today is a support ticket over whether "
+        "the copy was usable, judged with no written spec in the "
+        "record. Here the subject line, the section count, the calls "
+        "to action, the unsubscribe line, and the length are all "
+        "contract checks, so the verdict is arithmetic.",
+        date="2026-10-25"))
+
     return cases
 
 
@@ -362,6 +388,7 @@ def main():
         "Procurement: Sony WH-1000XM5, honest buyer and seller": "released",
         "Podcast edit package, multi-issue negotiated, honest editor": "released",
         "Data labeling batch, honest labeler": "released",
+        "Email newsletter issue, honest writer": "released",
     }
     failures = []
     for row in cases:

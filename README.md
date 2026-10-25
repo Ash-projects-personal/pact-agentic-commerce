@@ -511,9 +511,11 @@ Copy `.env.example` to `.env` and fill in your values.
 
 Leave the PayPal values empty to run in demo mode. Set any abuse
 limit variable to 0 to turn that cap off. With Turso set, deals live in
-Turso and survive the host restarting. The hosted demo does not have
-Turso set yet, so its deals still live in a local SQLite file and a
-host restart wipes them.
+Turso and survive the host restarting. The hosted demo has Turso set:
+a deal created on one instance was still there, unchanged, after the
+instance spun down and a new one woke up, so a deal is not lost when
+the host restarts. Without Turso set, deals live in a local SQLite
+file and a host restart wipes them.
 
 ### 3. Run the app
 
