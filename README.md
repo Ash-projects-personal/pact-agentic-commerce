@@ -206,11 +206,11 @@ never presented as live.
 
 ## Testing (for hackathon judges)
 
-There is no hosted demo yet. Run it yourself locally in PayPal sandbox
-mode with test money only. One step needs you: PayPal requires the
-account holder to approve each order before it can be captured, so a
-deal parks at an approval panel on purpose. Use these PayPal generated
-sandbox test accounts:
+Try the hosted demo first: https://pact-agentic-commerce.onrender.com.
+It runs in PayPal sandbox mode with test money only. One step needs you:
+PayPal requires the account holder to approve each order before it can
+be captured, so a deal parks at an approval panel on purpose. Use these
+PayPal generated sandbox test accounts:
 
 - Buyer account: `sb-v47e3z53491657@personal.example.com` / `RB%_"1jJ`
 - Seller account: `sb-krgz753508017@personal.example.com` / `SU_6sPa,`
@@ -506,9 +506,14 @@ Copy `.env.example` to `.env` and fill in your values.
 | PACT_MAX_DEALS_PER_MINUTE_GLOBAL | Deals created per minute across all clients. Default 120 |
 | PACT_RATE_WINDOW_SECONDS | Length of the rate window in seconds. Default 60 |
 | PACT_MAX_REQUEST_BYTES | Request body size cap in bytes on the negotiation and delivery endpoints. Default 65536 |
+| TURSO_DATABASE_URL | Optional. A Turso cloud database URL (libsql://...). When set with TURSO_AUTH_TOKEN, deals persist in Turso instead of the local SQLite file |
+| TURSO_AUTH_TOKEN | Optional. Auth token for the Turso database above |
 
 Leave the PayPal values empty to run in demo mode. Set any abuse
-limit variable to 0 to turn that cap off.
+limit variable to 0 to turn that cap off. With Turso set, deals live in
+Turso and survive the host restarting. The hosted demo does not have
+Turso set yet, so its deals still live in a local SQLite file and a
+host restart wipes them.
 
 ### 3. Run the app
 
@@ -585,6 +590,27 @@ turns a cap off. The counters live in memory, so a restart resets
 them. This is demo-grade protection against accidental floods, not a
 distributed rate limiter.
 
+## Agent SDK (APIMatic)
+
+Pact's API is built for other agents to call, so it ships a generated
+Python SDK. APIMatic generated it from the OpenAPI spec the app serves
+at /openapi.json. The SDK lives in sdk/pact-python-sdk.zip (61 files).
+sdk/agent_example.py drives a full deal through it: create, negotiate,
+pay, deliver, verify, then download the dispute packet. Run it with
+sdk/.venv/bin/python sdk/agent_example.py. It boots its own demo-mode
+server on 127.0.0.1:8123 with a throwaway database, so no PayPal
+account is touched. The example run settles a logo brand kit deal to
+released and downloads a 34,804 byte dispute packet.
+
+Two honest limits. The generated client assumes https, so the example
+patches the base URI to http for the local run; against the hosted
+demo no patch is needed. The spec does not declare the per-deal role
+token header, so the generated methods take no token argument; the
+example carries the tokens on one requests session per role, buyer and
+seller. The hosted APIMatic developer portal is not published yet. The
+SDK here is the generated artifact. The portal needs a Docs-as-Code
+build that runs on a developer machine.
+
 ## Layout
 
 - `pact/main.py` FastAPI app and the deal flow endpoints
@@ -596,6 +622,9 @@ distributed rate limiter.
 - `pact/store.py` Deals, ledger, agent reputation
 - `pact/static/` The single page UI with the AG Grid audit ledger
 - `mcp/` Example configuration for the official PayPal MCP server
+- `sdk/pact-openapi.json` Exported OpenAPI spec for the app
+- `sdk/pact-python-sdk.zip` APIMatic generated Python SDK (61 files)
+- `sdk/agent_example.py` An agent drives a full deal through the SDK
 - `tests/` Smoke test, accuracy battery, webhook tests
 - `experiments/` Measured studies: accuracy, negotiation sweep, settlement oracle, adversarial battery
 

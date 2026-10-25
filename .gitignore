@@ -1,4 +1,5 @@
 .env
+.muse-live-demo-test*.json
 .venv/
 __pycache__/
 *.pyc

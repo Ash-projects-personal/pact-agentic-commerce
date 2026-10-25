@@ -16,6 +16,16 @@ the whole working state after every HTTP response.
 Database path comes from PACT_DB_PATH, defaulting to data/pact.db under
 the project root. Callers that use the store as a library (experiments)
 get no persistence; that is fine because experiments are throwaway runs.
+
+Turso (2026-10-24): when TURSO_DATABASE_URL and TURSO_AUTH_TOKEN are
+set, the same tables live in a Turso cloud database instead of the local
+file, through the libsql client, whose API mirrors sqlite3 for every call
+this module makes. That is what keeps deals alive on Render: the free
+instance spins down after 15 minutes idle and restarts with an empty
+ephemeral filesystem, so a local SQLite file is wiped on every restart.
+With Turso configured, a restart or redeploy loads the same deals back.
+Without those two variables the local SQLite file is used exactly as
+before, so local runs and the test suite need no cloud account.
 """
 
 import itertools
@@ -31,6 +41,22 @@ _db_lock = threading.Lock()
 _active_path = None
 
 
+def _turso_config():
+    """Turso connection settings, or None when not configured.
+
+    An explicitly set PACT_DB_PATH always wins, so tests and local
+    scratch servers that point at a temp file never touch the cloud
+    database by accident.
+    """
+    if os.environ.get("PACT_DB_PATH", "").strip():
+        return None
+    url = os.environ.get("TURSO_DATABASE_URL", "").strip()
+    token = os.environ.get("TURSO_AUTH_TOKEN", "").strip()
+    if url and token:
+        return url, token
+    return None
+
+
 def db_path():
     """Path to the SQLite file, from env or the local default."""
     configured = os.environ.get("PACT_DB_PATH", "").strip()
@@ -42,9 +68,15 @@ def db_path():
 def init_db(path=None):
     """Create the directory and tables. Safe to call more than once."""
     global _active_path
-    path = Path(path) if path is not None else db_path()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(str(path))
+    turso = _turso_config()
+    if turso is None:
+        path = Path(path) if path is not None else db_path()
+        path.parent.mkdir(parents=True, exist_ok=True)
+    else:
+        # No local file when Turso is configured; the tables live in
+        # the cloud database.
+        path = None
+    conn = _connect()
     try:
         conn.execute(
             "CREATE TABLE IF NOT EXISTS deals "
@@ -72,6 +104,20 @@ def init_db(path=None):
 
 
 def _connect():
+    turso = _turso_config()
+    if turso is not None:
+        try:
+            import libsql_experimental as libsql
+        except ImportError:
+            try:
+                import libsql
+            except ImportError as exc:
+                raise RuntimeError(
+                    "TURSO_DATABASE_URL is set but no libsql package is "
+                    "installed. Install it from requirements.txt."
+                ) from exc
+        url, token = turso
+        return libsql.connect(url, auth_token=token)
     return sqlite3.connect(str(_active_path if _active_path is not None
                                else db_path()))
 
