@@ -53,7 +53,7 @@ largest single change from this build. A dispute flow that fits the 28 day
 window and produces the dispute packet automatically. Mandates for repeat
 buyers, so a pre-approved bounded budget replaces per deal approval.
 Richer checks, starting with schema checks on structured artifacts and
-test based checks on code. And PactBench, the scale program: a 300 label
+test based checks on code. And PactBench, the scale program: a 314 delivery
 verifier battery, 10,000 simulated settlement deals against two money
 invariants, and a chaos suite over every settlement leg.
 
@@ -206,10 +206,11 @@ never presented as live.
 
 ## Testing (for hackathon judges)
 
-The hosted demo runs in PayPal sandbox mode with test money only. One
-step needs you: PayPal requires the account holder to approve each order
-before it can be captured, so a deal parks at an approval panel on
-purpose. Use these PayPal generated sandbox test accounts:
+There is no hosted demo yet. Run it yourself locally in PayPal sandbox
+mode with test money only. One step needs you: PayPal requires the
+account holder to approve each order before it can be captured, so a
+deal parks at an approval panel on purpose. Use these PayPal generated
+sandbox test accounts:
 
 - Buyer account: `sb-v47e3z53491657@personal.example.com` / `RB%_"1jJ`
 - Seller account: `sb-krgz753508017@personal.example.com` / `SU_6sPa,`

@@ -4,7 +4,9 @@ The deal shapes and price bands come from public marketplace data
 gathered 2026-10-22 (see research/real-deal-data.md in this repo for
 the sources): Fiverr and Upwork listing prices for logo kits, listing
 copy, social packs, Python fixes, and research briefs, plus the
-protection terms those platforms actually offer.
+protection terms those platforms actually offer. Two later cases use
+fresh listing sweeps from 2026-10-24: the podcast edit package (Part
+1.17) and the data labeling batch (Part 1.18).
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -254,6 +256,27 @@ def run_cases():
         "contract.",
         date="2026-10-24"))
 
+    # The tenth case, and the second new scenario covered by a real
+    # market case: a labeled batch of product titles, honest seller.
+    # The checks count labeled rows, require the guide and the
+    # distribution summary, count flagged ambiguous rows, and require
+    # batch notes of a minimum length, so a batch of guessed labels
+    # with no guide and no flags fails on its own terms.
+    deal = run_deal("data_labeling_batch")
+    cases.append(summarize(
+        "Data labeling batch, honest labeler",
+        "Live listing sweep 2026-10-24 (Part 1.18): Upwork "
+        "annotation catalog tiers $10/$50/$100, $40/$100/$200, "
+        "$70/$100/$150, $40/$100/$250, $35/$75/$140. Buyer max $90, "
+        "seller floor $40, the scenario defaults.",
+        deal,
+        "A labeling dispute today is a support ticket over whether "
+        "the labels were right, judged with no written guide in the "
+        "record. Here the guide, the row count, the flagged rows, "
+        "and the distribution summary are all contract checks, so "
+        "the verdict is arithmetic.",
+        date="2026-10-24"))
+
     return cases
 
 
@@ -338,6 +361,7 @@ def main():
         "Market research brief, weak first draft rescued on revision": "released",
         "Procurement: Sony WH-1000XM5, honest buyer and seller": "released",
         "Podcast edit package, multi-issue negotiated, honest editor": "released",
+        "Data labeling batch, honest labeler": "released",
     }
     failures = []
     for row in cases:

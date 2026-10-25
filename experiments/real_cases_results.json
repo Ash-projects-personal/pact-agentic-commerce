@@ -108,6 +108,19 @@
    "seller_reputation": 88,
    "same_deal_today": "A podcast edit dispute over chapters or show notes today goes to a support queue with no written spec. Here the frozen spec counts the chapters, timestamps, and words, and the negotiated terms are written into the same frozen contract.",
    "date": "2026-10-24"
+  },
+  {
+   "case": "Data labeling batch, honest labeler",
+   "market_reference": "Live listing sweep 2026-10-24 (Part 1.18): Upwork annotation catalog tiers $10/$50/$100, $40/$100/$200, $70/$100/$150, $40/$100/$250, $35/$75/$140. Buyer max $90, seller floor $40, the scenario defaults.",
+   "negotiated_price": 54.0,
+   "bond": 10.8,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "A labeling dispute today is a support ticket over whether the labels were right, judged with no written guide in the record. Here the guide, the row count, the flagged rows, and the distribution summary are all contract checks, so the verdict is arithmetic.",
+   "date": "2026-10-24"
   }
  ],
  "limit_case": {
