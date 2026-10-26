@@ -887,6 +887,64 @@ SCENARIOS = [
             },
         ],
     },
+    {
+        "id": "ac_repair_service",
+        "title": "AC repair service job",
+        "service_summary": (
+            "A written service report for a residential central AC "
+            "capacitor replacement plus tune-up: the diagnosis, the part "
+            "replaced, system readings after the fix, and the warranty "
+            "terms. Priced from live 2026 AC repair listings."
+        ),
+        "seller_id": "seller_coolair",
+        "seller_behavior": "honest",
+        "default_buyer_max": 350.0,
+        "default_seller_floor": 160.0,
+        "deliverables": [
+            "Diagnosis of the fault",
+            "Capacitor replaced",
+            "System readings after the fix",
+            "Warranty terms",
+            "Next service note",
+        ],
+        "candidate_checks": [
+            {
+                "id": "diagnosis",
+                "label": "Diagnosis included",
+                "kind": "contains",
+                "needle": "Diagnosis",
+            },
+            {
+                "id": "part_replaced",
+                "label": "Capacitor named as the part replaced",
+                "kind": "contains",
+                "needle": "Capacitor",
+            },
+            {
+                "id": "readings",
+                "label": "System readings after the fix",
+                "kind": "min_items",
+                "marker": "Reading ",
+                "unit": "readings",
+                "buyer_demand": 3,
+                "seller_offer": 2,
+            },
+            {
+                "id": "warranty",
+                "label": "Warranty terms included",
+                "kind": "contains",
+                "needle": "Warranty",
+            },
+            {
+                "id": "report_words",
+                "label": "Report length",
+                "kind": "min_words",
+                "unit": "words",
+                "buyer_demand": 200,
+                "seller_offer": 120,
+            },
+        ],
+    },
 ]
 
 SCENARIO_BY_ID = {s["id"]: s for s in SCENARIOS}
@@ -1833,6 +1891,80 @@ def build_spreadsheet_report_cheat(spec):
     )
 
 
+def build_ac_repair_service(spec):
+    checks = _settled_map(spec)
+    n_readings = max(3, int(checks["readings"]["value"]))
+    readings = [
+        "supply air temperature 55 degrees Fahrenheit at the vent.",
+        "return air temperature 74 degrees Fahrenheit at the filter.",
+        "compressor amp draw 8.2 amps on the nameplate rated circuit.",
+        "system static pressure 0.5 inches of water column across the coil.",
+    ]
+    lines = ["AC Repair Service Report", ""]
+    lines.append("Job: residential central AC capacitor replacement and tune-up.")
+    lines.append("")
+    lines.append("Diagnosis")
+    lines.append(
+        "Diagnosis: the system would not start the compressor. The fan ran "
+        "but the compressor stayed silent. Testing showed the run capacitor "
+        "had failed. The capacitor read well below its rated value on the "
+        "meter. A failed capacitor is the most common cause of this fault."
+    )
+    lines.append("")
+    lines.append("Part replaced")
+    lines.append(
+        "Capacitor: dual run capacitor 45/5 microfarad 440 volt. The old "
+        "part was removed and the new part was fitted. The wiring was "
+        "checked and tightened. The system was started and the compressor "
+        "came on at once."
+    )
+    lines.append("")
+    lines.append("Readings after the fix")
+    for i in range(n_readings):
+        lines.append(f"Reading {i + 1}: {readings[i % len(readings)]}")
+    lines.append("")
+    lines.append("Warranty")
+    lines.append(
+        "Warranty: the new capacitor carries a 5 year parts warranty. Labor "
+        "on this visit carries a 1 year warranty. The warranty covers the "
+        "part and the fitting work. Call the shop if the system stops "
+        "cooling again."
+    )
+    lines.append("")
+    lines.append("Next service")
+    lines.append(
+        "Next service: change the filter every 3 months and book a tune-up "
+        "before next summer. Keep the outdoor unit clear of leaves and "
+        "debris so airflow stays strong. The filter size is 20 by 25 by 1 "
+        "inch. The shop stocks this size and can leave a spare filter on "
+        "the next visit."
+    )
+    return "\n".join(lines)
+
+
+def build_ac_repair_service_weak(spec):
+    lines = ["AC Repair Service Report (first draft)", ""]
+    lines.append("Diagnosis")
+    lines.append("Diagnosis: the compressor would not start. The part had failed.")
+    lines.append("")
+    lines.append("Part replaced")
+    lines.append("Capacitor: dual run capacitor fitted.")
+    lines.append("")
+    lines.append("Reading 1: supply air temperature 55 degrees Fahrenheit.")
+    lines.append("")
+    lines.append("The full readings and the warranty terms are still to come.")
+    return "\n".join(lines)
+
+
+def build_ac_repair_service_cheat(spec):
+    return (
+        "Your AC is fixed and the house is cool again. The tech came out, "
+        "got the unit running, and left everything tidy. The system runs "
+        "quiet now and the air feels cold at the vents. Let us know if "
+        "anything changes and we will come back out."
+    )
+
+
 _WEAK_BUILDERS = {
     "data_labeling_batch": build_labeling_batch_weak,
     "podcast_edit_package": build_podcast_package_weak,
@@ -1841,6 +1973,7 @@ _WEAK_BUILDERS = {
     "book_cover_design": build_book_cover_package_weak,
     "api_integration_task": build_api_integration_weak,
     "spreadsheet_cleanup_report": build_spreadsheet_report_weak,
+    "ac_repair_service": build_ac_repair_service_weak,
 }
 
 _CHEAT_BUILDERS = {
@@ -1851,6 +1984,7 @@ _CHEAT_BUILDERS = {
     "book_cover_design": build_book_cover_package_cheat,
     "api_integration_task": build_api_integration_cheat,
     "spreadsheet_cleanup_report": build_spreadsheet_report_cheat,
+    "ac_repair_service": build_ac_repair_service_cheat,
 }
 
 
@@ -1923,4 +2057,6 @@ def build_delivery(scenario, spec, quality="auto", revision=False):
         return build_api_integration(spec)
     if scenario["id"] == "spreadsheet_cleanup_report":
         return build_spreadsheet_report(spec)
+    if scenario["id"] == "ac_repair_service":
+        return build_ac_repair_service(spec)
     return build_poor_delivery()

@@ -796,5 +796,119 @@
         }
       ]
     }
+  },
+  "ac_repair_service": {
+    "settled_values": {
+      "diagnosis": "Diagnosis",
+      "part_replaced": "Capacitor",
+      "readings": 3,
+      "warranty": "Warranty",
+      "report_words": 160
+    },
+    "honest": {
+      "passed": "5/5",
+      "checks": [
+        {
+          "check_id": "diagnosis",
+          "passed": true,
+          "measured": 1,
+          "required": "Diagnosis"
+        },
+        {
+          "check_id": "part_replaced",
+          "passed": true,
+          "measured": 1,
+          "required": "Capacitor"
+        },
+        {
+          "check_id": "readings",
+          "passed": true,
+          "measured": 3,
+          "required": 3
+        },
+        {
+          "check_id": "warranty",
+          "passed": true,
+          "measured": 1,
+          "required": "Warranty"
+        },
+        {
+          "check_id": "report_words",
+          "passed": true,
+          "measured": 227,
+          "required": 160
+        }
+      ]
+    },
+    "weak": {
+      "passed": "2/5",
+      "checks": [
+        {
+          "check_id": "diagnosis",
+          "passed": true,
+          "measured": 1,
+          "required": "Diagnosis"
+        },
+        {
+          "check_id": "part_replaced",
+          "passed": true,
+          "measured": 1,
+          "required": "Capacitor"
+        },
+        {
+          "check_id": "readings",
+          "passed": false,
+          "measured": 1,
+          "required": 3
+        },
+        {
+          "check_id": "warranty",
+          "passed": false,
+          "measured": 0,
+          "required": "Warranty"
+        },
+        {
+          "check_id": "report_words",
+          "passed": false,
+          "measured": 43,
+          "required": 160
+        }
+      ]
+    },
+    "cheat": {
+      "passed": "0/5",
+      "checks": [
+        {
+          "check_id": "diagnosis",
+          "passed": false,
+          "measured": 0,
+          "required": "Diagnosis"
+        },
+        {
+          "check_id": "part_replaced",
+          "passed": false,
+          "measured": 0,
+          "required": "Capacitor"
+        },
+        {
+          "check_id": "readings",
+          "passed": false,
+          "measured": 0,
+          "required": 3
+        },
+        {
+          "check_id": "warranty",
+          "passed": false,
+          "measured": 0,
+          "required": "Warranty"
+        },
+        {
+          "check_id": "report_words",
+          "passed": false,
+          "measured": 47,
+          "required": 160
+        }
+      ]
+    }
   }
 }

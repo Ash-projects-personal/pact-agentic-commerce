@@ -1,4 +1,5 @@
-"""Scenario expansion tests (queue item R: 7 -> 14 scenarios).
+"""Scenario expansion tests (queue item R: 7 -> 14 scenarios, plus
+queue item AA: the AC repair service scenario, for 15 total).
 
 For each new scenario the test settles a real spec through the
 negotiation engine, then checks the three delivery builders against
@@ -10,7 +11,7 @@ the verifier:
 - cheat: every check fails (recycled generic copy that ignores the
   contract)
 
-It also checks the API surface: /api/scenarios lists all 14
+It also checks the API surface: /api/scenarios lists all 15
 scenarios, and one new scenario runs the full demo lifecycle
 (create, negotiate, pay, deliver, verify) to a released deal.
 
@@ -54,6 +55,7 @@ NEW_SCENARIOS = [
     "book_cover_design",
     "api_integration_task",
     "spreadsheet_cleanup_report",
+    "ac_repair_service",
 ]
 
 
@@ -119,7 +121,7 @@ async def main():
             "cheat": {"passed": f"{c_n}/{c_total}", "checks": c_rows},
         }
 
-    # The API lists all 14 scenarios, and one new scenario runs the
+    # The API lists all 15 scenarios, and one new scenario runs the
     # full demo lifecycle to a released deal.
     print("api surface")
     from fastapi.testclient import TestClient
@@ -140,7 +142,7 @@ async def main():
         resp = client.get("/api/scenarios")
         check("GET /api/scenarios 200", resp.status_code == 200, resp.text[:200])
         ids = [s["id"] for s in resp.json()]
-        check("14 scenarios listed", len(ids) == 14, f"got {len(ids)}")
+        check("15 scenarios listed", len(ids) == 15, f"got {len(ids)}")
         check("all new scenario ids listed",
               all(s in ids for s in NEW_SCENARIOS),
               f"missing: {[s for s in NEW_SCENARIOS if s not in ids]}")

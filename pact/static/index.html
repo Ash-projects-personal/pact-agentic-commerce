@@ -59,6 +59,26 @@
       <p class="muted" id="disputePacketRow" hidden><a id="disputePacketLink" href="#" download>Download the dispute evidence packet</a>: the full transcript, frozen contract, every check verdict, and every PayPal transaction id for this deal in one file.</p>
     </div>
 
+    <div class="card" id="tourCard">
+      <h2>Guided tour</h2>
+      <p class="muted">One real demo deal, played as a story: negotiation, bond, verification, payout. About 40 seconds. Demo mode only.</p>
+      <ol id="tourSteps" class="tour-steps">
+        <li data-step="create">Create the deal</li>
+        <li data-step="negotiate">Negotiation: the agents settle a price and write the checks</li>
+        <li data-step="pay">Pay and bond: the buyer pays, the seller posts a bond</li>
+        <li data-step="deliver">Delivery: the seller submits the brand kit</li>
+        <li data-step="verify">Verification: the verifier runs the checks</li>
+        <li data-step="release">Payout: the price is released and the bond returns</li>
+      </ol>
+      <p id="tourCaption" class="tour-caption" aria-live="polite">Press Play the tour to watch one deal run end to end.</p>
+      <div class="tour-controls">
+        <button id="tourPlayBtn" class="primary" disabled>Play the tour</button>
+        <button id="tourPauseBtn" disabled>Pause</button>
+        <button id="tourReplayBtn" disabled>Replay</button>
+      </div>
+      <p id="tourNote" class="muted" hidden>The tour runs in demo mode only. This server runs PayPal sandbox mode, so the tour is off here. Run the app with no PayPal credentials set to play it.</p>
+    </div>
+
     <div class="card">
       <h2>Agents and reputation</h2>
       <div id="agentList"></div>

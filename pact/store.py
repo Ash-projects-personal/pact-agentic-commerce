@@ -180,6 +180,15 @@ AGENTS = {
         "reputation": 82,
         "deals": 0,
     },
+    "seller_coolair": {
+        "id": "seller_coolair",
+        "name": "Coolair Seller Agent",
+        "role": "seller",
+        "persona": "HVAC tech that ships a written service report with "
+                   "diagnosis, part, readings, and warranty",
+        "reputation": 82,
+        "deals": 0,
+    },
 }
 
 # The deal state machine. A deal moves forward through these states and ends

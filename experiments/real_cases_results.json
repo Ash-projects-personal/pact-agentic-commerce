@@ -134,6 +134,19 @@
    "seller_reputation": 88,
    "same_deal_today": "A newsletter dispute today is a support ticket over whether the copy was usable, judged with no written spec in the record. Here the subject line, the section count, the calls to action, the unsubscribe line, and the length are all contract checks, so the verdict is arithmetic.",
    "date": "2026-10-25"
+  },
+  {
+   "case": "Book cover design package, honest designer",
+   "market_reference": "Live listing sweep 2026-10-26 (Part 20): Upwork book cover catalog tiers $5/$10/$15, $40/$60/$80, $65/$85/$95, $10/$20/$28, and $400/$700/$1,200; Fiverr gigs from $10 to $20 with paid reviews at $50 and $200 to $400. Buyer max $140, seller floor $50, the scenario defaults.",
+   "negotiated_price": 75.75,
+   "bond": 15.15,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "A book cover dispute today is a support ticket over whether the cover was usable, judged with no written spec in the record. Here the concept count, the spine and back cover sections, the palette, and the typography pairing are all contract checks, so the verdict is arithmetic.",
+   "date": "2026-10-26"
   }
  ],
  "limit_case": {

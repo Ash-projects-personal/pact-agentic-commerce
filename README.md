@@ -165,6 +165,9 @@ A revision costs 3 points. A refund costs 12. A slashed bond costs 20 more.
   handling, worked examples, and a README.
 - Spreadsheet cleanup and report. Per column fixes, findings, a
   methodology section, and a duplicate count.
+- AC repair service job. A written service report for a residential
+  central AC capacitor replacement plus tune-up: diagnosis, the part
+  replaced, system readings after the fix, and warranty terms.
 
 Every scenario ships three delivery builders: an honest one that meets
 the settled spec, a weak first draft that fails some checks, and a
@@ -230,6 +233,14 @@ The cheat attempt scenario shows the full fail path: refund, slashed
 bond, and the reputation hit. If you run the app locally with no
 credentials in `.env`, the same flow runs in a clearly labeled demo mode
 with a local payment simulator instead.
+
+The guided tour: in demo mode, press Play the tour in the demo UI. It
+runs one real logo and brand kit deal end to end, a $222.17 price with a
+$44.43 bond and 5 checks, and narrates each step while the ledger fills
+in. Pause, resume, and replay controls sit under the caption. The tour
+runs in demo mode only. On the hosted sandbox demo it stays off, since
+the approval step needs a person. The narration script lives at
+`research/demo-tour-script.md`.
 
 ## Evidence (PactBench)
 

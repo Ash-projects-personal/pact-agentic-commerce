@@ -4,9 +4,11 @@ The deal shapes and price bands come from public marketplace data
 gathered 2026-10-22 (see research/real-deal-data.md in this repo for
 the sources): Fiverr and Upwork listing prices for logo kits, listing
 copy, social packs, Python fixes, and research briefs, plus the
-protection terms those platforms actually offer. Two later cases use
-fresh listing sweeps from 2026-10-24: the podcast edit package (Part
-1.17) and the data labeling batch (Part 1.18).
+protection terms those platforms actually offer. Four later cases
+use fresh listing sweeps: the podcast edit package (Part 17) and
+the data labeling batch (Part 18) from 2026-10-24, the email
+newsletter issue (Part 19) from 2026-10-25, and the book cover
+design package (Part 20) from 2026-10-26.
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -14,10 +16,7 @@ the same dispute would cost on today's rails: Upwork binding
 arbitration is $675 in total ($337.50 per party) and takes about 30
 days; Fiverr takes 20 percent from the seller and lets its support
 team judge; a plain PayPal payment excludes services from Purchase
-Protection entirely. Three later cases use fresh listing sweeps: the
-podcast edit package (Part 1.17) and the data labeling batch (Part
-1.18) from 2026-10-24, and the email newsletter issue (Part 1.19)
-from 2026-10-25.
+Protection entirely.
 
 The translation case is a verifier level limit case on purpose: it
 shows a cheat that counting checks cannot catch, recorded as such.
@@ -303,6 +302,30 @@ def run_cases():
         "contract checks, so the verdict is arithmetic.",
         date="2026-10-25"))
 
+    # The twelfth case, and the fourth new scenario covered by a real
+    # market case: a book cover design package (concept directions,
+    # spine design, back cover layout, color palette, typography
+    # pairing), honest seller. The checks count the concept
+    # directions, require the spine and back cover sections, and
+    # require the palette and typography sections, so a single JPG
+    # sold as a full kit fails on its own terms.
+    deal = run_deal("book_cover_design")
+    cases.append(summarize(
+        "Book cover design package, honest designer",
+        "Live listing sweep 2026-10-26 (Part 20): Upwork "
+        "book cover catalog tiers $5/$10/$15, $40/$60/$80, "
+        "$65/$85/$95, $10/$20/$28, and $400/$700/$1,200; Fiverr "
+        "gigs from $10 to $20 with paid reviews at $50 and "
+        "$200 to $400. Buyer max $140, seller floor $50, the "
+        "scenario defaults.",
+        deal,
+        "A book cover dispute today is a support ticket over whether "
+        "the cover was usable, judged with no written spec in the "
+        "record. Here the concept count, the spine and back cover "
+        "sections, the palette, and the typography pairing are all "
+        "contract checks, so the verdict is arithmetic.",
+        date="2026-10-26"))
+
     return cases
 
 
@@ -389,6 +412,7 @@ def main():
         "Podcast edit package, multi-issue negotiated, honest editor": "released",
         "Data labeling batch, honest labeler": "released",
         "Email newsletter issue, honest writer": "released",
+        "Book cover design package, honest designer": "released",
     }
     failures = []
     for row in cases:

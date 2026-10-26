@@ -12,6 +12,10 @@ let gridApi = null;
 let ledgerRows = [];
 let currentLedgerDealId = null;
 let expandedSeqs = new Set();
+// Tour highlight (queue item AB): ledger seqs the running tour just
+// produced. The grid paints them so each new event is easy to spot
+// as it lands. Cleared when a new tour starts.
+let tourNewSeqs = new Set();
 let repChart = null;
 let lastAgents = [];
 
@@ -379,6 +383,7 @@ function setupGrid() {
       rowClassRules: {
         "row-bad": (p) => !!p.data && BAD_EVENTS.has(p.data.event_type),
         "row-money": (p) => !!p.data && MONEY_EVENTS.has(p.data.event_type),
+        "row-tour-new": (p) => !!p.data && tourNewSeqs.has(p.data.seq),
       },
       onCellClicked: (p) => {
         if (!p.data || p.data._detail) return;
@@ -712,6 +717,13 @@ function renderDeal(deal) {
   $("payBtn").disabled = deal.state !== "agreed";
   $("deliverBtn").disabled = !["paid_held", "revision"].includes(deal.state);
   $("verifyBtn").disabled = deal.state !== "delivered";
+  // While a tour runs, the manual buttons stay off so a stray click
+  // cannot move the tour's deal out from under it.
+  if (tourRunning) {
+    ["createBtn", "negotiateBtn", "payBtn", "deliverBtn", "verifyBtn"].forEach((id) => {
+      $(id).disabled = true;
+    });
+  }
   const panel = $("approvalPanel");
   if (deal.state === "awaiting_approval") {
     panel.hidden = false;
@@ -732,6 +744,158 @@ function renderDeal(deal) {
   refreshAgents();
 }
 
+// ---------------------------------------------------------------------------
+// Guided tour (queue item AB): one real demo-mode deal, played as a story.
+// The tour drives the same API calls the manual buttons use, through the
+// same api() helper and the same per-deal role tokens, one call at a time,
+// so it cannot trip the per-deal lock (item C) or the abuse limits
+// (item Z): one deal per run, sequential calls, seconds apart.
+// Scenario: logo_brand_kit at its defaults (buyer max 300, seller floor
+// 180). The deterministic engine settles it at $222.17 with a $44.43
+// bond and 5 checks, so the captions below carry real numbers.
+// ---------------------------------------------------------------------------
+const TOUR_SCENARIO = "logo_brand_kit";
+const TOUR_STEP_IDS = ["create", "negotiate", "pay", "deliver", "verify", "release"];
+let tourRunning = false;
+let tourPaused = false;
+let tourHasRun = false;
+let tourRunId = 0;
+
+function tourCaption(text) {
+  const el = $("tourCaption");
+  if (el) el.textContent = text;
+}
+
+function tourStep(id) {
+  const idx = TOUR_STEP_IDS.indexOf(id);
+  document.querySelectorAll("#tourSteps li").forEach((li) => {
+    const liIdx = TOUR_STEP_IDS.indexOf(li.dataset.step);
+    li.classList.toggle("active", liIdx === idx);
+    li.classList.toggle("done", liIdx !== -1 && liIdx < idx);
+  });
+}
+
+function tourSetButtons() {
+  const play = $("tourPlayBtn");
+  const pause = $("tourPauseBtn");
+  const replay = $("tourReplayBtn");
+  if (!play || !pause || !replay) return;
+  play.disabled = tourRunning || play.dataset.demoOnly === "1";
+  pause.disabled = !tourRunning;
+  pause.textContent = tourPaused ? "Resume" : "Pause";
+  replay.disabled = tourRunning || !tourHasRun;
+}
+
+function tourWait(ms, runId) {
+  return new Promise((resolve) => {
+    let left = ms;
+    const tick = () => {
+      if (runId !== tourRunId) { resolve(); return; }
+      if (tourPaused) { setTimeout(tick, 200); return; }
+      left -= 200;
+      if (left <= 0) resolve();
+      else setTimeout(tick, 200);
+    };
+    setTimeout(tick, 200);
+  });
+}
+
+function tourEvent(deal, type) {
+  return (deal.ledger || []).find((e) => e.event_type === type) || null;
+}
+
+function tourMarkNew(deal, maxSeq) {
+  let next = maxSeq;
+  (deal.ledger || []).forEach((e) => {
+    if (e.seq > maxSeq) tourNewSeqs.add(e.seq);
+    if (e.seq > next) next = e.seq;
+  });
+  if (gridApi) gridApi.setGridOption("rowData", buildDisplayRows());
+  else renderFallback();
+  return next;
+}
+
+async function runTour() {
+  const runId = ++tourRunId;
+  const stale = () => runId !== tourRunId;
+  tourRunning = true;
+  tourPaused = false;
+  tourNewSeqs = new Set();
+  tourSetButtons();
+  let maxSeq = 0;
+  try {
+    tourStep("create");
+    tourCaption("Two agents open a deal. A buyer wants a logo and brand kit. The buyer will pay up to $300. The seller will not work under $180.");
+    await tourWait(3200, runId);
+    if (stale()) return;
+    let deal = await api("/api/deals", "POST", { scenario_id: TOUR_SCENARIO });
+    renderDeal(deal);
+    maxSeq = tourMarkNew(deal, maxSeq);
+    tourCaption("Deal open. The buyer and the seller are both in. Next, they negotiate the price.");
+    await tourWait(2800, runId);
+    if (stale()) return;
+
+    tourStep("negotiate");
+    tourCaption("The agents trade offers. The buyer opens low. The seller holds firm. They meet in the middle.");
+    await tourWait(3200, runId);
+    if (stale()) return;
+    deal = await api("/api/deals/" + deal.id + "/negotiate/run", "POST", {}, "buyer");
+    renderDeal(deal);
+    maxSeq = tourMarkNew(deal, maxSeq);
+    const spec = deal.spec;
+    tourCaption("They agreed on $" + spec.price + ". The bond is $" + spec.bond_amount + ", " + spec.bond_percent + " percent of the price. The agents wrote " + spec.acceptance_checks.length + " checks into the contract.");
+    await tourWait(4200, runId);
+    if (stale()) return;
+
+    tourStep("pay");
+    tourCaption("The buyer pays $" + spec.price + ". The seller posts a $" + spec.bond_amount + " bond. PayPal holds both until the work is judged.");
+    await tourWait(3200, runId);
+    if (stale()) return;
+    deal = await api("/api/deals/" + deal.id + "/pay", "POST", {}, "buyer");
+    renderDeal(deal);
+    maxSeq = tourMarkNew(deal, maxSeq);
+    const held = tourEvent(deal, "payment_held");
+    const bondEv = tourEvent(deal, "bond_posted");
+    tourCaption("Money held. Payment capture " + (held && held.data.capture_id) + ". Bond capture " + (bondEv && bondEv.data.capture_id) + ". Nothing moves until verification.");
+    await tourWait(4200, runId);
+    if (stale()) return;
+
+    tourStep("deliver");
+    tourCaption("The seller delivers the brand kit: logo concepts, a color palette, typography, taglines, and a short brand guide.");
+    await tourWait(3000, runId);
+    if (stale()) return;
+    deal = await api("/api/deals/" + deal.id + "/deliver", "POST", { quality: "auto" }, "seller");
+    renderDeal(deal);
+    maxSeq = tourMarkNew(deal, maxSeq);
+    const delivered = tourEvent(deal, "delivery_submitted");
+    tourCaption("Delivery in. " + (delivered ? delivered.data.words + " words" : "The work is in") + ". The verifier now reads it against the contract, not against the seller's word.");
+    await tourWait(3600, runId);
+    if (stale()) return;
+
+    tourStep("verify");
+    tourCaption("The verifier runs the " + spec.acceptance_checks.length + " checks the agents wrote. Each check has a measured number and a required number.");
+    await tourWait(3200, runId);
+    if (stale()) return;
+    deal = await api("/api/deals/" + deal.id + "/verify", "POST", {}, "buyer");
+    renderDeal(deal);
+    maxSeq = tourMarkNew(deal, maxSeq);
+    const v = deal.verification;
+    const rel = tourEvent(deal, "payment_released");
+    tourStep("release");
+    tourCaption("Done. " + v.passed_count + " of " + v.total_count + " checks passed. The $" + spec.price + " price is released to the seller. The $" + spec.bond_amount + " bond goes back. Payout batch " + (rel && rel.data.payout_batch_id) + ". Every step sits in the ledger below.");
+    await tourWait(5000, runId);
+  } catch (err) {
+    tourCaption("The tour stopped: " + (err && err.message ? err.message : String(err)));
+  } finally {
+    if (!stale()) {
+      tourRunning = false;
+      tourHasRun = true;
+      tourSetButtons();
+      renderDeal(currentDeal);
+    }
+  }
+}
+
 async function init() {
   const health = await api("/api/health");
   const badge = $("modeBadge");
@@ -743,6 +907,29 @@ async function init() {
   }
   $("llmBadge").textContent = health.llm_enabled ? "LLM rationales on" : "LLM off: deterministic engine";
   $("bondPct").textContent = health.bond_percent_default;
+
+  // The tour drives real demo-mode deals only. On a sandbox server the
+  // play button stays off and the note says why, so a judge never
+  // starts a tour that would park at the approval panel.
+  const tourDemo = health.mode === "demo";
+  const tourNote = $("tourNote");
+  if (tourNote) tourNote.hidden = tourDemo;
+  const tourPlay = $("tourPlayBtn");
+  if (tourPlay) {
+    tourPlay.dataset.demoOnly = tourDemo ? "0" : "1";
+    tourPlay.disabled = !tourDemo;
+    tourPlay.addEventListener("click", () => { runTour(); });
+  }
+  const tourPause = $("tourPauseBtn");
+  if (tourPause) {
+    tourPause.addEventListener("click", () => {
+      if (!tourRunning) return;
+      tourPaused = !tourPaused;
+      tourSetButtons();
+    });
+  }
+  const tourReplay = $("tourReplayBtn");
+  if (tourReplay) tourReplay.addEventListener("click", () => { runTour(); });
 
   scenarios = await api("/api/scenarios");
   const sel = $("scenarioSelect");

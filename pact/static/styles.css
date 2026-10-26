@@ -193,3 +193,22 @@ table.payload-table td.pv { word-break: break-all; }
 .evidence-card h3 { margin: 0 0 6px; font-size: 15px; }
 .evidence-card p { margin: 6px 0; font-size: 13px; line-height: 1.45; }
 .evidence-src { font-family: ui-monospace, monospace; font-size: 11px; }
+
+/* Guided tour (queue item AB) */
+.tour-steps { margin: 0 0 12px; padding-left: 20px; font-size: 13.5px; color: var(--muted); }
+.tour-steps li { padding: 3px 0; }
+.tour-steps li.active { color: var(--ink); font-weight: 700; }
+.tour-steps li.done { color: var(--good); }
+.tour-caption {
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 600;
+  min-height: 66px;
+  background: var(--wash);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 0 0 12px;
+}
+.tour-controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.tour-controls button.primary { margin-top: 0; }
+.ag-row.row-tour-new { background: #fff3d6; }
