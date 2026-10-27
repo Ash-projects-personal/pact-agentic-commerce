@@ -147,6 +147,19 @@
    "seller_reputation": 88,
    "same_deal_today": "A book cover dispute today is a support ticket over whether the cover was usable, judged with no written spec in the record. Here the concept count, the spine and back cover sections, the palette, and the typography pairing are all contract checks, so the verdict is arithmetic.",
    "date": "2026-10-26"
+  },
+  {
+   "case": "Product photography set, honest photographer",
+   "market_reference": "Live listing sweep 2026-10-27 (Part 22): Upwork product photography catalog tiers $55/$150/$250, $50/$120/$200, $125/$240/$450, $80/$200/$500, $5/$10/$30, $150/$300/$950, $60/$85/$110, and $95/$800/$1,450; Fiverr photo editing $5 to $100. Buyer max $220, seller floor $90, the scenario defaults.",
+   "negotiated_price": 126.75,
+   "bond": 25.35,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "A photography dispute today is a support ticket over whether the photos were usable, judged with no written spec in the record. Here the photo count, the hero shot, the license, and the retouch notes are all contract checks, so the verdict is arithmetic.",
+   "date": "2026-10-27"
   }
  ],
  "limit_case": {

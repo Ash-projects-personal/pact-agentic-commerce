@@ -4,11 +4,12 @@ The deal shapes and price bands come from public marketplace data
 gathered 2026-10-22 (see research/real-deal-data.md in this repo for
 the sources): Fiverr and Upwork listing prices for logo kits, listing
 copy, social packs, Python fixes, and research briefs, plus the
-protection terms those platforms actually offer. Four later cases
+protection terms those platforms actually offer. Five later cases
 use fresh listing sweeps: the podcast edit package (Part 17) and
 the data labeling batch (Part 18) from 2026-10-24, the email
-newsletter issue (Part 19) from 2026-10-25, and the book cover
-design package (Part 20) from 2026-10-26.
+newsletter issue (Part 19) from 2026-10-25, the book cover
+design package (Part 20) from 2026-10-26, and the product
+photography set (Part 22) from 2026-10-27.
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -326,6 +327,31 @@ def run_cases():
         "contract checks, so the verdict is arithmetic.",
         date="2026-10-26"))
 
+    # The thirteenth case, and the fifth new scenario covered by a
+    # real market case: a product photography set (shot manifest,
+    # one hero shot, resolution and background per photo, retouch
+    # notes, usage license), honest seller. The checks count the
+    # listed photos, require the hero shot, the license, and the
+    # retouch notes, so a folder of unedited phone snaps with no
+    # manifest fails on its own terms.
+    deal = run_deal("product_photo_set")
+    cases.append(summarize(
+        "Product photography set, honest photographer",
+        "Live listing sweep 2026-10-27 (Part 22): Upwork "
+        "product photography catalog tiers $55/$150/$250, "
+        "$50/$120/$200, $125/$240/$450, $80/$200/$500, "
+        "$5/$10/$30, $150/$300/$950, $60/$85/$110, and "
+        "$95/$800/$1,450; Fiverr photo editing $5 to $100. "
+        "Buyer max $220, seller floor $90, the scenario "
+        "defaults.",
+        deal,
+        "A photography dispute today is a support ticket over "
+        "whether the photos were usable, judged with no written "
+        "spec in the record. Here the photo count, the hero shot, "
+        "the license, and the retouch notes are all contract "
+        "checks, so the verdict is arithmetic.",
+        date="2026-10-27"))
+
     return cases
 
 
@@ -413,6 +439,7 @@ def main():
         "Data labeling batch, honest labeler": "released",
         "Email newsletter issue, honest writer": "released",
         "Book cover design package, honest designer": "released",
+        "Product photography set, honest photographer": "released",
     }
     failures = []
     for row in cases:
