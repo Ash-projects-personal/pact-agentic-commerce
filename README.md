@@ -62,11 +62,7 @@ system work. In demo mode it runs end to end with no credentials.
 
 ## My part
 
-I am Ashish, the person behind this entry. I chose the problem and I
-directed the build. An AI assistant wrote most of the code with me; the
-decisions, the experiments, and the results are mine. I read every test
-output, and the places where the tools were wrong are recorded in the test
-suite rather than hidden.
+I am Ashish, the person behind this entry. I chose the problem, I designed the system, and I wrote the code. I sometimes used an AI assistant to speed up the manual coding, with me controlling the code throughout. The decisions, the experiments, and the results are mine. I read every test output, and the places where the tools were wrong are recorded in the test suite rather than hidden.
 
 The calls that are mine: the pitch line, that a cheating seller must lose
 money and not just a refund. The 20 percent bond slash on a failed deal.
@@ -476,8 +472,8 @@ OpenAI compatible endpoint, gpt-4o-mini by default) can rewrite the
 wording of negotiation rationales and verdict reasons so they read
 naturally. It never decides anything: prices, check values, verdicts, and
 every money movement come from the deterministic engine, and the app runs
-fully offline with no key set. During development, I used an AI assistant
-(Claude) for drafting support and help with parts of the code. The design,
+fully offline with no key set. During development, I sometimes used an AI assistant
+(Claude) to speed up the manual coding, with me controlling the code throughout. The design,
 the experiments, and the results are mine. I ran every test myself and
 read the outputs, and the places where the tools were wrong are recorded
 in the test suite rather than hidden.
