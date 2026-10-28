@@ -160,6 +160,19 @@
    "seller_reputation": 88,
    "same_deal_today": "A photography dispute today is a support ticket over whether the photos were usable, judged with no written spec in the record. Here the photo count, the hero shot, the license, and the retouch notes are all contract checks, so the verdict is arithmetic.",
    "date": "2026-10-27"
+  },
+  {
+   "case": "API integration task, honest integrator",
+   "market_reference": "Live listing sweep 2026-10-28 (Part 23): Upwork API integration catalog tiers $750/$1,500/$2,750, $300/$750/$1,500, $80/$150/$300, $100/$300/$700, $65/$245/$795, $950/$2,200/$4,000, and $299/$699/$1,499. Buyer max $320, seller floor $120, the scenario defaults.",
+   "negotiated_price": 177.0,
+   "bond": 35.4,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "An integration dispute today is a support ticket over whether the endpoints were really wrapped and documented, judged with no written spec in the record. Here the endpoint count, the examples, the authentication and error handling sections, and the README are all contract checks, so the verdict is arithmetic.",
+   "date": "2026-10-28"
   }
  ],
  "limit_case": {

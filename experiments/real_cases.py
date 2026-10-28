@@ -9,7 +9,8 @@ use fresh listing sweeps: the podcast edit package (Part 17) and
 the data labeling batch (Part 18) from 2026-10-24, the email
 newsletter issue (Part 19) from 2026-10-25, the book cover
 design package (Part 20) from 2026-10-26, and the product
-photography set (Part 22) from 2026-10-27.
+photography set (Part 22) from 2026-10-27, and the API
+integration task (Part 23) from 2026-10-28.
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -352,6 +353,32 @@ def run_cases():
         "checks, so the verdict is arithmetic.",
         date="2026-10-27"))
 
+    # The fourteenth case, and the sixth new scenario covered by a
+    # real market case: a scoped API integration (wrapped endpoints,
+    # authentication section, error handling section, worked usage
+    # examples, README section), honest seller. The checks count the
+    # wrapped endpoints and the usage examples, and require the
+    # authentication, error handling, and README sections, so a
+    # one-paragraph "it works on my machine" note fails on its own
+    # terms.
+    deal = run_deal("api_integration_task")
+    cases.append(summarize(
+        "API integration task, honest integrator",
+        "Live listing sweep 2026-10-28 (Part 23): Upwork "
+        "API integration catalog tiers $750/$1,500/$2,750, "
+        "$300/$750/$1,500, $80/$150/$300, $100/$300/$700, "
+        "$65/$245/$795, $950/$2,200/$4,000, and $299/$699/$1,499. "
+        "Buyer max $320, seller floor $120, the scenario "
+        "defaults.",
+        deal,
+        "An integration dispute today is a support ticket over "
+        "whether the endpoints were really wrapped and documented, "
+        "judged with no written spec in the record. Here the "
+        "endpoint count, the examples, the authentication and error "
+        "handling sections, and the README are all contract checks, "
+        "so the verdict is arithmetic.",
+        date="2026-10-28"))
+
     return cases
 
 
@@ -440,6 +467,7 @@ def main():
         "Email newsletter issue, honest writer": "released",
         "Book cover design package, honest designer": "released",
         "Product photography set, honest photographer": "released",
+        "API integration task, honest integrator": "released",
     }
     failures = []
     for row in cases:
