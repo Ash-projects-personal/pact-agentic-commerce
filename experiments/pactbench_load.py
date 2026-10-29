@@ -15,7 +15,7 @@ small local helper (no numpy; no number is hand-typed). Every deal must
 reach a terminal state ("released" or "refunded"); anything else is an
 honest failure recorded in the JSON with its error.
 
-Deal content: scenarios cycle across all 14 scenario ids (order taken
+Deal content: scenarios cycle across all 15 scenario ids (order taken
 from /api/scenarios); buyer_max / seller_floor / bond_percent are drawn
 from random.Random(SEED) so the run is reproducible.
 

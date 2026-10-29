@@ -173,6 +173,19 @@
    "seller_reputation": 88,
    "same_deal_today": "An integration dispute today is a support ticket over whether the endpoints were really wrapped and documented, judged with no written spec in the record. Here the endpoint count, the examples, the authentication and error handling sections, and the README are all contract checks, so the verdict is arithmetic.",
    "date": "2026-10-28"
+  },
+  {
+   "case": "AC repair service, honest technician",
+   "market_reference": "Live re-check 2026-10-29 (Part 24) against the Part 21 sweep: 2026 cost guides put professional capacitor replacement at $150 to $400, most common average $175 (costrepairguide.com, smartservice.com); Angi 2026 data: $200 to $400, average $250. Buyer max $350, seller floor $160, the scenario defaults, inside the documented band.",
+   "negotiated_price": 213.0,
+   "bond": 42.6,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "A service callback dispute today is a phone argument over what the tech says he did, with no written record of the diagnosis or the readings after the fix. Here the diagnosis, the named part, three system readings, and the warranty are contract checks, so the verdict is arithmetic.",
+   "date": "2026-10-29"
   }
  ],
  "limit_case": {

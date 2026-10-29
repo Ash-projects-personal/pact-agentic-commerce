@@ -62,6 +62,10 @@ def main():
     ops = loadres["per_operation_latency_ms"]
     mi_terms = multi["mean_settled_terms"]
 
+    # scenario count is derived from the battery run itself (per-scenario
+    # accuracy is keyed by scenario id), never typed by hand
+    n_battery_scenarios = len(battery.get("per_scenario_accuracy", {}))
+
     rows = [
         ("E1 verifier accuracy (frozen)",
          f"{e1['deliveries']} deliveries, {e1['checks_judged']} checks judged",
@@ -69,7 +73,7 @@ def main():
          f"{pct(e1['delivery_level_accuracy'])}, traps {e1['trap_cases_right']}/{e1['trap_cases']}",
          "experiments/results.json"),
         ("PactBench verifier battery (extended)",
-         f"{battery['total_deliveries']} deliveries across all 14 scenarios, "
+         f"{battery['total_deliveries']} deliveries across all {n_battery_scenarios} scenarios, "
          f"{battery['total_judged_checks']} checks judged, seed {battery['seed']}",
          f"check accuracy {pct(battery['check_level_accuracy'])} "
          f"(TP {b_cm['TP']} TN {b_cm['TN']} FP {b_cm['FP']} FN {b_cm['FN']}); "

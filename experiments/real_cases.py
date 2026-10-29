@@ -9,8 +9,9 @@ use fresh listing sweeps: the podcast edit package (Part 17) and
 the data labeling batch (Part 18) from 2026-10-24, the email
 newsletter issue (Part 19) from 2026-10-25, the book cover
 design package (Part 20) from 2026-10-26, and the product
-photography set (Part 22) from 2026-10-27, and the API
-integration task (Part 23) from 2026-10-28.
+photography set (Part 22) from 2026-10-27, the API
+integration task (Part 23) from 2026-10-28, and the AC
+repair service (Part 24) from 2026-10-29.
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -379,6 +380,23 @@ def run_cases():
         "so the verdict is arithmetic.",
         date="2026-10-28"))
 
+    deal = run_deal("ac_repair_service")
+    cases.append(summarize(
+        "AC repair service, honest technician",
+        "Live re-check 2026-10-29 (Part 24) against the Part 21 "
+        "sweep: 2026 cost guides put professional capacitor "
+        "replacement at $150 to $400, most common average $175 "
+        "(costrepairguide.com, smartservice.com); Angi 2026 data: "
+        "$200 to $400, average $250. Buyer max $350, seller floor "
+        "$160, the scenario defaults, inside the documented band.",
+        deal,
+        "A service callback dispute today is a phone argument over "
+        "what the tech says he did, with no written record of the "
+        "diagnosis or the readings after the fix. Here the diagnosis, "
+        "the named part, three system readings, and the warranty are "
+        "contract checks, so the verdict is arithmetic.",
+        date="2026-10-29"))
+
     return cases
 
 
@@ -468,6 +486,7 @@ def main():
         "Book cover design package, honest designer": "released",
         "Product photography set, honest photographer": "released",
         "API integration task, honest integrator": "released",
+        "AC repair service, honest technician": "released",
     }
     failures = []
     for row in cases:

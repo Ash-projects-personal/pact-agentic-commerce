@@ -25,7 +25,7 @@ Buyer/API families B1..B6 are run once via the in-process TestClient
 
 Labels: honest (expected all checks pass), cheat / poor / mutations
 (expected fail, i.e. NOT all checks pass), weak (observed distribution
-only, no expectation; only 7 of 14 scenarios ship a weak builder).
+only, no expectation; only 8 of 15 scenarios ship a weak builder).
 
 Run with: NO_PROXY=localhost,127.0.0.1 .venv/bin/python experiments/verifier_battery.py
 """
@@ -76,6 +76,7 @@ SCENARIO_IDS = [
     "book_cover_design",
     "api_integration_task",
     "spreadsheet_cleanup_report",
+    "ac_repair_service",
 ]
 
 A2B_POOL = [
@@ -466,7 +467,7 @@ async def main():
         "title": "T (part 1): extended verifier battery",
         "seed": SEED,
         "method": (
-            "Each of the 14 scenarios is settled once via new_deal(scen, "
+            "Each of the 15 scenarios is settled once via new_deal(scen, "
             "scen['default_buyer_max'], scen['default_seller_floor'], 20.0) "
             "followed by run_negotiation, exactly the experiments/adversarial.py "
             "pattern. Deliveries are built with build_delivery(scen, spec, "

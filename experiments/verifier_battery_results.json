@@ -1,75 +1,75 @@
 {
   "title": "T (part 1): extended verifier battery",
   "seed": 20261023,
-  "method": "Each of the 14 scenarios is settled once via new_deal(scen, scen['default_buyer_max'], scen['default_seller_floor'], 20.0) followed by run_negotiation, exactly the experiments/adversarial.py pattern. Deliveries are built with build_delivery(scen, spec, quality=...) for quality in auto (honest; unavailable for cheat_attempt, whose seller_behavior is 'cheat'), cheat, poor, and weak (only the 7 scenarios shipping a weak builder; the other 7 are recorded honestly instead of faked). Every seller-side mutation family (A1 empty markers, A2 single-word stuffing, A2b sentence rotation, A2c honest front plus stuffed tail, A3 needle echo, A4 dropped concept control, A5 hashtag-only) is generalized from adversarial.py to each scenario's own delivery text and settled spec, in multiple honest parameter variants per family. Every delivery is judged with pact/verifier.py verify_delivery(spec, text). Expected verdicts: honest -> all checks pass; cheat, poor, and every mutation -> fail (not all checks pass). Weak deliveries carry no expectation and are reported as an observed distribution. Buyer/API families B1..B6 are run once via the in-process TestClient in demo mode against a throwaway SQLite DB (no live money, no live server) and reported as blocked/not-blocked. Demo mode forced by popping PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, LLM_API_KEY before import; PACT_DB_PATH points at a temp dir. Frozen E1..E4 numbers in experiments/run_experiments.py were not touched.",
-  "total_deliveries": 314,
-  "total_judged_checks": 1570,
+  "method": "Each of the 15 scenarios is settled once via new_deal(scen, scen['default_buyer_max'], scen['default_seller_floor'], 20.0) followed by run_negotiation, exactly the experiments/adversarial.py pattern. Deliveries are built with build_delivery(scen, spec, quality=...) for quality in auto (honest; unavailable for cheat_attempt, whose seller_behavior is 'cheat'), cheat, poor, and weak (only the 7 scenarios shipping a weak builder; the other 7 are recorded honestly instead of faked). Every seller-side mutation family (A1 empty markers, A2 single-word stuffing, A2b sentence rotation, A2c honest front plus stuffed tail, A3 needle echo, A4 dropped concept control, A5 hashtag-only) is generalized from adversarial.py to each scenario's own delivery text and settled spec, in multiple honest parameter variants per family. Every delivery is judged with pact/verifier.py verify_delivery(spec, text). Expected verdicts: honest -> all checks pass; cheat, poor, and every mutation -> fail (not all checks pass). Weak deliveries carry no expectation and are reported as an observed distribution. Buyer/API families B1..B6 are run once via the in-process TestClient in demo mode against a throwaway SQLite DB (no live money, no live server) and reported as blocked/not-blocked. Demo mode forced by popping PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, LLM_API_KEY before import; PACT_DB_PATH points at a temp dir. Frozen E1..E4 numbers in experiments/run_experiments.py were not touched.",
+  "total_deliveries": 337,
+  "total_judged_checks": 1685,
   "checks_per_delivery": 5.0,
   "check_level_confusion_matrix": {
-    "TP": 65,
-    "TN": 139,
+    "TP": 70,
+    "TN": 149,
     "FP": 1,
     "FN": 0
   },
-  "check_level_accuracy": 0.9951219512195122,
+  "check_level_accuracy": 0.9954545454545455,
   "check_level_note": "Expected per-check verdicts are deterministic: honest expected pass on every check; cheat and poor expected fail on every check. Weak deliveries carry no expectation and are excluded.",
   "delivery_level_confusion_matrix": {
-    "TP": 13,
-    "TN": 265,
-    "FP": 29,
+    "TP": 14,
+    "TN": 283,
+    "FP": 32,
     "FN": 0
   },
-  "delivery_level_accuracy": 0.9055374592833876,
+  "delivery_level_accuracy": 0.9027355623100304,
   "delivery_level_note": "Expected delivery verdicts: honest -> all_passed True; cheat, poor, and every mutation family -> all_passed False. Weak deliveries carry no expectation and are excluded.",
   "per_label_delivery_accuracy": {
     "honest": {
-      "n": 13,
-      "correct": 13,
+      "n": 14,
+      "correct": 14,
       "accuracy": 1.0
     },
     "cheat": {
-      "n": 14,
-      "correct": 14,
+      "n": 15,
+      "correct": 15,
       "accuracy": 1.0
     },
     "poor": {
-      "n": 14,
-      "correct": 14,
+      "n": 15,
+      "correct": 15,
       "accuracy": 1.0
     },
     "A1": {
-      "n": 28,
-      "correct": 28,
+      "n": 30,
+      "correct": 30,
       "accuracy": 1.0
     },
     "A2": {
-      "n": 42,
-      "correct": 38,
-      "accuracy": 0.9047619047619048
+      "n": 45,
+      "correct": 40,
+      "accuracy": 0.8888888888888888
     },
     "A2b": {
-      "n": 42,
-      "correct": 39,
-      "accuracy": 0.9285714285714286
+      "n": 45,
+      "correct": 42,
+      "accuracy": 0.9333333333333333
     },
     "A2c": {
-      "n": 42,
-      "correct": 20,
-      "accuracy": 0.47619047619047616
+      "n": 45,
+      "correct": 21,
+      "accuracy": 0.4666666666666667
     },
     "A3": {
-      "n": 28,
-      "correct": 28,
+      "n": 30,
+      "correct": 30,
       "accuracy": 1.0
     },
     "A4": {
-      "n": 42,
-      "correct": 42,
+      "n": 45,
+      "correct": 45,
       "accuracy": 1.0
     },
     "A5": {
-      "n": 42,
-      "correct": 42,
+      "n": 45,
+      "correct": 45,
       "accuracy": 1.0
     }
   },
@@ -283,6 +283,21 @@
         "mutations": 19
       },
       "checks_judged": 115
+    },
+    "ac_repair_service": {
+      "n": 22,
+      "correct": 19,
+      "accuracy": 0.8636363636363636,
+      "honest_builder_available": true,
+      "weak_builder_available": true,
+      "counts": {
+        "honest": 1,
+        "cheat": 1,
+        "poor": 1,
+        "weak": 1,
+        "mutations": 19
+      },
+      "checks_judged": 115
     }
   },
   "per_scenario_counts": {
@@ -411,42 +426,51 @@
       "mutations": 19,
       "checks_judged": 115,
       "spec_check_count": 5
+    },
+    "ac_repair_service": {
+      "honest": 1,
+      "cheat": 1,
+      "poor": 1,
+      "weak": 1,
+      "mutations": 19,
+      "checks_judged": 115,
+      "spec_check_count": 5
     }
   },
   "per_family_block_rates": {
     "A1": {
-      "n": 28,
-      "blocked": 28,
+      "n": 30,
+      "blocked": 30,
       "block_rate": 1.0
     },
     "A2": {
-      "n": 42,
-      "blocked": 38,
-      "block_rate": 0.9047619047619048
+      "n": 45,
+      "blocked": 40,
+      "block_rate": 0.8888888888888888
     },
     "A2b": {
-      "n": 42,
-      "blocked": 39,
-      "block_rate": 0.9285714285714286
+      "n": 45,
+      "blocked": 42,
+      "block_rate": 0.9333333333333333
     },
     "A2c": {
-      "n": 42,
-      "blocked": 20,
-      "block_rate": 0.47619047619047616
+      "n": 45,
+      "blocked": 21,
+      "block_rate": 0.4666666666666667
     },
     "A3": {
-      "n": 28,
-      "blocked": 28,
+      "n": 30,
+      "blocked": 30,
       "block_rate": 1.0
     },
     "A4": {
-      "n": 42,
-      "blocked": 42,
+      "n": 45,
+      "blocked": 45,
       "block_rate": 1.0
     },
     "A5": {
-      "n": 42,
-      "blocked": 42,
+      "n": 45,
+      "blocked": 45,
       "block_rate": 1.0
     }
   },
@@ -547,6 +571,16 @@
       "failed_check_ids": [
         "cleaned_columns",
         "findings",
+        "report_words"
+      ]
+    },
+    "ac_repair_service": {
+      "all_passed": false,
+      "passed_count": 2,
+      "total_count": 5,
+      "failed_check_ids": [
+        "readings",
+        "warranty",
         "report_words"
       ]
     }
@@ -763,7 +797,25 @@
       "label": "A2cv2",
       "finding": "mutation A2c variant 2 passed ALL checks (beats the system)",
       "note": "full honest text + 400x single-word tail"
+    },
+    {
+      "scenario_id": "ac_repair_service",
+      "label": "A2v0",
+      "finding": "mutation A2 variant 0 passed ALL checks (beats the system)",
+      "note": "honest front + 100x single-word stuffing"
+    },
+    {
+      "scenario_id": "ac_repair_service",
+      "label": "A2cv0",
+      "finding": "mutation A2c variant 0 passed ALL checks (beats the system)",
+      "note": "full honest text + 100x single-word tail"
+    },
+    {
+      "scenario_id": "ac_repair_service",
+      "label": "A2cv1",
+      "finding": "mutation A2c variant 1 passed ALL checks (beats the system)",
+      "note": "full honest text + 200x single-word tail"
     }
   ],
-  "runtime_seconds": 0.67
+  "runtime_seconds": 0.88
 }
