@@ -397,6 +397,30 @@ def run_cases():
         "contract checks, so the verdict is arithmetic.",
         date="2026-10-29"))
 
+    # The sixteenth case, and the seventh new scenario covered by a
+    # real market case: a spreadsheet cleanup with a written change
+    # report (per-column fixes, findings, methodology, duplicate
+    # count), honest seller. The checks count the cleaned columns and
+    # the findings, and require the methodology section and the
+    # duplicate count, so a "cleaned it, trust me" one-liner with no
+    # report fails on its own terms.
+    deal = run_deal("spreadsheet_cleanup_report")
+    cases.append(summarize(
+        "Spreadsheet cleanup and report, honest analyst",
+        "Live listing sweep 2026-10-30 (Part 25): Upwork "
+        "spreadsheet cleanup catalog tiers $45/$65/$120, "
+        "$15/$35/$55, $15/$25/$50, $8/$35/$98, $20/$45/$95, "
+        "$15/$35/$60, $18/$35/$60, $15/$35/$75, $25/$50/$90, "
+        "and $35/$55/$85. Buyer max $110, seller floor $40, "
+        "the scenario defaults, inside the documented band.",
+        deal,
+        "A cleanup dispute today is the buyer staring at a file "
+        "they cannot audit, arguing with a seller who says they "
+        "fixed everything. Here the per-column fixes, the "
+        "findings, the methodology, and the duplicate count are "
+        "contract checks, so the verdict is arithmetic.",
+        date="2026-10-30"))
+
     return cases
 
 
@@ -487,6 +511,7 @@ def main():
         "Product photography set, honest photographer": "released",
         "API integration task, honest integrator": "released",
         "AC repair service, honest technician": "released",
+        "Spreadsheet cleanup and report, honest analyst": "released",
     }
     failures = []
     for row in cases:

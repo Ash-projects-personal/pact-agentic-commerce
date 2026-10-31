@@ -186,6 +186,19 @@
    "seller_reputation": 88,
    "same_deal_today": "A service callback dispute today is a phone argument over what the tech says he did, with no written record of the diagnosis or the readings after the fix. Here the diagnosis, the named part, three system readings, and the warranty are contract checks, so the verdict is arithmetic.",
    "date": "2026-10-29"
+  },
+  {
+   "case": "Spreadsheet cleanup and report, honest analyst",
+   "market_reference": "Live listing sweep 2026-10-30 (Part 25): Upwork spreadsheet cleanup catalog tiers $45/$65/$120, $15/$35/$55, $15/$25/$50, $8/$35/$98, $20/$45/$95, $15/$35/$60, $18/$35/$60, $15/$35/$75, $25/$50/$90, and $35/$55/$85. Buyer max $110, seller floor $40, the scenario defaults, inside the documented band.",
+   "negotiated_price": 60.0,
+   "bond": 12.0,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "A cleanup dispute today is the buyer staring at a file they cannot audit, arguing with a seller who says they fixed everything. Here the per-column fixes, the findings, the methodology, and the duplicate count are contract checks, so the verdict is arithmetic.",
+   "date": "2026-10-30"
   }
  ],
  "limit_case": {
