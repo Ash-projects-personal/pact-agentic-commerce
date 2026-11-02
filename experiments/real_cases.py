@@ -16,7 +16,10 @@ and report (Part 25) from 2026-10-30, and the landing page copy
 (Part 26) from 2026-10-31, which covers all 15 scenarios. The
 eighteenth case (2026-11-01) is the first cheat case on one of
 the new scenario families: a data labeling batch cheat priced
-against a live data annotation re-check (Part 27).
+against a live data annotation re-check (Part 27). The
+nineteenth case (2026-11-02) is the second cheat case on a new
+scenario family: a podcast edit package cheat priced against a
+live podcast editing re-check (Part 28).
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -482,6 +485,37 @@ def run_cases():
         "the buyer is refunded, and the seller's bond is slashed.",
         date="2026-11-01"))
 
+    # The nineteenth case, and the second cheat case on one of the
+    # new scenario families: a podcast edit package cheat. The
+    # seller ships a paragraph of assurances ("Great episode! ...
+    # it sounds amazing now") with no chapter markers, no
+    # timestamped notes, no transcript, and no show notes. It
+    # fails all 5 checks, and because no check passed there is
+    # nothing to revise against, so the contract skips the
+    # revision round, refunds the buyer, and slashes the seller's
+    # bond. Only one delivery is made: the first verify ends the
+    # deal at refunded, so there is no second deliver call.
+    deal = run_deal("podcast_edit_package", qualities=("cheat",))
+    cases.append(summarize(
+        "Podcast edit package, cheat editor",
+        "Live re-check 2026-11-02 (Part 28) against the Part 1.17 "
+        "sweep (2026-10-24): Upwork catalog tiers $120/$210/$300, "
+        "$40/$80/$120, $70/$105/$140, and $30/$60/$90 "
+        "(30/60/90 min); Upwork hire page: audio cleanup $50 to "
+        "$200, full episode edit $200 to $500, video production "
+        "$500 to $1,200; Fiverr median starting price $25 across "
+        "37 well-reviewed gigs (Pro median $152.50). Buyer max "
+        "$220, seller floor $80, the scenario defaults, inside "
+        "the documented band.",
+        deal,
+        "A podcast cheat today is a done message with no package "
+        "to check, judged by ear if it gets judged at all. Here "
+        "the chapter markers, the timestamped notes, the "
+        "transcript, and the show notes are contract checks: "
+        "zero of five pass, so the revision round is skipped, "
+        "the buyer is refunded, and the seller's bond is slashed.",
+        date="2026-11-02"))
+
     return cases
 
 
@@ -575,6 +609,7 @@ def main():
         "Spreadsheet cleanup and report, honest analyst": "released",
         "Landing page copy, honest copywriter": "released",
         "Data labeling batch, cheat labeler": "refunded",
+        "Podcast edit package, cheat editor": "refunded",
     }
     failures = []
     for row in cases:
