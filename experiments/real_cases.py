@@ -4,14 +4,19 @@ The deal shapes and price bands come from public marketplace data
 gathered 2026-10-22 (see research/real-deal-data.md in this repo for
 the sources): Fiverr and Upwork listing prices for logo kits, listing
 copy, social packs, Python fixes, and research briefs, plus the
-protection terms those platforms actually offer. Five later cases
+protection terms those platforms actually offer. Nine later cases
 use fresh listing sweeps: the podcast edit package (Part 17) and
 the data labeling batch (Part 18) from 2026-10-24, the email
 newsletter issue (Part 19) from 2026-10-25, the book cover
 design package (Part 20) from 2026-10-26, and the product
 photography set (Part 22) from 2026-10-27, the API
-integration task (Part 23) from 2026-10-28, and the AC
-repair service (Part 24) from 2026-10-29.
+integration task (Part 23) from 2026-10-28, the AC
+repair service (Part 24) from 2026-10-29, the spreadsheet cleanup
+and report (Part 25) from 2026-10-30, and the landing page copy
+(Part 26) from 2026-10-31, which covers all 15 scenarios. The
+eighteenth case (2026-11-01) is the first cheat case on one of
+the new scenario families: a data labeling batch cheat priced
+against a live data annotation re-check (Part 27).
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -421,6 +426,62 @@ def run_cases():
         "contract checks, so the verdict is arithmetic.",
         date="2026-10-30"))
 
+    # The seventeenth case, and the eighth new scenario covered by a
+    # real market case: full landing page copy (headline and
+    # subheadline, benefit sections, calls to action, closing
+    # section answering the main objection), honest writer. The
+    # checks count the benefit sections and the calls to action,
+    # require a minimum word count, and require the headline and
+    # subheadline sections, so a short generic blurb with no
+    # structure fails on its own terms. This case completes the
+    # set: every one of the 15 Pact scenarios now has a real
+    # market case.
+    deal = run_deal("landing_page_copy")
+    cases.append(summarize(
+        "Landing page copy, honest copywriter",
+        "Live listing sweep 2026-10-31 (Part 26): Upwork landing "
+        "page catalog tiers $80/$100/$120, $500/$750/$1,000, "
+        "$20/$75/$150, and $50/$100/$150; Fiverr 2026 guides "
+        "Basic $50 to $150, Standard $150 to $400, Premium $400 "
+        "to $800, website copywriting Pro $50 to $800. Buyer max "
+        "$450, seller floor $260, the scenario defaults, inside "
+        "the documented band.",
+        deal,
+        "A landing page dispute today is the buyer staring at "
+        "copy that does not sell, arguing with a seller who says "
+        "the words are fine. Here the benefit sections, the word "
+        "count, the calls to action, and the headline and "
+        "subheadline sections are contract checks, so the "
+        "verdict is arithmetic.",
+        date="2026-10-31"))
+
+    # The eighteenth case, and the first cheat case on one of the
+    # new scenario families: a data labeling batch cheat. The
+    # seller ships a paragraph of assurances ("labeled your data
+    # carefully") with no rows, no guide, and no flagged rows. It
+    # fails all 5 checks, and because no check passed there is
+    # nothing to revise against, so the contract skips the
+    # revision round, refunds the buyer, and slashes the seller's
+    # bond. Only one delivery is made: the first verify ends the
+    # deal at refunded, so there is no second deliver call.
+    deal = run_deal("data_labeling_batch", qualities=("cheat",))
+    cases.append(summarize(
+        "Data labeling batch, cheat labeler",
+        "Live listing re-check 2026-11-01 (Part 27): Upwork "
+        "annotation catalog tiers $10/$100/$420, $95/$295/$595, "
+        "$20/$30/$40, $35/$75/$140, $100/$300/$700, "
+        "$40/$100/$250, $35/$120/$250, and $20/$200/$500. "
+        "Buyer max $90, seller floor $40, the scenario defaults, "
+        "inside the documented band.",
+        deal,
+        "A labeling cheat today is a support ticket over whether "
+        "the labels were real, judged with no written guide in "
+        "the record. Here the row count, the guide, the flagged "
+        "rows, and the distribution summary are contract checks: "
+        "zero of five pass, so the revision round is skipped, "
+        "the buyer is refunded, and the seller's bond is slashed.",
+        date="2026-11-01"))
+
     return cases
 
 
@@ -512,6 +573,8 @@ def main():
         "API integration task, honest integrator": "released",
         "AC repair service, honest technician": "released",
         "Spreadsheet cleanup and report, honest analyst": "released",
+        "Landing page copy, honest copywriter": "released",
+        "Data labeling batch, cheat labeler": "refunded",
     }
     failures = []
     for row in cases:

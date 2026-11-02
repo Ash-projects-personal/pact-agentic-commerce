@@ -199,6 +199,32 @@
    "seller_reputation": 88,
    "same_deal_today": "A cleanup dispute today is the buyer staring at a file they cannot audit, arguing with a seller who says they fixed everything. Here the per-column fixes, the findings, the methodology, and the duplicate count are contract checks, so the verdict is arithmetic.",
    "date": "2026-10-30"
+  },
+  {
+   "case": "Landing page copy, honest copywriter",
+   "market_reference": "Live listing sweep 2026-10-31 (Part 26): Upwork landing page catalog tiers $80/$100/$120, $500/$750/$1,000, $20/$75/$150, and $50/$100/$150; Fiverr 2026 guides Basic $50 to $150, Standard $150 to $400, Premium $400 to $800, website copywriting Pro $50 to $800. Buyer max $450, seller floor $260, the scenario defaults, inside the documented band.",
+   "negotiated_price": 324.22,
+   "bond": 64.84,
+   "checks": "5/5",
+   "outcome": "released",
+   "payment_status": "released",
+   "bond_status": "returned",
+   "seller_reputation": 88,
+   "same_deal_today": "A landing page dispute today is the buyer staring at copy that does not sell, arguing with a seller who says the words are fine. Here the benefit sections, the word count, the calls to action, and the headline and subheadline sections are contract checks, so the verdict is arithmetic.",
+   "date": "2026-10-31"
+  },
+  {
+   "case": "Data labeling batch, cheat labeler",
+   "market_reference": "Live listing re-check 2026-11-01 (Part 27): Upwork annotation catalog tiers $10/$100/$420, $95/$295/$595, $20/$30/$40, $35/$75/$140, $100/$300/$700, $40/$100/$250, $35/$120/$250, and $20/$200/$500. Buyer max $90, seller floor $40, the scenario defaults, inside the documented band.",
+   "negotiated_price": 54.0,
+   "bond": 10.8,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 56,
+   "same_deal_today": "A labeling cheat today is a support ticket over whether the labels were real, judged with no written guide in the record. Here the row count, the guide, the flagged rows, and the distribution summary are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
+   "date": "2026-11-01"
   }
  ],
  "limit_case": {
