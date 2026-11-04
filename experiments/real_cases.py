@@ -19,7 +19,13 @@ the new scenario families: a data labeling batch cheat priced
 against a live data annotation re-check (Part 27). The
 nineteenth case (2026-11-02) is the second cheat case on a new
 scenario family: a podcast edit package cheat priced against a
-live podcast editing re-check (Part 28).
+live podcast editing re-check (Part 28). The twentieth case
+(2026-11-03) is the third cheat case on a new scenario family:
+an email newsletter issue cheat priced against a live newsletter
+writing re-check (Part 29). The twenty-first case
+(2026-11-04) is the fourth cheat case on a new scenario family:
+a product photography set cheat priced against a live product
+photography re-check (Part 30).
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -516,6 +522,71 @@ def run_cases():
         "the buyer is refunded, and the seller's bond is slashed.",
         date="2026-11-02"))
 
+    # The twentieth case, and the third cheat case on one of the
+    # new scenario families: an email newsletter issue cheat. The
+    # seller ships a paragraph of assurances ("Here is your
+    # newsletter! ... packed with value") with no subject line, no
+    # sections, no calls to action, and no unsubscribe line. It
+    # fails all 5 checks, and because no check passed there is
+    # nothing to revise against, so the contract skips the
+    # revision round, refunds the buyer, and slashes the seller's
+    # bond. Only one delivery is made: the first verify ends the
+    # deal at refunded, so there is no second deliver call.
+    deal = run_deal("newsletter_issue", qualities=("cheat",))
+    cases.append(summarize(
+        "Email newsletter issue, cheat writer",
+        "Live re-check 2026-11-03 (Part 29) against the Part 1.19 "
+        "sweep (2026-10-25): Upwork catalog tiers $190/$320/$635 "
+        "(curated weekly agency), $150/$225/$270 (designed "
+        "newsletter), $250/$300/$400 (subscriber newsletter), and "
+        "$300/$500/$700 (newsletter design, 4/8/12 pages). Buyer "
+        "max $160, seller floor $70, the scenario defaults, inside "
+        "the documented band.",
+        deal,
+        "A newsletter cheat today is an AI drafted filler paragraph "
+        "sold as hand written conversion copy, or a done message "
+        "with no issue at all. Here the subject line, the sections, "
+        "the calls to action, the unsubscribe line, and the issue "
+        "length are contract checks: zero of five pass, so the "
+        "revision round is skipped, the buyer is refunded, and the "
+        "seller's bond is slashed.",
+        date="2026-11-03"))
+
+    # The twenty-first case, and the fourth cheat case on one of
+    # the new scenario families: a product photography set cheat.
+    # The seller ships a paragraph of assurances ("The photos are
+    # done and they look fantastic ... download link") with no
+    # shot manifest, no hero shot, no usage license, and no
+    # retouch notes, which matches the documented AI generated
+    # photo cheat in this market (a download link sold as a real
+    # shoot). It fails all 5 checks, and because no check passed
+    # there is nothing to revise against, so the contract skips
+    # the revision round, refunds the buyer, and slashes the
+    # seller's bond. Only one delivery is made: the first verify
+    # ends the deal at refunded, so there is no second deliver
+    # call.
+    deal = run_deal("product_photo_set", qualities=("cheat",))
+    cases.append(summarize(
+        "Product photography set, cheat photographer",
+        "Live re-check 2026-11-04 (Part 30) against the Part 22 "
+        "sweep (2026-10-27): Upwork catalog tiers $55/$150/$250, "
+        "$90/$120/$160, $100/$150/$175, $125/$240/$450, "
+        "$150/$300/$550, $230/$385/$655, $35/$65/$95, and "
+        "$50/$75/$100; an October 2026 AI photography guide found "
+        "the first page of Fiverr AI photo gigs starting at $5 "
+        "to $250 with 24 of 48 at $15 or less, the image itself "
+        "costing about 10 cents. Buyer max $220, seller floor "
+        "$90, the scenario defaults, inside the documented band.",
+        deal,
+        "A photography cheat today is a done message with a "
+        "download link and no manifest to check, sometimes AI "
+        "generated images sold as a human shoot. Here the photo "
+        "count, the hero shot, the usage license, the retouch "
+        "notes, and the manifest length are contract checks: "
+        "zero of five pass, so the revision round is skipped, "
+        "the buyer is refunded, and the seller's bond is slashed.",
+        date="2026-11-04"))
+
     return cases
 
 
@@ -610,6 +681,8 @@ def main():
         "Landing page copy, honest copywriter": "released",
         "Data labeling batch, cheat labeler": "refunded",
         "Podcast edit package, cheat editor": "refunded",
+        "Email newsletter issue, cheat writer": "refunded",
+        "Product photography set, cheat photographer": "refunded",
     }
     failures = []
     for row in cases:

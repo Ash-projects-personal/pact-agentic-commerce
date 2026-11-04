@@ -238,6 +238,32 @@
    "seller_reputation": 56,
    "same_deal_today": "A podcast cheat today is a done message with no package to check, judged by ear if it gets judged at all. Here the chapter markers, the timestamped notes, the transcript, and the show notes are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
    "date": "2026-11-02"
+  },
+  {
+   "case": "Email newsletter issue, cheat writer",
+   "market_reference": "Live re-check 2026-11-03 (Part 29) against the Part 1.19 sweep (2026-10-25): Upwork catalog tiers $190/$320/$635 (curated weekly agency), $150/$225/$270 (designed newsletter), $250/$300/$400 (subscriber newsletter), and $300/$500/$700 (newsletter design, 4/8/12 pages). Buyer max $160, seller floor $70, the scenario defaults, inside the documented band.",
+   "negotiated_price": 95.25,
+   "bond": 19.05,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 56,
+   "same_deal_today": "A newsletter cheat today is an AI drafted filler paragraph sold as hand written conversion copy, or a done message with no issue at all. Here the subject line, the sections, the calls to action, the unsubscribe line, and the issue length are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
+   "date": "2026-11-03"
+  },
+  {
+   "case": "Product photography set, cheat photographer",
+   "market_reference": "Live re-check 2026-11-04 (Part 30) against the Part 22 sweep (2026-10-27): Upwork catalog tiers $55/$150/$250, $90/$120/$160, $100/$150/$175, $125/$240/$450, $150/$300/$550, $230/$385/$655, $35/$65/$95, and $50/$75/$100; an October 2026 AI photography guide found the first page of Fiverr AI photo gigs starting at $5 to $250 with 24 of 48 at $15 or less, the image itself costing about 10 cents. Buyer max $220, seller floor $90, the scenario defaults, inside the documented band.",
+   "negotiated_price": 126.75,
+   "bond": 25.35,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 56,
+   "same_deal_today": "A photography cheat today is a done message with a download link and no manifest to check, sometimes AI generated images sold as a human shoot. Here the photo count, the hero shot, the usage license, the retouch notes, and the manifest length are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
+   "date": "2026-11-04"
   }
  ],
  "limit_case": {
