@@ -264,6 +264,19 @@
    "seller_reputation": 56,
    "same_deal_today": "A photography cheat today is a done message with a download link and no manifest to check, sometimes AI generated images sold as a human shoot. Here the photo count, the hero shot, the usage license, the retouch notes, and the manifest length are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
    "date": "2026-11-04"
+  },
+  {
+   "case": "Book cover design package, cheat designer",
+   "market_reference": "Live re-check 2026-11-05 (Part 31) against the Part 20 sweep (2026-10-26): Upwork catalog tiers $5/$10/$15, $40/$60/$80, $65/$85/$95, $10/$20/$28, and $400/$700/$1,200; Fiverr gigs from $10 to $20 with paid reviews at $50 and $200 to $400. A 2026 pricing guide puts freelance cover design at $15 to $100 and premade covers at $100 to $150, and an October 2026 survey of Fiverr front-page cover listings found $10 to $245 with many around $50. Buyer max $140, seller floor $50, the scenario defaults, inside the documented band.",
+   "negotiated_price": 75.75,
+   "bond": 15.15,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 56,
+   "same_deal_today": "A cover cheat today is a premade template with the title swapped in, sold as a custom package, or a single JPG with no spine, no back cover, and no source files. Here the concept count, the spine and back cover sections, the palette, and the typography pairing are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
+   "date": "2026-11-05"
   }
  ],
  "limit_case": {

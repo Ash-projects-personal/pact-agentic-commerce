@@ -25,7 +25,10 @@ an email newsletter issue cheat priced against a live newsletter
 writing re-check (Part 29). The twenty-first case
 (2026-11-04) is the fourth cheat case on a new scenario family:
 a product photography set cheat priced against a live product
-photography re-check (Part 30).
+photography re-check (Part 30). The twenty-second case
+(2026-11-05) is the fifth cheat case on a new scenario family:
+a book cover design package cheat priced against a live book
+cover design re-check (Part 31).
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -587,6 +590,43 @@ def run_cases():
         "the buyer is refunded, and the seller's bond is slashed.",
         date="2026-11-04"))
 
+    # The twenty-second case, and the fifth cheat case on one of
+    # the new scenario families: a book cover design package
+    # cheat. The seller ships a paragraph of assurances ("Your
+    # cover is ready and it looks stunning ... the title really
+    # pops") with no concept directions, no spine design, no back
+    # cover layout, no palette, and no typography pairing, which
+    # matches the documented template cheat in this market (a
+    # premade or stock template sold as a custom package). It
+    # fails all 5 checks, and because no check passed there is
+    # nothing to revise against, so the contract skips the
+    # revision round, refunds the buyer, and slashes the seller's
+    # bond. Only one delivery is made: the first verify ends the
+    # deal at refunded, so there is no second deliver call.
+    deal = run_deal("book_cover_design", qualities=("cheat",))
+    cases.append(summarize(
+        "Book cover design package, cheat designer",
+        "Live re-check 2026-11-05 (Part 31) against the Part 20 "
+        "sweep (2026-10-26): Upwork catalog tiers $5/$10/$15, "
+        "$40/$60/$80, $65/$85/$95, $10/$20/$28, and "
+        "$400/$700/$1,200; Fiverr gigs from $10 to $20 with paid "
+        "reviews at $50 and $200 to $400. A 2026 pricing guide "
+        "puts freelance cover design at $15 to $100 and premade "
+        "covers at $100 to $150, and an October 2026 survey of "
+        "Fiverr front-page cover listings found $10 to $245 with "
+        "many around $50. Buyer max $140, seller floor $50, the "
+        "scenario defaults, inside the documented band.",
+        deal,
+        "A cover cheat today is a premade template with the title "
+        "swapped in, sold as a custom package, or a single JPG "
+        "with no spine, no back cover, and no source files. Here "
+        "the concept count, the spine and back cover sections, "
+        "the palette, and the typography pairing are contract "
+        "checks: zero of five pass, so the revision round is "
+        "skipped, the buyer is refunded, and the seller's bond "
+        "is slashed.",
+        date="2026-11-05"))
+
     return cases
 
 
@@ -683,6 +723,7 @@ def main():
         "Podcast edit package, cheat editor": "refunded",
         "Email newsletter issue, cheat writer": "refunded",
         "Product photography set, cheat photographer": "refunded",
+        "Book cover design package, cheat designer": "refunded",
     }
     failures = []
     for row in cases:
