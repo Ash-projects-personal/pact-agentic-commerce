@@ -28,7 +28,10 @@ a product photography set cheat priced against a live product
 photography re-check (Part 30). The twenty-second case
 (2026-11-05) is the fifth cheat case on a new scenario family:
 a book cover design package cheat priced against a live book
-cover design re-check (Part 31).
+cover design re-check (Part 31). The twenty-third case
+(2026-11-06) is the sixth cheat case on a new scenario family:
+an API integration task cheat priced against a live API
+integration re-check (Part 32).
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -627,6 +630,40 @@ def run_cases():
         "is slashed.",
         date="2026-11-05"))
 
+    # The twenty-third case, and the sixth cheat case on one of
+    # the new scenario families: an API integration task cheat.
+    # The seller ships a paragraph of assurances ("The API is
+    # integrated and working ... tested it end to end") with no
+    # wrapped endpoints, no authentication section, no error
+    # handling, no worked examples, and no README, which matches
+    # the documented done message cheat in this market (a "it
+    # works" note with no code to check). It fails all 5 checks,
+    # and because no check passed there is nothing to revise
+    # against, so the contract skips the revision round, refunds
+    # the buyer, and slashes the seller's bond. Only one delivery
+    # is made: the first verify ends the deal at refunded, so
+    # there is no second deliver call.
+    deal = run_deal("api_integration_task", qualities=("cheat",))
+    cases.append(summarize(
+        "API integration task, cheat integrator",
+        "Live re-check 2026-11-06 (Part 32) against the Part 23 "
+        "sweep (2026-10-28): Upwork catalog tiers $100/$300/$700, "
+        "$65/$245/$795, $99/$199/$499, $69/$249/$599, "
+        "$200/$400/$600, $179/$379/$699, $99/$700/$1,400, "
+        "$35/$70/$120, and $100/$300/$500; Fiverr API "
+        "integration and automation gigs $10 to $70 and $80 to "
+        "$400 per project. Buyer max $320, seller floor $120, "
+        "the scenario defaults, inside the documented band.",
+        deal,
+        "An integration cheat today is a done message with no "
+        "code to check, judged by whether the app happens to "
+        "work when the buyer tries it. Here the endpoint count, "
+        "the usage examples, the authentication and error "
+        "handling sections, and the README are contract checks: "
+        "zero of five pass, so the revision round is skipped, "
+        "the buyer is refunded, and the seller's bond is slashed.",
+        date="2026-11-06"))
+
     return cases
 
 
@@ -724,6 +761,7 @@ def main():
         "Email newsletter issue, cheat writer": "refunded",
         "Product photography set, cheat photographer": "refunded",
         "Book cover design package, cheat designer": "refunded",
+        "API integration task, cheat integrator": "refunded",
     }
     failures = []
     for row in cases:

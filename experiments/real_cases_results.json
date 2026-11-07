@@ -277,6 +277,19 @@
    "seller_reputation": 56,
    "same_deal_today": "A cover cheat today is a premade template with the title swapped in, sold as a custom package, or a single JPG with no spine, no back cover, and no source files. Here the concept count, the spine and back cover sections, the palette, and the typography pairing are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
    "date": "2026-11-05"
+  },
+  {
+   "case": "API integration task, cheat integrator",
+   "market_reference": "Live re-check 2026-11-06 (Part 32) against the Part 23 sweep (2026-10-28): Upwork catalog tiers $100/$300/$700, $65/$245/$795, $99/$199/$499, $69/$249/$599, $200/$400/$600, $179/$379/$699, $99/$700/$1,400, $35/$70/$120, and $100/$300/$500; Fiverr API integration and automation gigs $10 to $70 and $80 to $400 per project. Buyer max $320, seller floor $120, the scenario defaults, inside the documented band.",
+   "negotiated_price": 177.0,
+   "bond": 35.4,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 56,
+   "same_deal_today": "An integration cheat today is a done message with no code to check, judged by whether the app happens to work when the buyer tries it. Here the endpoint count, the usage examples, the authentication and error handling sections, and the README are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
+   "date": "2026-11-06"
   }
  ],
  "limit_case": {
