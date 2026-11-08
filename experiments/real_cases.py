@@ -31,7 +31,10 @@ a book cover design package cheat priced against a live book
 cover design re-check (Part 31). The twenty-third case
 (2026-11-06) is the sixth cheat case on a new scenario family:
 an API integration task cheat priced against a live API
-integration re-check (Part 32).
+integration re-check (Part 32). The twenty-fourth case
+(2026-11-07) is the seventh cheat case on one of the new
+scenario families: an AC repair service cheat priced
+against a live AC repair cost guide re-check (Part 33).
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -664,6 +667,40 @@ def run_cases():
         "the buyer is refunded, and the seller's bond is slashed.",
         date="2026-11-06"))
 
+    # The twenty-fourth case, and the seventh cheat case on one of
+    # the new scenario families: an AC repair service cheat. The
+    # seller ships a paragraph of assurances ("Your AC is fixed and
+    # the house is cool again") with no diagnosis, no capacitor
+    # named as the part replaced, no system readings, and no
+    # warranty, which matches the documented "fixed it, trust me"
+    # cheat in this market (a done message judged only by whether
+    # the house feels cool when the tech leaves). It fails all 5
+    # checks, and because no check passed there is nothing to revise
+    # against, so the contract skips the revision round, refunds the
+    # buyer, and slashes the seller's bond. Only one delivery is
+    # made: the first verify ends the deal at refunded, so there is
+    # no second deliver call.
+    deal = run_deal("ac_repair_service", qualities=("cheat",))
+    cases.append(summarize(
+        "AC repair service, cheat technician",
+        "Live re-check 2026-11-07 (Part 33) against the Part 24 "
+        "sweep (2026-10-29): Angi updated Oct 29, 2026: $200 to "
+        "$400, average $250; This Old House: $80 to $400, average "
+        "$175; Smart Service: $80 to $400, average $175; "
+        "costrepairguide.com: $80 to $400, average $175. Buyer max "
+        "$350, seller floor $160, the scenario defaults, inside "
+        "the documented band.",
+        deal,
+        "An AC repair cheat today is a done message with no "
+        "diagnosis, no named part, no readings, and no warranty, "
+        "judged by whether the house feels cool when the tech "
+        "leaves. Here the diagnosis, the named capacitor, the "
+        "system readings, the warranty, and the report length are "
+        "contract checks: zero of five pass, so the revision round "
+        "is skipped, the buyer is refunded, and the seller's bond "
+        "is slashed.",
+        date="2026-11-07"))
+
     return cases
 
 
@@ -762,6 +799,7 @@ def main():
         "Product photography set, cheat photographer": "refunded",
         "Book cover design package, cheat designer": "refunded",
         "API integration task, cheat integrator": "refunded",
+        "AC repair service, cheat technician": "refunded",
     }
     failures = []
     for row in cases:

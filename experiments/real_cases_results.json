@@ -290,6 +290,19 @@
    "seller_reputation": 56,
    "same_deal_today": "An integration cheat today is a done message with no code to check, judged by whether the app happens to work when the buyer tries it. Here the endpoint count, the usage examples, the authentication and error handling sections, and the README are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
    "date": "2026-11-06"
+  },
+  {
+   "case": "AC repair service, cheat technician",
+   "market_reference": "Live re-check 2026-11-07 (Part 33) against the Part 24 sweep (2026-10-29): Angi updated Oct 29, 2026: $200 to $400, average $250; This Old House: $80 to $400, average $175; Smart Service: $80 to $400, average $175; costrepairguide.com: $80 to $400, average $175. Buyer max $350, seller floor $160, the scenario defaults, inside the documented band.",
+   "negotiated_price": 213.0,
+   "bond": 42.6,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 56,
+   "same_deal_today": "An AC repair cheat today is a done message with no diagnosis, no named part, no readings, and no warranty, judged by whether the house feels cool when the tech leaves. Here the diagnosis, the named capacitor, the system readings, the warranty, and the report length are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
+   "date": "2026-11-07"
   }
  ],
  "limit_case": {
