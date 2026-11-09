@@ -33,8 +33,11 @@ cover design re-check (Part 31). The twenty-third case
 an API integration task cheat priced against a live API
 integration re-check (Part 32). The twenty-fourth case
 (2026-11-07) is the seventh cheat case on one of the new
-scenario families: an AC repair service cheat priced
-against a live AC repair cost guide re-check (Part 33).
+scenario families: an AC repair service cheat priced against a live AC repair cost
+guide re-check (Part 33). The twenty-fifth case (2026-11-08) is
+the eighth cheat case on one of the new scenario families: a
+spreadsheet cleanup and report cheat priced against a live
+spreadsheet cleanup re-check (Part 34).
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -701,6 +704,42 @@ def run_cases():
         "is slashed.",
         date="2026-11-07"))
 
+    # The twenty-fifth case, and the eighth cheat case on one of
+    # the new scenario families: a spreadsheet cleanup and report
+    # cheat. The seller ships a paragraph of assurances ("Your
+    # spreadsheet is all cleaned up ... Duplicates are gone and
+    # the formatting is consistent") with no per-column fixes, no
+    # findings, no methodology, and no duplicate count, which
+    # matches the documented "cleaned it, trust me" cheat in this
+    # market (a done message judged only by whether the file looks
+    # tidy when the buyer opens it). It fails all 5 checks, and
+    # because no check passed there is nothing to revise against,
+    # so the contract skips the revision round, refunds the buyer,
+    # and slashes the seller's bond. Only one delivery is made:
+    # the first verify ends the deal at refunded, so there is no
+    # second deliver call.
+    deal = run_deal("spreadsheet_cleanup_report", qualities=("cheat",))
+    cases.append(summarize(
+        "Spreadsheet cleanup and report, cheat analyst",
+        "Live re-check 2026-11-08 (Part 34) against the Part 25 "
+        "sweep (2026-10-30): Upwork catalog tiers $30/$75/$150, "
+        "$30/$70/$120, $75/$175/$325, $49/$99/$199, $45/$110/$225, "
+        "$25/$60/$120, $75/$150/$300, and $15/$40/$85; a 2026 "
+        "cost guide puts freelance data cleaning at $20 to $50 "
+        "plus per hour, about $30 at the intermediate tier; "
+        "Fiverr cleanup gigs $15 to $150. Buyer max $110, seller "
+        "floor $40, the scenario defaults, inside the documented "
+        "band.",
+        deal,
+        "A cleanup cheat today is a done message with no report "
+        "to check, judged by whether the file looks tidy when "
+        "the buyer opens it. Here the per-column fixes, the "
+        "findings, the methodology, and the duplicate count are "
+        "contract checks: zero of five pass, so the revision "
+        "round is skipped, the buyer is refunded, and the "
+        "seller's bond is slashed.",
+        date="2026-11-08"))
+
     return cases
 
 
@@ -800,6 +839,7 @@ def main():
         "Book cover design package, cheat designer": "refunded",
         "API integration task, cheat integrator": "refunded",
         "AC repair service, cheat technician": "refunded",
+        "Spreadsheet cleanup and report, cheat analyst": "refunded",
     }
     failures = []
     for row in cases:

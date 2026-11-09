@@ -303,6 +303,19 @@
    "seller_reputation": 56,
    "same_deal_today": "An AC repair cheat today is a done message with no diagnosis, no named part, no readings, and no warranty, judged by whether the house feels cool when the tech leaves. Here the diagnosis, the named capacitor, the system readings, the warranty, and the report length are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
    "date": "2026-11-07"
+  },
+  {
+   "case": "Spreadsheet cleanup and report, cheat analyst",
+   "market_reference": "Live re-check 2026-11-08 (Part 34) against the Part 25 sweep (2026-10-30): Upwork catalog tiers $30/$75/$150, $30/$70/$120, $75/$175/$325, $49/$99/$199, $45/$110/$225, $25/$60/$120, $75/$150/$300, and $15/$40/$85; a 2026 cost guide puts freelance data cleaning at $20 to $50 plus per hour, about $30 at the intermediate tier; Fiverr cleanup gigs $15 to $150. Buyer max $110, seller floor $40, the scenario defaults, inside the documented band.",
+   "negotiated_price": 60.0,
+   "bond": 12.0,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 56,
+   "same_deal_today": "A cleanup cheat today is a done message with no report to check, judged by whether the file looks tidy when the buyer opens it. Here the per-column fixes, the findings, the methodology, and the duplicate count are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
+   "date": "2026-11-08"
   }
  ],
  "limit_case": {
