@@ -316,6 +316,32 @@
    "seller_reputation": 56,
    "same_deal_today": "A cleanup cheat today is a done message with no report to check, judged by whether the file looks tidy when the buyer opens it. Here the per-column fixes, the findings, the methodology, and the duplicate count are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
    "date": "2026-11-08"
+  },
+  {
+   "case": "Landing page copy, cheat copywriter",
+   "market_reference": "Live re-check 2026-11-09 (Part 35) against the Part 26 sweep (2026-10-31): Upwork catalog tiers $150/$250/$500 (500/1,000/2,000 words) and $300/$500/$1,000 (300/500/1,000 words); Upwork 2026 guide: $100 to $600 for a single web page, $1,000 to $5,000 for a landing or sales page; AWAI lead-gen landing page $500 to $1,500 plus. Buyer max $450, seller floor $260, the scenario defaults, inside the documented band.",
+   "negotiated_price": 324.22,
+   "bond": 64.84,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 56,
+   "same_deal_today": "A landing page cheat today is AI-drafted filler or a done message with no page to check, judged by whether the words sound good when the buyer reads them. Here the headline and subheadline sections, the benefit sections, the calls to action, and the copy length are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
+   "date": "2026-11-09"
+  },
+  {
+   "case": "Logo and brand kit, cheat designer",
+   "market_reference": "Live re-check 2026-11-10 (Part 36) against the Part 1.1 sweep (2026-10-22): Fiverr standard $70, Fiverr premium $160, Upwork median $263 (Review42 July 2026 rate cards); Upwork hire page: logo designer $15 to $30 an hour, simple logo concept $150 to $500 per project; Vistaprint guide: good logo $300 to $2,500; Zarla October 2026: logo $200 to $800, brand identity kit $500 to $2,000; 99designs brand identity pack from $599. Buyer max $300, seller floor $180, the scenario defaults, inside the documented band.",
+   "negotiated_price": 222.17,
+   "bond": 44.43,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 56,
+   "same_deal_today": "A logo cheat today is a template or a single JPG sold as a full kit with vector files, judged by whether the file looks good when the buyer opens it. Here the concept count, the palette hex codes, the typography and tagline sections, and the guide length are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
+   "date": "2026-11-10"
   }
  ],
  "limit_case": {

@@ -37,7 +37,13 @@ scenario families: an AC repair service cheat priced against a live AC repair co
 guide re-check (Part 33). The twenty-fifth case (2026-11-08) is
 the eighth cheat case on one of the new scenario families: a
 spreadsheet cleanup and report cheat priced against a live
-spreadsheet cleanup re-check (Part 34).
+spreadsheet cleanup re-check (Part 34). The twenty-sixth case
+(2026-11-09) is the ninth cheat case on one of the new scenario
+families: a landing page copy cheat priced against a live
+landing page copy re-check (Part 35). The
+twenty-seventh case (2026-11-10) is the tenth cheat case on one of the new
+scenario families: a logo and brand kit cheat priced against a live logo
+and brand kit re-check (Part 36).
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -740,6 +746,78 @@ def run_cases():
         "seller's bond is slashed.",
         date="2026-11-08"))
 
+    # The twenty-sixth case, and the ninth cheat case on one of
+    # the new scenario families: a landing page copy cheat. The
+    # seller ships a paragraph of assurances ("Your landing page
+    # is done and it looks amazing ... Just publish it and watch
+    # the signups come in") with no headline section, no
+    # subheadline, no benefit sections, and no calls to action,
+    # which matches the documented AI-drafted copy cheat in this
+    # market (generic copy sold as hand-written conversion work).
+    # It fails all 5 checks, and because no check passed there
+    # is nothing to revise against, so the contract skips the
+    # revision round, refunds the buyer, and slashes the seller's
+    # bond. Only one delivery is made: the first verify ends the
+    # deal at refunded, so there is no second deliver call.
+    deal = run_deal("landing_page_copy", qualities=("cheat",))
+    cases.append(summarize(
+        "Landing page copy, cheat copywriter",
+        "Live re-check 2026-11-09 (Part 35) against the Part 26 "
+        "sweep (2026-10-31): Upwork catalog tiers $150/$250/$500 "
+        "(500/1,000/2,000 words) and $300/$500/$1,000 "
+        "(300/500/1,000 words); Upwork 2026 guide: $100 to $600 "
+        "for a single web page, $1,000 to $5,000 for a landing "
+        "or sales page; AWAI lead-gen landing page $500 to "
+        "$1,500 plus. Buyer max $450, seller floor $260, the "
+        "scenario defaults, inside the documented band.",
+        deal,
+        "A landing page cheat today is AI-drafted filler or a "
+        "done message with no page to check, judged by whether "
+        "the words sound good when the buyer reads them. Here "
+        "the headline and subheadline sections, the benefit "
+        "sections, the calls to action, and the copy length are "
+        "contract checks: zero of five pass, so the revision "
+        "round is skipped, the buyer is refunded, and the "
+        "seller's bond is slashed.",
+        date="2026-11-09"))
+
+    # The twenty-seventh case, and the tenth cheat case on one of
+    # the new scenario families: a logo and brand kit cheat. The
+    # seller ships a paragraph of assurances ("Your logo and brand
+    # kit are done and they look fantastic ... Just download the
+    # files and start using your new brand today") with no logo
+    # concepts, no hex codes, no typography section, and no
+    # tagline section, which matches the documented template cheat
+    # in this market (a premade template or a single JPG sold as
+    # a full kit with vector files). It fails all 5 checks, and
+    # because no check passed there is nothing to revise against,
+    # so the contract skips the revision round, refunds the buyer,
+    # and slashes the seller's bond. Only one delivery is made:
+    # the first verify ends the deal at refunded, so there is no
+    # second deliver call.
+    deal = run_deal("logo_brand_kit", qualities=("cheat",))
+    cases.append(summarize(
+        "Logo and brand kit, cheat designer",
+        "Live re-check 2026-11-10 (Part 36) against the Part 1.1 "
+        "sweep (2026-10-22): Fiverr standard $70, Fiverr premium "
+        "$160, Upwork median $263 (Review42 July 2026 rate cards); "
+        "Upwork hire page: logo designer $15 to $30 an hour, "
+        "simple logo concept $150 to $500 per project; Vistaprint "
+        "guide: good logo $300 to $2,500; Zarla October 2026: "
+        "logo $200 to $800, brand identity kit $500 to $2,000; "
+        "99designs brand identity pack from $599. Buyer max $300, "
+        "seller floor $180, the scenario defaults, inside the "
+        "documented band.",
+        deal,
+        "A logo cheat today is a template or a single JPG sold as "
+        "a full kit with vector files, judged by whether the file "
+        "looks good when the buyer opens it. Here the concept "
+        "count, the palette hex codes, the typography and tagline "
+        "sections, and the guide length are contract checks: zero "
+        "of five pass, so the revision round is skipped, the buyer "
+        "is refunded, and the seller's bond is slashed.",
+        date="2026-11-10"))
+
     return cases
 
 
@@ -840,6 +918,8 @@ def main():
         "API integration task, cheat integrator": "refunded",
         "AC repair service, cheat technician": "refunded",
         "Spreadsheet cleanup and report, cheat analyst": "refunded",
+        "Landing page copy, cheat copywriter": "refunded",
+        "Logo and brand kit, cheat designer": "refunded",
     }
     failures = []
     for row in cases:
