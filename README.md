@@ -299,6 +299,35 @@ and bond moves, all with real PayPal sandbox transaction IDs.
 | deal-0003 | Logo kit, poor delivery | $222.17 | $44.43 | Refunded, bond slashed, 0 of 5 checks | Refund 02S348440D980433R, slash payout PWMV585KHNEM6 |
 | deal-0004 | Cheat attempt | $180.96 | $36.19 | Caught twice, refunded, bond slashed | Refund 9VH98649B6022315A, slash payout X3BT5KNKEF8CL |
 
+### Read back from PayPal (November 12, 2026)
+
+On November 12, 2026, every leg in the table above was read back from
+the PayPal sandbox: each capture by its capture id, each payout by its
+batch id with its item status, and each refund by its refund id. The
+read-back moved no money. The amounts read back matched the recorded
+price and bond on every capture, and both refunds read back at the full
+price. All 16 legs came back with the status recorded when the deals
+settled on October 22, 2026. 16 of 16 matched.
+
+| Deal | Leg | PayPal ID | Recorded at settlement | Read back from PayPal | Match |
+| --- | --- | --- | --- | --- | --- |
+| deal-0001, released, 5 of 5 checks | Price capture | 2XX57477S7535341X | COMPLETED | COMPLETED | Yes |
+| deal-0001 | Bond capture | 76U34250RE4380745 | COMPLETED | COMPLETED | Yes |
+| deal-0001 | Price payout | DZNF5GE6AEUHN | SUCCESS | Batch SUCCESS, item SUCCESS to sb-krgz753508017@personal.example.com | Yes |
+| deal-0001 | Bond return payout | Y4BT2Q3N8QR7J | SUCCESS | Batch SUCCESS, item SUCCESS to sb-krgz753508017@personal.example.com | Yes |
+| deal-0002, released, 5 of 5 checks | Price capture | 5V6374204C639882V | COMPLETED | COMPLETED | Yes |
+| deal-0002 | Bond capture | 0FJ792206C854335V | COMPLETED | COMPLETED | Yes |
+| deal-0002 | Price payout | A2EXK2WL4D4BG | SUCCESS | Batch SUCCESS, item SUCCESS to sb-krgz753508017@personal.example.com | Yes |
+| deal-0002 | Bond return payout | L35MAUZEMNY92 | SUCCESS | Batch SUCCESS, item SUCCESS to sb-krgz753508017@personal.example.com | Yes |
+| deal-0003, refunded, bond slashed, 0 of 5 checks | Price capture | 0X9062287L385133Y | REFUNDED | REFUNDED | Yes |
+| deal-0003 | Bond capture | 3AP59378SU264272M | COMPLETED | COMPLETED | Yes |
+| deal-0003 | Bond slash payout | PWMV585KHNEM6 | SUCCESS | Batch SUCCESS, item SUCCESS to sb-v47e3z53491657@personal.example.com | Yes |
+| deal-0003 | Price refund | 02S348440D980433R | COMPLETED | COMPLETED | Yes |
+| deal-0004, refunded, bond slashed, 1 of 5 checks then 1 of 5 | Price capture | 60E66083JP1219234 | REFUNDED | REFUNDED | Yes |
+| deal-0004 | Bond capture | 4P1624176C9319628 | COMPLETED | COMPLETED | Yes |
+| deal-0004 | Bond slash payout | X3BT5KNKEF8CL | SUCCESS | Batch SUCCESS, item SUCCESS to sb-v47e3z53491657@personal.example.com | Yes |
+| deal-0004 | Price refund | 9VH98649B6022315A | COMPLETED | COMPLETED | Yes |
+
 ## Use cases
 
 Pact is built for any market where a buyer pays a stranger for digital
@@ -642,16 +671,23 @@ pay, deliver, verify, then download the dispute packet. Run it with
 sdk/.venv/bin/python sdk/agent_example.py. It boots its own demo-mode
 server on 127.0.0.1:8123 with a throwaway database, so no PayPal
 account is touched. The example run settles a logo brand kit deal to
-released and downloads a 34,804 byte dispute packet.
+released and downloads a 35,456 byte dispute packet (run verified
+again on submission day, Nov 12, 2026, exit code 0).
 
-Two honest limits. The generated client assumes https, so the example
+Three honest limits. The generated client assumes https, so the example
 patches the base URI to http for the local run; against the hosted
 demo no patch is needed. The spec does not declare the per-deal role
 token header, so the generated methods take no token argument; the
 example carries the tokens on one requests session per role, buyer and
-seller. The hosted APIMatic developer portal is not published yet. The
-SDK here is the generated artifact. The portal needs a Docs-as-Code
-build that runs on a developer machine.
+seller. And the exported spec now carries all 16 operations, including
+the delivery timeout endpoint added with graded settlement, while the
+generated SDK was built from the earlier spec and covers the other 15,
+which include the whole deal lifecycle the example drives. The hosted
+APIMatic developer portal is not published yet. The SDK here is the
+generated artifact. sdk/apimatic-project.zip holds the portal project
+with the current spec inside it, ready to import. Publishing the
+portal and regenerating the SDK both need a sign in to an APIMatic
+account, and that account does not exist yet.
 
 ## Layout
 
@@ -667,6 +703,7 @@ build that runs on a developer machine.
 - `sdk/pact-openapi.json` Exported OpenAPI spec for the app
 - `sdk/pact-python-sdk.zip` APIMatic generated Python SDK (61 files)
 - `sdk/agent_example.py` An agent drives a full deal through the SDK
+- `sdk/apimatic-project.zip` APIMatic portal project, current spec inside, not yet published
 - `tests/` Smoke test, accuracy battery, webhook tests
 - `experiments/` Measured studies: accuracy, negotiation sweep, settlement oracle, adversarial battery
 

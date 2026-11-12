@@ -48,7 +48,13 @@ twenty-eighth case (2026-11-11) is the eleventh cheat case on one of the
 new scenario families: a Python script task cheat priced against a live
 Python bug fix re-check (Part 37). The code task has no dedicated cheat
 builder, so the cheat delivery is the shipped recycled-copy fallback
-(CHEAT_V1): unrelated ad copy with no code in it at all.
+(CHEAT_V1): unrelated ad copy with no code in it at all. The
+twenty-ninth case (2026-11-12) is the twelfth cheat case on one of the
+new scenario families: a market research brief cheat priced against a live
+market research re-check (Part 38). The brief has no dedicated cheat
+builder, so the cheat delivery is the shipped recycled-copy fallback
+(CHEAT_V1): unrelated ad copy with no sources, no data points, no
+competitor section, and no risks section.
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -860,6 +866,45 @@ def run_cases():
         "bond is slashed.",
         date="2026-11-11"))
 
+    # The twenty-ninth case, and the twelfth cheat case on one of the
+    # new scenario families: a market research brief cheat. The brief
+    # has no dedicated cheat builder, so the cheat delivery is the
+    # shipped recycled-copy fallback: unrelated ad copy with no named
+    # sources, no data points, no competitor section, and no risks
+    # section. It fails all 5 checks, and because no check passed
+    # there is nothing to revise against, so the contract skips the
+    # revision round, refunds the buyer, and slashes the seller's
+    # bond. Only one delivery is made: the first verify ends the
+    # deal at refunded, so there is no second deliver call.
+    deal = run_deal("research_brief", buyer_max=120.0, seller_floor=60.0,
+                    qualities=("cheat",))
+    cases.append(summarize(
+        "Market research brief, cheat researcher",
+        "Live re-check 2026-11-12 (Part 38) against the Part 1.5 "
+        "sweep (2026-10-22): Upwork catalog $45, $85, $145 for "
+        "summary research reports. Re-check sources read "
+        "2026-11-12: Upwork research hire page (Nov 2026) puts a "
+        "desk research or background brief at $500 to $2,000 a "
+        "project and a full market research study at $2,500 to "
+        "$8,000 (https://research.upwork.com/hire/researchers/); "
+        "a June 2026 rate analysis puts a 5 to 10 page market "
+        "research report at $150 to $500 on Fiverr and $200 to "
+        "$800 on Upwork; a live Upwork catalog listing offers a "
+        "platform demand brief at $75, $150, and $225. The short "
+        "summary brief Pact models is the entry end of that "
+        "market, so buyer max $120 and seller floor $60 sit "
+        "inside the documented band.",
+        deal,
+        "A research cheat today is a done message with a few "
+        "generic paragraphs and no sources to check, judged by "
+        "whether the brief sounds informed when the buyer reads "
+        "it. Here the named sources, the data points, the "
+        "competitor and risks sections, and the brief length are "
+        "contract checks: zero of five pass, so the revision round "
+        "is skipped, the buyer is refunded, and the seller's bond "
+        "is slashed.",
+        date="2026-11-12"))
+
     return cases
 
 
@@ -963,6 +1008,7 @@ def main():
         "Landing page copy, cheat copywriter": "refunded",
         "Logo and brand kit, cheat designer": "refunded",
         "Python script task, cheat coder": "refunded",
+        "Market research brief, cheat researcher": "refunded",
     }
     failures = []
     for row in cases:

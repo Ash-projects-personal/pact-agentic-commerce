@@ -405,10 +405,48 @@
         }
       }
     },
+    "/api/deals/{deal_id}/timeout": {
+      "post": {
+        "summary": "Timeout Deal",
+        "description": "Times a deal out when the seller never delivered by the agreed deadline: the held price is refunded in full and the whole bond is slashed to the buyer.",
+        "operationId": "timeout_deal_api_deals__deal_id__timeout_post",
+        "parameters": [
+          {
+            "name": "deal_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Deal Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/webhooks/paypal": {
       "post": {
         "summary": "Paypal Webhook",
-        "description": "Receives PayPal webhook events. Verifies the event signature when a webhook id is configured; events without one are recorded as unverified. Settlement never depends on webhooks.",
+        "description": "Receives PayPal webhook events. Verifies the event signature when a webhook id is configured; events without one are recorded as unverified. A verified event can advance reconciliation (a payout event can trigger the same payout status read-back the deal flow uses), but it never authorizes a settlement decision: settlement is driven by direct API responses in the deal flow.",
         "operationId": "paypal_webhook_webhooks_paypal_post",
         "responses": {
           "200": {

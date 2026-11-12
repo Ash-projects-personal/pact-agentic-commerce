@@ -355,6 +355,19 @@
    "seller_reputation": 56,
    "same_deal_today": "A code cheat today is a done message with an unrelated file, or boilerplate with the agreed function missing, judged by whether the script runs when the buyer tries it. Here the function definition, the validation section, the README, the usage examples, and the delivery length are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
    "date": "2026-11-11"
+  },
+  {
+   "case": "Market research brief, cheat researcher",
+   "market_reference": "Live re-check 2026-11-12 (Part 38) against the Part 1.5 sweep (2026-10-22): Upwork catalog $45, $85, $145 for summary research reports. Re-check sources read 2026-11-12: Upwork research hire page (Nov 2026) puts a desk research or background brief at $500 to $2,000 a project and a full market research study at $2,500 to $8,000 (https://research.upwork.com/hire/researchers/); a June 2026 rate analysis puts a 5 to 10 page market research report at $150 to $500 on Fiverr and $200 to $800 on Upwork; a live Upwork catalog listing offers a platform demand brief at $75, $150, and $225. The short summary brief Pact models is the entry end of that market, so buyer max $120 and seller floor $60 sit inside the documented band.",
+   "negotiated_price": 78.52,
+   "bond": 15.7,
+   "checks": "0/5",
+   "outcome": "refunded",
+   "payment_status": "refunded",
+   "bond_status": "slashed",
+   "seller_reputation": 59,
+   "same_deal_today": "A research cheat today is a done message with a few generic paragraphs and no sources to check, judged by whether the brief sounds informed when the buyer reads it. Here the named sources, the data points, the competitor and risks sections, and the brief length are contract checks: zero of five pass, so the revision round is skipped, the buyer is refunded, and the seller's bond is slashed.",
+   "date": "2026-11-12"
   }
  ],
  "limit_case": {
