@@ -5,8 +5,10 @@ Agent to agent commerce with verified settlement.
 Two software agents agree a deal for a digital service, write the contract
 checks themselves, put real money behind the deal through PayPal, and let a
 third agent judge the delivered work against the contract before anyone gets
-paid. If the work fails, the buyer is refunded and the seller loses a
-performance bond on top.
+paid. If the work passes in part, the seller is paid for the checks that
+passed and the bond slashes only for the checks that failed. If it all
+fails, the buyer is refunded in full and the whole bond is slashed to the
+buyer.
 
 Built for the PayPal AI Hackathon on Devpost. Submission deadline November
 12, 2026 at 12:00 PM PT.
@@ -28,7 +30,15 @@ performance bond of 20 percent of the price. On a failed deal the buyer is
 refunded in full and the bond is paid to the buyer. The sandbox run on
 October 22, 2026 shows it: a cheat deal at $180.96 was caught in both
 rounds, the buyer was refunded, and the seller's $36.19 bond was slashed.
-The cheat seller's reputation fell from 64 to 29 on that one deal.
+The cheat seller's reputation fell from 64 to 29 on that one deal. That
+run settled under the old all-or-nothing rule. Settlement is graded now:
+a delivery that passes some checks pays the seller for those checks and
+slashes the bond only for the failed share, so the same cheat run today
+settles with the seller paid $36.19 of the $180.96 price, the buyer
+refunded $144.77, $28.95 of the $36.19 bond slashed to the buyer, and
+the seller reputation falling from 64 to 46. A seller who delivers
+four fifths of the contract keeps four fifths of the price; a seller
+who delivers nothing keeps nothing.
 
 Third, the contract travels with the money. When the agents freeze the
 spec, the app computes its SHA-256 and writes the deal id plus that hash
@@ -53,7 +63,7 @@ largest single change from this build. A dispute flow that fits the 28 day
 window and produces the dispute packet automatically. Mandates for repeat
 buyers, so a pre-approved bounded budget replaces per deal approval.
 Richer checks, starting with schema checks on structured artifacts and
-test based checks on code. And PactBench, the scale program: a 314 delivery
+test based checks on code. And PactBench, the scale program: a 337 delivery
 verifier battery, 10,000 simulated settlement deals against two money
 invariants, and a chaos suite over every settlement leg.
 
@@ -99,9 +109,10 @@ never a real account or card.
    into the contract and the spec hash covers them. The negotiated bond
    percent is what the payment code charges, and the negotiated revision
    rounds are what the verify endpoint allows. The delivery window is
-   contractual only: the demo delivers instantly, so no clock enforces
-   it. The terms phase runs after the price is locked, so it can never
-   undo a price agreement.
+   enforced, not just contractual: the clock starts when both payments
+   are captured, and past the deadline the buyer may time the deal out
+   for a full refund and a full bond slash. The terms phase runs after
+   the price is locked, so it can never undo a price agreement.
 2. The agents then write the contract. The acceptance checks are not a fixed
    template. The buyer proposes a value for each check, the seller accepts
    or counters, and numeric counters settle at the midpoint. The settled
@@ -119,16 +130,32 @@ never a real account or card.
 6. All checks pass: the price is paid out to the seller and the bond is
    returned to the seller.
 7. Some checks pass and some fail: the seller gets exactly one revision
-   round. A delivery that passes nothing skips revision and settles at once.
-8. A final fail: the buyer is refunded in full and the bond is slashed,
-   paid out to the buyer.
-9. Every event lands in an audit ledger shown in the UI in an AG Grid
+   round on a single-issue deal, or the negotiated rounds on a
+   multi-issue deal. A delivery that passes nothing skips revision and
+   settles at once.
+8. After the revision rounds are spent, the deal settles graded: the
+   seller is paid for the checks that passed, the buyer is refunded the
+   rest, and the bond is slashed in proportion to the failed checks. If
+   no checks pass, the buyer is refunded in full and the whole bond is
+   slashed to the buyer.
+9. The seller must deliver within the agreed window: 7 days on a
+   single-issue deal, the negotiated window on a multi-issue deal. If
+   the seller never delivers by then, the buyer may time the deal out:
+   full refund plus full bond slash, ending refunded with the
+   settlement path "timeout". A deal in revision cannot time out: the
+   seller delivered once, so the buyer waits for the re-delivery.
+10. Every event lands in an audit ledger shown in the UI in an AG Grid
    table: each negotiation move, the frozen contract, each order, capture,
    delivery, verification check, payout, refund, bond move, and reputation
    change.
 
 Reputation sits next to each agent in the UI. A completed deal raises it.
 A revision costs 3 points. A refund costs 12. A slashed bond costs 20 more.
+On a graded settlement the seller takes one delta: the passed share of
+the 6 point release gain minus the failed share of the 20 point slash
+hit, each rounded half-even. A delivery that passes 1 of 5 checks costs
+15, so the cheat seller above falls 64 to 46 on one deal instead of
+64 to 29.
 
 ## Scenarios
 
@@ -140,9 +167,10 @@ A revision costs 3 points. A refund costs 12. A slashed bond costs 20 more.
   brief full of general claims with no sources fails on its own terms.
 - Cheat attempt. The seller delivers recycled generic copy that ignores the
   agreed checks. The verifier catches it check by check, the seller burns
-  its one revision with nearly the same copy, the buyer is refunded, the
-  bond is slashed, and the seller reputation takes the full hit. This
-  scenario runs end to end in demo mode.
+  its one revision with nearly the same copy, and the deal settles graded:
+  the seller is paid for the one check that passed, the buyer is refunded
+  the rest, most of the bond is slashed to the buyer, and the seller
+  reputation falls 64 to 46. This scenario runs end to end in demo mode.
 - Procurement. A buyer agent hires a seller agent to buy one real
   retail product, a Sony WH-1000XM5 headphones unit, at a real
   retailer. Market data comes from Channel3 and grounds the whole
@@ -192,7 +220,8 @@ retailer, the buy link, and the price paid, plus an order reference.
 The verifier checks the report against the frozen contract like any
 other deal. A report that names the wrong product, the wrong retailer,
 or a price over the ceiling fails, and the usual rules follow: one
-revision round, then a refund and a slashed bond.
+revision round, then a graded settlement, or a refund and a slashed
+bond if nothing passes.
 
 One honest note on data. Live mode needs a Channel3 API key in the
 environment variable `CHANNEL3_API_KEY`, and the grounding ledger
@@ -225,10 +254,11 @@ Click path:
 4. Back in Pact, press the capture button. Then run delivery and
    verification, and watch the settlement and the audit ledger.
 
-The cheat attempt scenario shows the full fail path: refund, slashed
-bond, and the reputation hit. If you run the app locally with no
-credentials in `.env`, the same flow runs in a clearly labeled demo mode
-with a local payment simulator instead.
+The cheat attempt scenario shows the graded settlement path: the seller
+is paid for the one check that passed, the buyer is refunded the rest,
+most of the bond is slashed to the buyer, and the reputation hit follows.
+If you run the app locally with no credentials in `.env`, the same flow
+runs in a clearly labeled demo mode with a local payment simulator instead.
 
 The guided tour: in demo mode, press Play the tour in the demo UI. It
 runs one real logo and brand kit deal end to end, a $222.17 price with a
@@ -240,7 +270,7 @@ the approval step needs a person. The narration script lives at
 
 ## Evidence (PactBench)
 
-Every number below was generated by a run, not typed by hand. The frozen studies (E1, E2, E3, E4) never change retroactively. New suites extend the evidence, they do not rewrite it.
+Every number below was generated by a run, not typed by hand. The frozen studies (E1, E2, E4) never change retroactively. New suites extend the evidence, they do not rewrite it. E3 is a rules oracle: when the settlement rules change, the oracle's expectations move with them, so the cheat path now expects the graded outcome; the path count stays 10 and the match stays 10/10.
 
 | Suite | Size | Result | Source |
 |---|---|---|---|
@@ -248,9 +278,9 @@ Every number below was generated by a run, not typed by hand. The frozen studies
 | PactBench verifier battery (extended) | 337 deliveries across all 15 scenarios, 1685 checks judged, seed 20261023 | check accuracy 99.5% (TP 70 TN 149 FP 1 FN 0); delivery accuracy 90.3% (TP 14 TN 283 FP 32 FN 0) | `experiments/verifier_battery_results.json` |
 | E2 negotiation sweep (frozen) | 196 runs on the buyer ceiling by seller floor grid | in-zone agreement 100.0%, walk away correct 100.0%, mean price position 0.3776 | `experiments/results.json` |
 | Multi-issue negotiation sweep | 196 runs, seed fixed in the sweep script | agreement in zone 100.0%, match vs single-issue twins 100.0%, walk away correct 100.0%, bond consistent 100.0%, cap hits 0.0%, mean 25.0 terms moves, settled terms 12 days / 3 rounds / 23.54% bond | `experiments/results_multi_issue.json` |
-| E3 settlement oracle (frozen) | 10 end-to-end deal paths | 10/10 match the rules oracle, 331 ledger events total | `experiments/results.json` |
-| Monte Carlo settlement integrity | 10,000 simulated deals, seed 20261023, randomized prices, bond percents, concession rates, delivery qualities, injected leg failures | verdict-state violations 0, money conservation violations 0, terminal states released 4,591 / refunded 5,237 / failed 172 | `experiments/monte_carlo_settlement_results.json` |
-| Property tests (randomized API) | 342 randomized cases, 4935 checks, seed 20261023 | end-to-end deals across scenarios and qualities, illegal transitions rejected, malformed bodies fuzzed, state machine invariants hold | `tests/pactbench_property_test.py` |
+| E3 settlement oracle | 10 end-to-end deal paths | 10/10 match the rules oracle, 342 ledger events total | `experiments/results.json` |
+| Monte Carlo settlement integrity | 10,000 simulated deals, seed 20261023, randomized prices, bond percents, concession rates, delivery qualities, injected leg failures | verdict-state violations 0, money conservation violations 0, terminal states released 4,591 / graded 1,228 / refunded 4,009 / failed 172 | `experiments/monte_carlo_settlement_results.json` |
+| Property tests (randomized API) | 401 randomized cases, 5285 checks, seed 20261023 | end-to-end deals across scenarios and qualities, illegal transitions rejected, malformed bodies fuzzed, state machine invariants hold | `tests/pactbench_property_test.py` |
 | Chaos suite | 8 cases, 107 checks | every settlement leg killed and resumed to the right terminal state, duplicate webhooks idempotent, out-of-order webhooks handled, replayed pay/pay-confirm on terminal deals rejected with 409 | `tests/pactbench_chaos_test.py` |
 | Load check | 50 parallel deals settled in demo mode, concurrency 10, seed 20261023 | end-to-end p50 2010 ms / p95 5836 ms / p99 5925 ms, total wall time 6.2 s, 46 released / 4 refunded, zero failures | `experiments/pactbench_load_results.json` |
 | E4 live sandbox deals (frozen) | 4 deals settled on PayPal sandbox, api-m.sandbox.paypal.com on 2026-10-22 | price payouts, bond returns, refund plus bond slash all executed with real sandbox transaction ids, recorded in the paper table | `experiments/results.json` |
@@ -278,7 +308,8 @@ work and has no practical way to check the work before the money moves.
   research today pays into a platform escrow and argues with a human
   support queue when the work is thin. In Pact the checks are written
   into the deal before payment, the verdict is computed, and a seller
-  who delivers recycled work loses the bond on top of the refund.
+  who delivers recycled work loses most of the bond on top of most of
+  the price.
 - **Agents buying from agents.** An agent procuring data, content, or a
   sub task from another agent cannot sit on a support call. It needs a
   contract it can verify in code and a settlement rule that runs without
@@ -293,9 +324,11 @@ work and has no practical way to check the work before the money moves.
 
 ## Why this is good business for PayPal
 
-One Pact deal puts up to four paid money movements on PayPal rails
+One Pact deal puts up to six paid money movements on PayPal rails
 instead of one: the payment capture, the bond capture, and then two
-payouts (or a refund and one payout). At PayPal's published US rates
+payouts on a pass, a refund and one payout on a fail, or all four
+settlement legs on a graded settlement (a partial payout, a partial
+refund, a partial bond return, and a partial bond slash). At PayPal's published US rates
 (3.49 percent plus $0.49 to receive a commercial transaction, $0.25 per
 Payouts API payout, refund fees not returned), a completed $250 deal
 with a $50 bond earns PayPal about $11.95 in gross fees. A refunded

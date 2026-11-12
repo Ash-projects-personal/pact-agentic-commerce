@@ -43,7 +43,12 @@ families: a landing page copy cheat priced against a live
 landing page copy re-check (Part 35). The
 twenty-seventh case (2026-11-10) is the tenth cheat case on one of the new
 scenario families: a logo and brand kit cheat priced against a live logo
-and brand kit re-check (Part 36).
+and brand kit re-check (Part 36). The
+twenty-eighth case (2026-11-11) is the eleventh cheat case on one of the
+new scenario families: a Python script task cheat priced against a live
+Python bug fix re-check (Part 37). The code task has no dedicated cheat
+builder, so the cheat delivery is the shipped recycled-copy fallback
+(CHEAT_V1): unrelated ad copy with no code in it at all.
 
 Each case runs end to end in demo mode and records the negotiated
 price, the bond, the check outcomes, and the settlement, next to what
@@ -818,6 +823,43 @@ def run_cases():
         "is refunded, and the seller's bond is slashed.",
         date="2026-11-10"))
 
+    # The twenty-eighth case, and the eleventh cheat case on one of
+    # the new scenario families: a Python script task cheat. The
+    # code task has no dedicated cheat builder, so the cheat
+    # delivery is the shipped recycled-copy fallback: unrelated ad
+    # copy with no code in it at all, no agreed function, no
+    # validation section, no README, no usage examples, and far
+    # under the word floor. It fails all 5 checks, and because no
+    # check passed there is nothing to revise against, so the
+    # contract skips the revision round, refunds the buyer, and
+    # slashes the seller's bond. Only one delivery is made: the
+    # first verify ends the deal at refunded, so there is no
+    # second deliver call.
+    deal = run_deal("code_task", buyer_max=70.0, seller_floor=40.0,
+                    qualities=("cheat",))
+    cases.append(summarize(
+        "Python script task, cheat coder",
+        "Live re-check 2026-11-11 (Part 37) against the Part 1.4 "
+        "sweep (2026-10-22): Fiverr Python bug fixing $5 to $95; "
+        "Upwork catalog tiers $15, $50, $120. Re-check sources: "
+        "hirebestfreelance October 2026 guide puts simple scripts "
+        "and automation at $50 to $300 and mid-level project work "
+        "at $25 to $80 an hour; Second Talent November 2026 puts "
+        "Upwork Python work at a typical $20 to $40 an hour with a "
+        "$30 platform median, and Fiverr at $25 to $100 an hour. "
+        "Buyer max $70, seller floor $40, inside the documented "
+        "band.",
+        deal,
+        "A code cheat today is a done message with an unrelated "
+        "file, or boilerplate with the agreed function missing, "
+        "judged by whether the script runs when the buyer tries "
+        "it. Here the function definition, the validation section, "
+        "the README, the usage examples, and the delivery length "
+        "are contract checks: zero of five pass, so the revision "
+        "round is skipped, the buyer is refunded, and the seller's "
+        "bond is slashed.",
+        date="2026-11-11"))
+
     return cases
 
 
@@ -895,7 +937,7 @@ def main():
     expected = {
         "Amazon listing copy, honest seller": "released",
         "Amazon listing copy, under delivered then abandoned": "refunded",
-        "Social pack, recycled copy cheat": "refunded",
+        "Social pack, recycled copy cheat": "graded",
         "Logo and brand kit, honest studio": "released",
         "Python script task at bug fix prices": "released",
         "Market research brief, honest shop": "released",
@@ -920,6 +962,7 @@ def main():
         "Spreadsheet cleanup and report, cheat analyst": "refunded",
         "Landing page copy, cheat copywriter": "refunded",
         "Logo and brand kit, cheat designer": "refunded",
+        "Python script task, cheat coder": "refunded",
     }
     failures = []
     for row in cases:

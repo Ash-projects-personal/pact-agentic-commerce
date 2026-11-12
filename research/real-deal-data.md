@@ -239,3 +239,9 @@ Only sourced figures, no invented fees: PayPal already charges merchants a $15 d
 5. **Translation per 1,000 words.** Word count, language pair and file format are all checkable, and it exposes the honest limit of automated verification: the standard cheat in this market is raw machine translation sold as manual work, which counting cannot catch. Testing it forces Pact to show what its verifier can and cannot prove, which makes the whole test suite more credible.
 
 Two honorable mentions: resume writing (cheap, common, but quality is hard to check mechanically) and market research briefs (page counts and SWOT sections are checkable, but judging whether the research is real needs a smarter verifier than counting).
+## Live re-check log (daily real cases)
+
+The daily re-checks for cases 18 to 27 (Parts 27 to 36) are recorded in the market_reference string of each case in experiments/real_cases.py, not in this file. From Part 37 on, each re-check is also logged here.
+
+### Part 37: Python bug fix and small script, re-checked 2026-11-11
+Against the Part 1.4 sweep (2026-10-22): Fiverr Python bug fixing $5 to $95; Upwork catalog tiers $15, $50, $120. Re-check sources read 2026-11-11: hirebestfreelance October 2026 guide puts simple scripts and automation at $50 to $300 and mid-level project work at $25 to $80 an hour (https://hirebestfreelance.com/need-a-python-developer-heres-how-to-find-one/); Second Talent November 2026 puts Upwork Python work at a typical $20 to $40 an hour with a $30 platform median, and Fiverr at $25 to $100 an hour (https://www.secondtalent.com/cost-to-hire/python-developer/). Case 28 uses buyer max $70 and seller floor $40, inside the documented band.
