@@ -162,19 +162,33 @@ def test_cheat_scenario():
     deal = post(f"/api/deals/{deal['id']}/deliver", {"quality": "auto"})
     assert deal["deliverable"]["version"] == 2
     deal = post(f"/api/deals/{deal['id']}/verify")
-    assert deal["state"] == "refunded", deal["state"]
-    assert deal["bond"]["status"] == "slashed"
-    # Revision cost 3, refund cost 12, slash cost 20.
-    assert agent_rep("seller_fastcopy") == seller_before - 35
+    # The revision round is spent and only 1 of 5 checks passes again,
+    # so the deal settles graded, not all or nothing: the seller is
+    # paid for the one check that passed, the buyer is refunded the
+    # rest, and the bond slashes in proportion to the failed checks.
+    assert deal["state"] == "graded", deal["state"]
+    assert deal["payment"]["status"] == "partially_released"
+    assert deal["bond"]["status"] == "partially_slashed"
+    graded = deal["settlement"]["graded"]
+    assert graded["passed"] == 1 and graded["total"] == 5, graded
+    assert graded["price_paid_c"] > 0
+    assert graded["price_refunded_c"] > graded["price_paid_c"]
+    assert graded["bond_slashed_c"] > graded["bond_returned_c"]
+    # Revision cost 3, graded seller delta -15 (1 - 16 at 1 of 5).
+    assert agent_rep("seller_fastcopy") == seller_before - 18
     types = event_types(deal)
     for expected in ("revision_requested", "revision_submitted",
-                     "buyer_refunded", "bond_slashed"):
+                     "graded_settlement_decided", "buyer_refunded",
+                     "bond_slashed"):
         assert expected in types, f"missing ledger event {expected}"
     check_events = [e for e in deal["ledger"]
                     if e["event_type"] == "verification_check"]
     assert len(check_events) == 10, len(check_events)
     print(f"  round 1 catch: 4 of 5 checks failed on recycled copy")
-    print(f"  round 2 catch: revision failed again, refunded, bond slashed")
+    print(f"  round 2 catch: revision failed again, settled graded "
+          f"1 of 5: seller paid {graded['price_paid_c']} USD, buyer "
+          f"refunded {graded['price_refunded_c']} USD, bond slashed "
+          f"{graded['bond_slashed_c']} USD")
     print(f"  seller reputation {seller_before} -> {agent_rep('seller_fastcopy')}")
     print("  PASS")
 

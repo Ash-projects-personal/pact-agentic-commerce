@@ -67,12 +67,12 @@ FIRST_DRAW = rng.randint(0, 10 ** 9)
 LEGAL_NEXT = {
     "negotiating": {"agreed", "failed"},
     "agreed": {"paid_held"},
-    "paid_held": {"delivered"},
+    "paid_held": {"delivered", "refunded"},
     "delivered": {"verifying"},
-    "verifying": {"revision", "released", "refunded"},
+    "verifying": {"revision", "released", "graded", "refunded"},
     "revision": {"delivered"},
 }
-TERMINAL = {"released", "refunded", "failed"}
+TERMINAL = {"released", "graded", "refunded", "failed"}
 
 # procurement is excluded from the random pool: it pulls Channel3 market
 # grounding (cached fixture, no network) which adds a market_grounded
@@ -256,6 +256,21 @@ def assert_ledger_integrity(deal, phases):
         before("payment_released", "bond_returned",
                "bond returns after price release")
         money_last = "bond_returned"
+    elif deal["state"] == "graded":
+        # Graded order: the seller is paid its passed share, the buyer
+        # is refunded the failed share, the passed share of the bond
+        # returns, and the failed share slashes to the buyer.
+        before("verification_summary", "payment_released",
+               "graded payout follows verdict")
+        before("payment_released", "buyer_refunded",
+               "graded refund follows payout")
+        before("buyer_refunded", "bond_returned",
+               "graded bond return follows refund")
+        before("bond_returned", "bond_slashed",
+               "graded slash follows bond return")
+        before("verification_summary", "graded_settlement_decided",
+               "graded decision follows verdict")
+        money_last = "bond_slashed"
     elif deal["state"] == "refunded":
         before("verification_summary", "buyer_refunded",
                "refund follows verdict")
@@ -279,6 +294,12 @@ def assert_ledger_integrity(deal, phases):
             "delivery failed verification and the buyer was refunded",
             "performance bond slashed after the failed delivery",
             "followed the contract process and was made whole",
+            "delivery partly passed verification; the seller is paid for "
+            "the checks that passed and the bond is slashed in proportion "
+            "to the failed checks",
+            "followed the contract process and settled on the graded split",
+            "seller never delivered by the agreed deadline",
+            "performance bond slashed after the delivery timeout",
         }
         money_idx = _last(types, money_last)
         for e in ledger:
@@ -308,14 +329,41 @@ def assert_money(deal, phases):
               f"deal {deal['id']}: captured bond amount negative/missing")
         check(deal["payment"]["order_id"] != deal["bond"]["order_id"],
               f"deal {deal['id']}: price and bond share an order id")
-    if deal["state"] in ("released", "refunded"):
+    if deal["state"] in ("released", "graded", "refunded"):
         legs = deal["settlement"]["legs"]
         run_legs = [k for k, v in legs.items() if v["status"] == "done"]
         wanted = ({"price_payout", "bond_return"}
                   if deal["state"] == "released"
-                  else {"price_refund", "bond_slash"})
+                  else {"price_refund", "bond_slash"}
+                  if deal["state"] == "refunded"
+                  else {"price_payout", "price_refund",
+                        "bond_return", "bond_slash"})
         check(set(run_legs) == wanted,
               f"deal {deal['id']}: ran legs {run_legs}, expected {wanted}")
+        if deal["state"] == "graded":
+            # The graded breakdown is the per-check split, in dollars
+            # on the public view: the four legs sum exactly to the
+            # price plus the bond, and the passed count matches the
+            # verifier's verdict.
+            graded = deal["settlement"]["graded"]
+            check(graded is not None,
+                  f"deal {deal['id']}: graded deal with no breakdown")
+            check(graded["passed"] == deal["verification"]["passed_count"]
+                  and graded["total"] == deal["verification"]["total_count"],
+                  f"deal {deal['id']}: graded {graded['passed']}/"
+                  f"{graded['total']} != verification "
+                  f"{deal['verification']['passed_count']}/"
+                  f"{deal['verification']['total_count']}")
+            check(abs(graded["price_paid_c"] + graded["price_refunded_c"]
+                      - price) <= 0.01,
+                  f"deal {deal['id']}: graded price legs "
+                  f"{graded['price_paid_c']} + {graded['price_refunded_c']} "
+                  f"!= price {price}")
+            check(abs(graded["bond_slashed_c"] + graded["bond_returned_c"]
+                      - spec["bond_amount"]) <= 0.01,
+                  f"deal {deal['id']}: graded bond legs "
+                  f"{graded['bond_slashed_c']} + {graded['bond_returned_c']} "
+                  f"!= bond {spec['bond_amount']}")
         keys = []
         for leg in run_legs:
             entry = legs[leg]
@@ -391,6 +439,8 @@ def probe_illegal_moves(client, deal, seen, tag):
                          {"quality": "auto"}))
     if state not in ("delivered", "verifying"):
         attempts.append(("verify", f"{base}/verify", {}))
+    if state != "paid_held":
+        attempts.append(("timeout", f"{base}/timeout", {}))
     ledger_len = len(deal["ledger"])
     for name, path, body in attempts:
         assert_illegal_4xx(client, deal["id"], path, body, state,
@@ -512,7 +562,7 @@ def drive_end_to_end(client, params):
             check(status == 200, f"verify -> {status}: {deal}")
             # The verify call itself walks delivered -> verifying first
             # (the endpoint sets state="verifying" before judging), then
-            # verifying -> revision | released | refunded.
+            # verifying -> revision | released | graded | refunded.
             if deal["state"] != "verifying":
                 assert_legal_transition(seen, "verifying", deal["id"])
             assert_legal_transition(seen, deal["state"], deal["id"])
@@ -529,7 +579,7 @@ def drive_end_to_end(client, params):
     check(deal["state"] in TERMINAL,
           f"deal {deal['id']}: did not reach a terminal state, stuck at "
           f"{deal['state']} (path {seen})")
-    check(deal["state"] in ("released", "refunded"),
+    check(deal["state"] in ("released", "graded", "refunded"),
           f"deal {deal['id']}: unexpected terminal {deal['state']}")
 
     # Full property pass on the finished deal.

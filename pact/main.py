@@ -3,9 +3,14 @@
 Flow: two agents negotiate price and write the contract checks themselves,
 the spec freezes, the buyer pays into a hold through PayPal, the seller posts
 a performance bond the same way, the seller delivers, a verifier agent judges
-the delivery against the negotiated checks, and the money settles. Pass means
-the seller is paid and the bond comes back. Fail after one revision round
-means the buyer is refunded and the bond is slashed to the buyer.
+the delivery against the negotiated checks, and the money settles graded:
+the seller is paid for the checks that passed, the buyer is refunded for
+the checks that failed, and the bond slashes in proportion to the failed
+checks. All pass is the old release in full; none pass is the old refund
+in full. If the seller never delivers by the agreed deadline, the buyer
+may time the deal out: full refund plus full bond slash, ending refunded
+with the settlement path "timeout". A deal in revision cannot time out:
+the seller delivered once, so the buyer waits for the re-delivery.
 """
 
 import asyncio
@@ -16,6 +21,7 @@ import secrets
 import threading
 import time
 from contextlib import asynccontextmanager
+from datetime import datetime, timedelta, timezone
 from functools import partial
 from pathlib import Path
 from typing import Optional
@@ -27,6 +33,8 @@ from pydantic import BaseModel
 
 from . import persistence
 from . import money
+from .settlement import (grade_breakdown,
+                         graded_seller_reputation_delta)
 from .abuse_limits import (check_payload_size, check_rate_limit,
                            client_key, sized_path)
 from .channel3 import Channel3Error, build_candidate_checks, get_grounding
@@ -161,6 +169,12 @@ MAX_DEAL_AMOUNT = 1_000_000.0
 # A settled bond below this floor is no bond at all: the deal fails
 # cleanly instead of settling with a silent zero bond.
 MIN_BOND_AMOUNT = 0.50
+
+# Delivery window for single-issue deals, in days. Multi-issue deals use
+# the negotiated delivery window (5 to 12 days). Seven sits inside that
+# band and is the plain default the contract text states: the seller must
+# deliver within 7 days of payment, or the buyer may time the deal out.
+DEFAULT_DELIVERY_DAYS = 7
 
 # Delivery qualities a caller may ask for. "auto" runs the scenario's own
 # seller behavior; "poor" is a demo knob that forces the thin delivery so
@@ -708,6 +722,28 @@ async def _capture_both(deal, payments, label):
                        "rail": bond_capture.get("rail"),
                        "capture_request_id":
                            deal["bond"]["capture_request_id"]})
+        # The delivery clock starts at capture. Multi-issue deals use the
+        # negotiated window; single-issue deals use the default (7 days).
+        # Past the deadline the buyer may time the deal out for a full
+        # refund and a full bond slash (see /timeout). The deadline is a
+        # deal field, not part of the frozen spec: the spec is written
+        # before payment, and the clock can only start once the money is
+        # held. paid_at records the same moment the deadline counts
+        # from, so the timeout endpoint can name the days waited.
+        terms = deal.get("terms") or {}
+        delivery_days = terms.get("delivery_days") or DEFAULT_DELIVERY_DAYS
+        paid_at = datetime.now(timezone.utc)
+        deadline = paid_at + timedelta(days=int(delivery_days))
+        deal["paid_at"] = paid_at.isoformat()
+        deal["delivery_deadline"] = deadline.isoformat()
+        add_event(deal, "delivery_deadline_set", "system",
+                  f"Delivery is due within {int(delivery_days)} days of "
+                  f"payment, by {deal['delivery_deadline']}. If the seller "
+                  f"never delivers by then, the buyer may time the deal "
+                  f"out: the held price is refunded in full and the whole "
+                  f"bond is slashed to the buyer.",
+                  {"delivery_days": int(delivery_days),
+                   "delivery_deadline": deal["delivery_deadline"]})
     except PaymentError as exc:
         # Clean surface (queue item X): the raw PayPal body lives in the
         # ledger event and the server log under the correlation id, never
@@ -1031,6 +1067,24 @@ async def _confirm_payout_leg(deal, payments, leg, finalize):
 
 
 
+def _leg_amount_c(deal, leg, full_c):
+    """Integer cents this settlement leg moves.
+
+    The amount is recorded on the leg entry when the leg is sent, so a
+    resumed settlement and the webhook reconciliation path read back the
+    same amount the first attempt used. Deals settled before legs
+    carried amounts, and legs never sent, fall back to the full amount
+    for that leg's role. The "amount_c" key is the retired name for the
+    same field; it is read only so deals settled by the short-lived
+    build that wrote it still resume with the right amount.
+    """
+    entry = deal["settlement"]["legs"][leg]
+    amount = entry.get("amount_cents")
+    if amount is None:
+        amount = entry.get("amount_c")
+    return full_c if amount is None else int(amount)
+
+
 def _finalize_price_payout(deal, payments, key, batch_id):
     """Record a confirmed price payout leg (queue item D path).
 
@@ -1039,8 +1093,9 @@ def _finalize_price_payout(deal, payments, key, batch_id):
     implementation, one ledger shape, no duplicated money logic.
     """
     label = _mode_label(payments)
-    price_c = deal["spec"]["price"]
-    deal["payment"]["status"] = "released"
+    price_c = _leg_amount_c(deal, "price_payout", deal["spec"]["price"])
+    if deal["settlement"].get("path") != "graded":
+        deal["payment"]["status"] = "released"
     add_event(deal, "payment_released", "system",
               f"Verification passed and PayPal reports the payout "
               f"batch successful. Payment of {money.dollars(price_c)} "
@@ -1056,8 +1111,10 @@ def _finalize_price_payout(deal, payments, key, batch_id):
 def _finalize_bond_return(deal, payments, key, batch_id):
     """Record a confirmed bond return leg (queue item D path)."""
     label = _mode_label(payments)
-    bond_amount_c = deal["spec"]["bond_amount"]
-    deal["bond"]["status"] = "returned"
+    bond_amount_c = _leg_amount_c(deal, "bond_return",
+                                  deal["spec"]["bond_amount"])
+    if deal["settlement"].get("path") != "graded":
+        deal["bond"]["status"] = "returned"
     add_event(deal, "bond_returned", "system",
               f"Performance bond of {money.dollars(bond_amount_c)} USD "
               f"returned to the seller by payout ({label}); PayPal "
@@ -1072,8 +1129,9 @@ def _finalize_bond_return(deal, payments, key, batch_id):
 def _finalize_price_refund(deal, payments, key, refund_id):
     """Record a completed price refund leg."""
     label = _mode_label(payments)
-    price_c = deal["spec"]["price"]
-    deal["payment"]["status"] = "refunded"
+    price_c = _leg_amount_c(deal, "price_refund", deal["spec"]["price"])
+    if deal["settlement"].get("path") != "graded":
+        deal["payment"]["status"] = "refunded"
     add_event(deal, "buyer_refunded", "system",
               f"Verification failed. The held payment of "
               f"{money.dollars(price_c)} USD was refunded to the buyer "
@@ -1089,8 +1147,10 @@ def _finalize_price_refund(deal, payments, key, refund_id):
 def _finalize_bond_slash(deal, payments, key, batch_id):
     """Record a confirmed bond slash leg (queue item D path)."""
     label = _mode_label(payments)
-    bond_amount_c = deal["spec"]["bond_amount"]
-    deal["bond"]["status"] = "slashed"
+    bond_amount_c = _leg_amount_c(deal, "bond_slash",
+                                  deal["spec"]["bond_amount"])
+    if deal["settlement"].get("path") != "graded":
+        deal["bond"]["status"] = "slashed"
     add_event(deal, "bond_slashed", "system",
               f"Performance bond of {money.dollars(bond_amount_c)} USD "
               f"slashed and paid to the buyer by payout ({label}); "
@@ -1278,6 +1338,8 @@ async def _settle_release(deal, payments):
     """
     price_c = deal["spec"]["price"]
     bond_amount_c = deal["spec"]["bond_amount"]
+    deal["settlement"]["legs"]["price_payout"]["amount_cents"] = price_c
+    deal["settlement"]["legs"]["bond_return"]["amount_cents"] = bond_amount_c
 
     async def send_price(key):
         payout = await payments.payout(
@@ -1326,10 +1388,15 @@ async def _settle_refund(deal, payments):
 
     The capture refund is synchronous in this version; the bond slash
     payout is read back before it counts as done. Returns "settled",
-    "pending", or "failed".
+    "pending", or "failed". This is also the money route for a delivery
+    timeout: the legs are identical, and the deal ends refunded either
+    way. Only the settlement path ("refund" vs "timeout") tells a
+    failed verification apart from a missed deadline.
     """
     price_c = deal["spec"]["price"]
     bond_amount_c = deal["spec"]["bond_amount"]
+    deal["settlement"]["legs"]["price_refund"]["amount_cents"] = price_c
+    deal["settlement"]["legs"]["bond_slash"]["amount_cents"] = bond_amount_c
 
     async def send_refund(key):
         refund = await payments.refund(
@@ -1369,12 +1436,136 @@ async def _settle_refund(deal, payments):
     deal["state"] = "refunded"
     AGENTS[deal["buyer_agent_id"]]["deals"] += 1
     AGENTS[deal["seller_agent_id"]]["deals"] += 1
-    change_reputation(deal, deal["seller_agent_id"], -12,
-                      "delivery failed verification and the buyer was refunded")
-    change_reputation(deal, deal["seller_agent_id"], -20,
-                      "performance bond slashed after the failed delivery")
+    # Same deltas as a failed verification; only the reason differs on
+    # a timeout, where no delivery was ever judged.
+    timed_out = deal["settlement"].get("path") == "timeout"
+    change_reputation(
+        deal, deal["seller_agent_id"], -12,
+        "seller never delivered by the agreed deadline" if timed_out
+        else "delivery failed verification and the buyer was refunded")
+    change_reputation(
+        deal, deal["seller_agent_id"], -20,
+        "performance bond slashed after the delivery timeout"
+        if timed_out
+        else "performance bond slashed after the failed delivery")
     change_reputation(deal, deal["buyer_agent_id"], 1,
                       "followed the contract process and was made whole")
+    return "settled"
+
+
+async def _settle_graded(deal, payments, breakdown):
+    """Run the graded settlement legs in order.
+
+    The verifier's per-check results drive four legs: the seller is
+    paid its passed share of the price, the buyer is refunded the
+    failed share, the passed share of the bond returns to the seller,
+    and the failed share slashes to the buyer. Each leg is sent and
+    read back exactly like the release and refund legs, so a failed
+    leg resumes from the legs that already succeeded. Returns
+    "settled", "pending", or "failed".
+    """
+    price_c = deal["spec"]["price"]
+    bond_amount_c = deal["spec"]["bond_amount"]
+    to_seller_c = breakdown["price_paid_c"]
+    refund_c = breakdown["price_refunded_c"]
+    slash_c = breakdown["bond_slashed_c"]
+    return_c = breakdown["bond_returned_c"]
+    deal["settlement"]["legs"]["price_payout"]["amount_cents"] = to_seller_c
+    deal["settlement"]["legs"]["price_refund"]["amount_cents"] = refund_c
+    deal["settlement"]["legs"]["bond_return"]["amount_cents"] = return_c
+    deal["settlement"]["legs"]["bond_slash"]["amount_cents"] = slash_c
+
+    async def send_price(key):
+        payout = await payments.payout(
+            SETTINGS.seller_sandbox_email, to_seller_c, "USD",
+            f"Pact graded payment for deal {deal['id']} "
+            f"({breakdown['passed']} of {breakdown['total']} checks passed)",
+            request_id=key)
+        deal["settlement"]["payout_request_id"] = key
+        deal["settlement"]["payout_id"] = payout["payout_batch_id"]
+        deal["settlement"]["legs"]["price_payout"]["rail"] = payout.get("rail")
+        return payout["payout_batch_id"]
+
+    async def send_refund(key):
+        refund = await payments.refund(
+            deal["payment"]["capture_id"], refund_c, "USD", request_id=key)
+        deal["settlement"]["refund_request_id"] = key
+        deal["settlement"]["refund_id"] = refund["refund_id"]
+        deal["settlement"]["legs"]["price_refund"]["rail"] = refund.get("rail")
+        return refund["refund_id"]
+
+    async def send_bond_return(key):
+        bond_payout = await payments.payout(
+            SETTINGS.seller_sandbox_email, return_c, "USD",
+            f"Pact graded bond return for deal {deal['id']}",
+            request_id=key)
+        deal["settlement"]["bond_payout_request_id"] = key
+        deal["settlement"]["bond_payout_id"] = bond_payout["payout_batch_id"]
+        deal["settlement"]["legs"]["bond_return"]["rail"] = bond_payout.get("rail")
+        return bond_payout["payout_batch_id"]
+
+    async def send_slash(key):
+        slash = await payments.payout(
+            SETTINGS.buyer_sandbox_email, slash_c, "USD",
+            f"Pact graded bond slash for deal {deal['id']}",
+            request_id=key)
+        deal["settlement"]["bond_slash_request_id"] = key
+        deal["settlement"]["bond_payout_id"] = slash["payout_batch_id"]
+        deal["settlement"]["legs"]["bond_slash"]["rail"] = slash.get("rail")
+        return slash["payout_batch_id"]
+
+    if not await _send_leg(deal, "price_payout", send_price):
+        return "failed"
+    result = await _confirm_payout_leg(
+        deal, payments, "price_payout",
+        partial(_finalize_price_payout, deal, payments))
+    if result != "done":
+        return result
+    refund_entry = deal["settlement"]["legs"]["price_refund"]
+    if refund_entry["status"] != "done":
+        if not await _send_leg(deal, "price_refund", send_refund):
+            return "failed"
+        _finalize_price_refund(deal, payments,
+                               refund_entry["request_id"],
+                               refund_entry["result_id"])
+        refund_entry["status"] = "done"
+    if not await _send_leg(deal, "bond_return", send_bond_return):
+        return "failed"
+    result = await _confirm_payout_leg(
+        deal, payments, "bond_return",
+        partial(_finalize_bond_return, deal, payments))
+    if result != "done":
+        return result
+    if not await _send_leg(deal, "bond_slash", send_slash):
+        return "failed"
+    result = await _confirm_payout_leg(
+        deal, payments, "bond_slash",
+        partial(_finalize_bond_slash, deal, payments))
+    if result != "done":
+        return result
+    # All four legs are done. Only now do the deal-level statuses take
+    # their graded values: the finalizers above deliberately left them
+    # alone on the graded path, so no partial leg ever read as a full
+    # release or a full refund mid-settlement.
+    deal["payment"]["status"] = "partially_released"
+    deal["bond"]["status"] = "partially_slashed"
+    deal["state"] = "graded"
+    AGENTS[deal["buyer_agent_id"]]["deals"] += 1
+    AGENTS[deal["seller_agent_id"]]["deals"] += 1
+    # One seller delta for the graded split (see
+    # pact.settlement.graded_seller_reputation_delta): the passed share
+    # of the release gain minus the failed share of the bond slash hit.
+    # The buyer gets the same +1 as the refund path.
+    change_reputation(
+        deal, deal["seller_agent_id"],
+        graded_seller_reputation_delta(breakdown["passed"],
+                                       breakdown["total"]),
+        "delivery partly passed verification; the seller is paid for "
+        "the checks that passed and the bond is slashed in proportion "
+        "to the failed checks")
+    change_reputation(
+        deal, deal["buyer_agent_id"], 1,
+        "followed the contract process and settled on the graded split")
     return "settled"
 
 
@@ -1436,7 +1627,11 @@ async def verify(deal_id: str, request: Request):
         if path is None:
             # The settlement path is decided once, on the first verify.
             # Resumes reuse it; the revision branch is never re-entered
-            # for a deal whose settlement already started.
+            # for a deal whose settlement already started. The path is
+            # release when every check passed, graded when some passed
+            # and the revision rounds are spent, and refund only when
+            # nothing passed: a partial delivery settles graded, never
+            # all or nothing, once there is no revision left to fix it.
             if outcome["all_passed"]:
                 path = "release"
             elif revisions_used < revisions_allowed and outcome["any_passed"]:
@@ -1451,11 +1646,24 @@ async def verify(deal_id: str, request: Request):
                           f"{rounds_word} (this is revision "
                           f"{revisions_used + 1}). The seller must fix the "
                           f"failed checks and deliver again. A fail after "
-                          f"the allowed revision rounds refunds the buyer "
-                          f"and slashes the bond.")
+                          f"the allowed revision rounds settles graded: "
+                          f"the seller is paid for the checks that "
+                          f"passed, the buyer is refunded the rest, and "
+                          f"the bond slashes in proportion to the failed "
+                          f"checks.")
                 change_reputation(deal, deal["seller_agent_id"], -3,
                                   "delivery needed a revision round")
                 return public_deal(deal)
+            elif outcome["any_passed"]:
+                if revisions_used >= revisions_allowed:
+                    add_event(deal, "revisions_exhausted", "verifier",
+                              f"The contract allowed {revisions_allowed} "
+                              f"revision round(s) and all were used. The "
+                              f"deal settles graded: the seller is paid "
+                              f"for the checks that passed, the buyer is "
+                              f"refunded the rest, and the bond slashes in "
+                              f"proportion to the failed checks.")
+                path = "graded"
             else:
                 if revisions_used == 0 and not outcome["any_passed"]:
                     add_event(deal, "revision_skipped", "verifier",
@@ -1469,10 +1677,46 @@ async def verify(deal_id: str, request: Request):
                               f"deal goes to a refund and a bond slash.")
                 path = "refund"
             deal["settlement"]["path"] = path
+            # Every settled deal carries the same graded breakdown, in
+            # integer cents: on release it is the full price to the
+            # seller and the full bond back; on refund it is the full
+            # price back and the full bond slashed; on a graded path it
+            # is the per-check split. The UI renders the split from
+            # this one shape, whatever the outcome.
+            deal["settlement"]["graded"] = grade_breakdown(
+                deal["spec"]["price"], deal["spec"]["bond_amount"],
+                outcome["passed_count"], outcome["total_count"])
+            if path == "graded":
+                breakdown = deal["settlement"]["graded"]
+                add_event(deal, "graded_settlement_decided", "verifier",
+                          f"Graded settlement: {breakdown['passed']} of "
+                          f"{breakdown['total']} checks passed, so the "
+                          f"seller is paid "
+                          f"{money.dollars(breakdown['price_paid_c'])} "
+                          f"USD, the buyer is refunded "
+                          f"{money.dollars(breakdown['price_refunded_c'])} "
+                          f"USD, {money.dollars(breakdown['bond_slashed_c'])} "
+                          f"USD of the bond is slashed to the buyer, and "
+                          f"{money.dollars(breakdown['bond_returned_c'])} USD "
+                          f"of the bond returns to the seller.",
+                          {"passed": breakdown["passed"],
+                           "total": breakdown["total"],
+                           "price_paid_c":
+                               money.dollars(breakdown["price_paid_c"]),
+                           "price_refunded_c":
+                               money.dollars(breakdown["price_refunded_c"]),
+                           "bond_slashed_c":
+                               money.dollars(breakdown["bond_slashed_c"]),
+                           "bond_returned_c":
+                               money.dollars(breakdown["bond_returned_c"])})
         try:
-            outcome = (await _settle_release(deal, payments)
-                       if path == "release"
-                       else await _settle_refund(deal, payments))
+            if path == "release":
+                outcome = await _settle_release(deal, payments)
+            elif path == "graded":
+                outcome = await _settle_graded(
+                    deal, payments, deal["settlement"]["graded"])
+            else:
+                outcome = await _settle_refund(deal, payments)
         except UpstreamFailure as failed:
             return failed.response
         except PaymentError as exc:
@@ -1485,29 +1729,129 @@ async def verify(deal_id: str, request: Request):
             # The failing leg already recorded its clean error with a
             # correlation id on its leg entry; answer with the same id
             # so the response, the ledger event, and the log line agree.
-            failed_entry = next(
-                (e for e in deal["settlement"]["legs"].values()
-                 if e.get("status") == "failed"),
-                None) or {}
-            code = failed_entry.get("error_code") or "PAYOUT_FAILED"
-            correlation_id = failed_entry.get("correlation_id")
-            if not correlation_id:
-                response, correlation_id = build_error_response(
-                    deal, code, None, where="verify:settlement",
-                    event_type="payment_error")
-                return response
-            status, message = ERROR_CODES[code]
-            return JSONResponse(
-                status_code=status,
-                content={"error": {
-                    "code": code,
-                    "message": message,
-                    "correlation_id": correlation_id,
-                }},
-            )
+            return _failed_leg_response(deal)
         # "pending" also returns 200: the money calls were accepted and
         # the deal waits in verifying for PayPal to report the payout
         # batches successful. A later verify reads the statuses back.
+        return public_deal(deal)
+
+
+def _failed_leg_response(deal, where="verify:settlement"):
+    """Build the response for a settlement whose leg failed.
+
+    The failing leg already recorded its clean error with a correlation
+    id on its leg entry; answer with the same id so the response, the
+    ledger event, and the log line agree.
+    """
+    failed_entry = next(
+        (e for e in deal["settlement"]["legs"].values()
+         if e.get("status") == "failed"),
+        None) or {}
+    code = failed_entry.get("error_code") or "PAYOUT_FAILED"
+    correlation_id = failed_entry.get("correlation_id")
+    if not correlation_id:
+        response, correlation_id = build_error_response(
+            deal, code, None, where=where,
+            event_type="payment_error")
+        return response
+    status, message = ERROR_CODES[code]
+    return JSONResponse(
+        status_code=status,
+        content={"error": {
+            "code": code,
+            "message": message,
+            "correlation_id": correlation_id,
+        }},
+    )
+
+
+@app.post("/api/deals/{deal_id}/timeout",
+           description="Times a deal out when the seller never delivered "
+                       "by the agreed deadline: the held price is refunded "
+                       "in full and the whole bond is slashed to the buyer.")
+async def timeout_deal(deal_id: str, request: Request):
+    """Time a deal out for a missed delivery deadline.
+
+    Only the buyer may call it, and only while the deal is paid_held
+    with no delivery ever submitted. A deal in revision (the seller
+    delivered once and a re-delivery is pending) is NOT timeout
+    eligible: the seller has shown up, so the buyer waits for the
+    revision instead. That is a stated limit, not an oversight.
+
+    The deadline is the one set at capture: paid_at plus the
+    negotiated window on multi-issue deals, 7 days on single-issue
+    deals. Before the deadline the call is rejected with a 409 naming
+    the deadline; there is no force flag. A timed-out deal ends
+    refunded, the same terminal state as a failed verification: full
+    refund plus full bond slash, through the same money legs. Only the
+    settlement path, "timeout", tells it apart from a failed
+    verification.
+    """
+    deal = _deal_or_404(deal_id)
+    _require_deal_role(deal, request, "buyer")
+    async with _deal_lock(deal_id):
+        _require_state(deal, ["paid_held"], "timeout")
+        payments = get_agent_payment_service()
+        deadline = deal.get("delivery_deadline")
+        due = None
+        if deadline:
+            try:
+                due = datetime.fromisoformat(deadline)
+            except ValueError:
+                due = None
+        paid_at = deal.get("paid_at")
+        paid_dt = None
+        if paid_at:
+            try:
+                paid_dt = datetime.fromisoformat(paid_at)
+            except ValueError:
+                paid_dt = None
+        if due is None:
+            # A deal captured before deadlines were recorded carries no
+            # deadline to judge against. Fail closed instead of timing
+            # out a deal whose window was never set.
+            raise HTTPException(
+                status_code=409,
+                detail="This deal has no delivery deadline recorded, so "
+                       "it cannot be timed out. Deals captured after the "
+                       "timeout shipped always carry one.")
+        now = datetime.now(timezone.utc)
+        if now < due:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Delivery is not due yet; the deadline is "
+                       f"{deadline}.")
+        if paid_dt is not None:
+            days_waited = (now - paid_dt).days
+        else:
+            terms = deal.get("terms") or {}
+            days_waited = int(terms.get("delivery_days")
+                              or DEFAULT_DELIVERY_DAYS)
+        add_event(deal, "delivery_timeout", "buyer",
+                  f"The seller never delivered by the agreed deadline "
+                  f"({deadline}; {days_waited} days waited since payment "
+                  f"on {paid_at or 'an unrecorded payment time'}). The "
+                  f"deal times out: the held price of "
+                  f"{money.dollars(deal['spec']['price'])} USD is "
+                  f"refunded in full and the whole bond of "
+                  f"{money.dollars(deal['spec']['bond_amount'])} USD is "
+                  f"slashed to the buyer.",
+                  {"delivery_deadline": deadline,
+                   "paid_at": paid_at,
+                   "days_waited": days_waited})
+        # The money route is the refund route; the settlement path is
+        # what makes a timeout distinct from a failed verification.
+        deal["settlement"]["path"] = "timeout"
+        try:
+            outcome = await _settle_refund(deal, payments)
+        except UpstreamFailure as failed:
+            return failed.response
+        except PaymentError as exc:
+            raise_upstream(deal, "UPSTREAM_UNAVAILABLE", exc,
+                           where="timeout:settlement",
+                           event_type="payment_error")
+        if outcome == "failed":
+            return _failed_leg_response(deal, where="timeout:settlement")
         return public_deal(deal)
 
 

@@ -7,7 +7,10 @@ forced) and asserts two invariants on every deal:
   (a) terminal state matches the verifier's verdict: a deal whose final
       verification passed all checks never ends "refunded" with a slashed
       bond; a deal whose final verification failed a check never ends
-      "released".
+      "released"; a deal whose final verification passed some but not
+      all checks ends "graded", never "refunded"; a deal
+      whose final verification passed no check ends "refunded", never
+      "graded".
   (b) money conservation per deal in integer cents: payouts + refunds +
       returned bond + slashed bond + platform fees == captured totals,
       and payouts + refunds + returned bond never exceed captures.
@@ -27,6 +30,10 @@ Money model (demo mode, read from pact/main.py and pact/payments.py):
     bond_return leg pays spec.bond_amount back to the seller.
   - refund path: price_refund leg refunds spec.price to the buyer,
     bond_slash leg pays spec.bond_amount to the buyer.
+  - graded path: price_payout pays the passed share of spec.price to
+    the seller, price_refund refunds the failed share to the buyer,
+    bond_return pays the passed share of spec.bond_amount back to the
+    seller, bond_slash pays the failed share to the buyer.
   - No platform fee exists anywhere in the settlement code; fees = 0.
 All accounting below is in integer cents (round(x*100)); floats are
 never compared.
@@ -261,7 +268,7 @@ def run_one_deal(client, rng, idx):
                 assert deal["state"] == "delivered", \
                     f"re-deliver -> {deal['state']}"
                 continue
-            if state in ("released", "refunded"):
+            if state in ("released", "graded", "refunded"):
                 break
             # state == "verifying": an injected leg failed (502) or a
             # payout is pending; loop to resume.
@@ -310,6 +317,8 @@ def audit_deal(res, stub, deal):
     verification = deal.get("verification")
     assert verification is not None, f"deal {did}: {state} with no verdict"
     all_passed = verification["all_passed"] is True
+    passed = verification["passed_count"]
+    total = verification["total_count"]
     if state == "released" and not all_passed:
         va.append({
             "code": "released_despite_failed_verdict",
@@ -333,11 +342,34 @@ def audit_deal(res, stub, deal):
             "payment_status": deal["payment"]["status"],
             "bond_status": deal["bond"]["status"],
         })
-    if state not in ("released", "refunded"):
+    if state == "refunded" and passed > 0:
+        va.append({
+            "code": "refunded_despite_passed_checks",
+            "deal_id": did, "scenario": res["scenario"],
+            "quality": res["quality"], "fail_legs": res["fail_legs"],
+            "detail": "terminal state 'refunded' but the final "
+                      f"verification passed {passed} of {total} checks; "
+                      "a partial delivery settles graded, never refunded",
+            "payment_status": deal["payment"]["status"],
+            "bond_status": deal["bond"]["status"],
+        })
+    if state == "graded" and (all_passed or passed == 0):
+        va.append({
+            "code": "graded_without_partial_verdict",
+            "deal_id": did, "scenario": res["scenario"],
+            "quality": res["quality"], "fail_legs": res["fail_legs"],
+            "detail": "terminal state 'graded' but the final "
+                      f"verification passed {passed} of {total} checks; "
+                      "graded settlement needs some checks passed and "
+                      "some failed",
+            "payment_status": deal["payment"]["status"],
+            "bond_status": deal["bond"]["status"],
+        })
+    if state not in ("released", "graded", "refunded"):
         va.append({"code": "unexpected_terminal",
                    "deal_id": did,
                    "detail": f"terminal state {state!r} is neither "
-                             "released nor refunded"})
+                             "released, graded, nor refunded"})
 
     # ---- invariant (b): per-deal money conservation in integer cents --
     # spec arrives from the API in dollars; stub calls are already cents.
@@ -517,7 +549,12 @@ def main():
         "session (context manager shares one event loop portal). Demo mode "
         "forced by popping PAYPAL_CLIENT_ID/PAYPAL_CLIENT_SECRET/LLM_API_KEY/"
         "PAYPAL_WEBHOOK_ID/CHANNEL3_API_KEY before import; PACT_DB_PATH set "
-        "to a temp dir (dev DB at data/pact.db untouched). Lifecycle per "
+        "to a temp dir (dev DB at data/pact.db untouched). Deal-creation "
+        "rate caps were disabled for this run "
+        "(PACT_MAX_DEALS_PER_MINUTE_PER_IP=0, "
+        "PACT_MAX_DEALS_PER_MINUTE_GLOBAL=0): the caps are abuse "
+        "protection against floods, not settlement logic, and a 10,000-deal "
+        "experiment trips the 30-deals-per-minute demo default. Lifecycle per "
         "deal: POST /api/deals, negotiate/run, pay (demo captures instantly "
         "to paid_held; no pay/confirm needed), deliver, verify, with resume "
         "loops through injected 502s (deal stays 'verifying') and revision "

@@ -339,7 +339,8 @@ def e3_settlement_oracle():
         ("landing poor", "landing_page_copy", ["poor"],
          ("refunded", "refunded", "slashed", -32, 1)),
         ("cheat recycled twice", "cheat_attempt", ["auto", "auto"],
-         ("refunded", "refunded", "slashed", -35, 1)),
+         ("graded", "partially_released", "partially_slashed",
+          -18, 1)),
         ("cheat poor", "cheat_attempt", ["poor"],
          ("refunded", "refunded", "slashed", -32, 1)),
     ]

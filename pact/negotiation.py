@@ -464,7 +464,14 @@ async def run_negotiation(deal, scenario, multi_issue=False):
     bond_amount_c = money.pct_of(settled_c, deal["bond_percent"])
     revision_policy = (
         "One revision round when some checks pass and some fail. "
-        "A delivery that passes nothing is refunded at once."
+        "A delivery that passes nothing is refunded at once. "
+        "After the revision round, a delivery that passes some checks "
+        "settles graded: the seller is paid for the checks that "
+        "passed, the buyer is refunded the rest, and the bond is "
+        "slashed in proportion to the failed checks. "
+        "Delivery is due within 7 days of payment; if the seller "
+        "never delivers by then, the buyer may time the deal out for "
+        "a full refund and a full bond slash."
     )
     spec = {
         "scenario_id": scenario["id"],
@@ -485,17 +492,24 @@ async def run_negotiation(deal, scenario, multi_issue=False):
         # recomputed from the negotiated bond percent, so the money
         # plumbing enforces it. The revision rounds are enforced by the
         # verify endpoint's revision counter. The delivery window is
-        # contractual: the demo delivers instantly, so no clock enforces
-        # it here; a production deployment would start the clock at
-        # capture and fail late deliveries.
+        # contractual: the clock starts at capture (_capture_both sets
+        # delivery_deadline) and the buyer may time the deal out past
+        # it (/timeout); the demo delivers instantly, so the deadline
+        # rarely binds there.
         spec["terms"] = dict(deal["terms"])
         spec["bond_percent"] = deal["bond_percent"]
         spec["bond_amount"] = bond_amount_c
         spec["revision_policy"] = (
             f"{deal['terms']['revision_rounds']} revision rounds when "
             f"some checks pass and some fail. A delivery that passes "
-            f"nothing is refunded at once. Delivery is due within "
-            f"{deal['terms']['delivery_days']} days of payment."
+            f"nothing is refunded at once. After the revision rounds, "
+            f"a delivery that passes some checks settles graded: the "
+            f"seller is paid for the checks that passed, the buyer is "
+            f"refunded the rest, and the bond is slashed in proportion "
+            f"to the failed checks. Delivery is due within "
+            f"{deal['terms']['delivery_days']} days of payment; if the "
+            f"seller never delivers by then, the buyer may time the "
+            f"deal out for a full refund and a full bond slash."
         )
     if scenario.get("grounding"):
         # Market grounded scenarios (procurement) carry the evidence

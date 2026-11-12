@@ -192,9 +192,14 @@ AGENTS = {
 }
 
 # The deal state machine. A deal moves forward through these states and ends
-# in exactly one of released, refunded, or failed. awaiting_approval only
-# happens in sandbox mode: PayPal makes the account holder approve each
-# order in a browser before it can be captured.
+# in exactly one of released, graded, refunded, or failed.
+# awaiting_approval only happens in sandbox mode: PayPal makes the
+# account holder approve each order in a browser before it can be captured.
+# graded is the graded settlement terminal state: some checks passed, so
+# the seller was paid for those and the bond slashed only for the failed
+# share. A delivery timeout ends refunded, the same terminal state as a
+# failed verification: the buyer is refunded in full and the whole bond
+# is slashed, and the settlement path "timeout" is what tells them apart.
 STATES = [
     "negotiating",
     "agreed",
@@ -204,6 +209,7 @@ STATES = [
     "verifying",
     "revision",
     "released",
+    "graded",
     "refunded",
     "failed",
 ]
@@ -296,25 +302,44 @@ def new_deal(scenario, buyer_max_cents, seller_floor_cents, bond_percent,
             "bond_slash_request_id": None,
             # Settlement runs one leg at a time and records each leg as it
             # completes, so a failed leg can be resumed without rerunning
-            # the legs that already succeeded. "path" is "release" or
-            # "refund", decided once at the first verify and never
-            # re-decided on a resume.
+            # the legs that already succeeded. "path" is "release",
+            # "refund", or "graded", decided once at the first verify and
+            # never re-decided on a resume. "graded" is the per-check
+            # split (integer cents) for a partially settled deal; it is
+            # also recorded on release (all checks passed) and refund
+            # (none passed) so every settled deal carries the same
+            # breakdown shape. Each leg entry carries "amount_cents", the
+            # integer cents that leg moves; None until the leg is sent,
+            # when it is set to the amount for this settlement (full
+            # price or bond on release and refund, the graded share on
+            # a graded settlement).
             "path": None,
+            "graded": None,
             "legs": {
                 "price_payout": {"status": "pending", "attempt": 1,
                                  "request_id": None, "result_id": None,
-                                 "payout_status": None},
+                                 "payout_status": None, "amount_cents": None},
                 "bond_return": {"status": "pending", "attempt": 1,
                                 "request_id": None, "result_id": None,
-                                "payout_status": None},
+                                "payout_status": None, "amount_cents": None},
                 "price_refund": {"status": "pending", "attempt": 1,
                                  "request_id": None, "result_id": None,
-                                 "payout_status": None},
+                                 "payout_status": None, "amount_cents": None},
                 "bond_slash": {"status": "pending", "attempt": 1,
                                "request_id": None, "result_id": None,
-                               "payout_status": None},
+                               "payout_status": None, "amount_cents": None},
             },
         },
+        # Payment time: ISO timestamp set when the price and bond are
+        # captured. The delivery timeout deadline is paid_at plus the
+        # delivery window (see delivery_deadline below).
+        "paid_at": None,
+        # Delivery deadline: ISO timestamp set when the price and bond
+        # are captured. The seller must deliver by then; past it, the
+        # buyer may time the deal out for a full refund and a full bond
+        # slash. Multi-issue deals use the negotiated delivery window;
+        # single-issue deals use DEFAULT_DELIVERY_DAYS (see pact/main.py).
+        "delivery_deadline": None,
         "deliverable": None,
         "verification": None,
         "revision_used": False,
@@ -432,6 +457,17 @@ def public_deal(deal):
         out["spec"] = spec
     if out.get("market"):
         out["market"] = public_grounding(out["market"])
+    settlement = out.get("settlement")
+    if settlement:
+        settlement = dict(settlement)
+        graded = settlement.get("graded")
+        if graded:
+            graded = dict(graded)
+            for key in ("price_paid_c", "price_refunded_c",
+                        "bond_returned_c", "bond_slashed_c"):
+                graded[key] = _money.dollars(graded[key])
+            settlement["graded"] = graded
+        out["settlement"] = settlement
     return out
 
 

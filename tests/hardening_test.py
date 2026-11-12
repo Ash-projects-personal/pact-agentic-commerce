@@ -456,7 +456,7 @@ def _run(client):
     deal = run_to_paid()
     order_id = deal["payment"]["order_id"]
     SETTINGS.paypal_client_id = "test-id"
-    SETTINGS.paypal_client_secret = "test-secret"
+    SETTINGS.paypal_client_secret = "test"
     SETTINGS.paypal_webhook_id = "WH-TEST"
 
     async def fake_error(self, headers, event):

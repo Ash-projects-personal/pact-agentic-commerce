@@ -121,11 +121,12 @@ async function refreshAgents() {
 const MONEY_EVENTS = new Set([
   "payment_approval_requested", "bond_approval_requested", "payment_held",
   "bond_posted", "payment_released", "bond_returned", "buyer_refunded",
-  "bond_slashed",
+  "bond_slashed", "graded_settlement_decided", "delivery_deadline_set",
+  "delivery_timeout",
 ]);
 const BAD_EVENTS = new Set([
   "buyer_refunded", "bond_slashed", "negotiation_failed", "payment_error",
-  "webhook_rejected", "revision_skipped",
+  "webhook_rejected", "revision_skipped", "delivery_timeout",
 ]);
 
 function eventFamily(t) {
@@ -151,6 +152,9 @@ const EVENT_LABELS = {
   bond_returned: "Bond returned",
   buyer_refunded: "Buyer refunded",
   bond_slashed: "Bond slashed",
+  graded_settlement_decided: "Graded settlement decided",
+  delivery_deadline_set: "Delivery deadline set",
+  delivery_timeout: "Delivery timed out",
   bond_too_small: "Bond too small",
   payment_error: "Payment error",
   delivery_submitted: "Delivery submitted",
@@ -665,15 +669,25 @@ function timelineSteps(deal) {
   steps.push({ label: "Negotiation finished", done: !!deal && st !== "negotiating" || (deal && deal.moves.length > 0 && !!deal.spec) });
   steps.push({ label: "Contract frozen with agent written checks", done: !!deal && !!deal.spec });
   const pay = deal ? deal.payment.status : "not_started";
-  steps.push({ label: "Payment held: " + (deal && deal.payment.amount ? deal.payment.amount + " USD" : "") + (deal && deal.payment.mode ? " (" + deal.payment.mode + " mode)" : ""), done: ["held", "released", "refunded"].includes(pay) });
+  steps.push({ label: "Payment held: " + (deal && deal.payment.amount ? deal.payment.amount + " USD" : "") + (deal && deal.payment.mode ? " (" + deal.payment.mode + " mode)" : ""), done: ["held", "released", "partially_released", "refunded"].includes(pay) });
   const bond = deal ? deal.bond.status : "not_posted";
-  steps.push({ label: "Performance bond posted: " + (deal && deal.bond.amount ? deal.bond.amount + " USD" : ""), done: ["posted", "returned", "slashed"].includes(bond) });
+  steps.push({ label: "Performance bond posted: " + (deal && deal.bond.amount ? deal.bond.amount + " USD" : ""), done: ["posted", "returned", "partially_slashed", "slashed"].includes(bond) });
   steps.push({ label: "Delivery submitted", done: !!deal && !!deal.deliverable });
   if (deal && deal.revision_used) steps.push({ label: "Revision round used", done: true });
-  steps.push({ label: "Verification complete", done: !!deal && !!deal.verification && ["released", "refunded"].includes(st) });
+  steps.push({ label: "Verification complete", done: !!deal && !!deal.verification && ["released", "graded", "refunded"].includes(st) });
   if (deal && st === "released") {
     steps.push({ label: "Payment released to seller", done: true });
     steps.push({ label: "Bond returned to seller", done: bond === "returned" });
+  }
+  if (deal && st === "graded") {
+    const g = deal.settlement && deal.settlement.graded;
+    if (g) {
+      steps.push({ label: "Graded settlement: " + g.passed + " of " + g.total + " checks passed", done: true });
+      steps.push({ label: "Seller paid " + g.price_paid_c + " USD, buyer refunded " + g.price_refunded_c + " USD", done: pay === "partially_released" });
+      steps.push({ label: "Bond slashed " + g.bond_slashed_c + " USD to buyer, " + g.bond_returned_c + " USD returned", done: bond === "partially_slashed", bad: true });
+    } else {
+      steps.push({ label: "Settled graded", done: true });
+    }
   }
   if (deal && st === "refunded") {
     steps.push({ label: "Buyer refunded in full", done: true, bad: true });
@@ -692,12 +706,24 @@ function renderTimeline(deal) {
 function renderVerification(deal) {
   if (!deal || !deal.verification) return;
   const v = deal.verification;
-  $("verification").innerHTML =
+  let html =
     "<p><strong>Round " + v.round + ":</strong> " + v.passed_count + " of " + v.total_count + " negotiated checks passed.</p>" +
     v.results.map((r) => (
       '<div class="check"><span class="pill ' + (r.passed ? "pass" : "fail") + '">' + (r.passed ? "PASS" : "FAIL") + "</span>" +
       "<div><div>" + r.label + "</div><div class='reason'>" + r.reason + "</div></div></div>"
     )).join("");
+  // The graded breakdown: what each side actually got, per passed check.
+  // Present on every settled deal, so a full release and a full refund
+  // read the same way as a partial split.
+  const g = deal.settlement && deal.settlement.graded;
+  if (g) {
+    html += "<p><strong>Settlement:</strong> " + g.passed + " of " + g.total +
+      " checks passed. Seller paid " + g.price_paid_c + " USD, buyer " +
+      "refunded " + g.price_refunded_c + " USD, bond slashed " + g.bond_slashed_c +
+      " USD to the buyer, bond returned " + g.bond_returned_c + " USD to the " +
+      "seller.</p>";
+  }
+  $("verification").innerHTML = html;
 }
 
 function renderDeal(deal) {
@@ -717,10 +743,11 @@ function renderDeal(deal) {
   $("payBtn").disabled = deal.state !== "agreed";
   $("deliverBtn").disabled = !["paid_held", "revision"].includes(deal.state);
   $("verifyBtn").disabled = deal.state !== "delivered";
+  $("timeoutBtn").disabled = deal.state !== "paid_held";
   // While a tour runs, the manual buttons stay off so a stray click
   // cannot move the tour's deal out from under it.
   if (tourRunning) {
-    ["createBtn", "negotiateBtn", "payBtn", "deliverBtn", "verifyBtn"].forEach((id) => {
+    ["createBtn", "negotiateBtn", "payBtn", "deliverBtn", "verifyBtn", "timeoutBtn"].forEach((id) => {
       $(id).disabled = true;
     });
   }
@@ -972,6 +999,16 @@ async function init() {
   });
   $("verifyBtn").addEventListener("click", async () => {
     renderDeal(await api("/api/deals/" + currentDeal.id + "/verify", "POST", {}, "buyer"));
+  });
+  $("timeoutBtn").addEventListener("click", async () => {
+    // The call is refused with a 409 until the delivery deadline has
+    // passed, and only while the deal is paid_held with no delivery.
+    // A deal in revision cannot time out.
+    try {
+      renderDeal(await api("/api/deals/" + currentDeal.id + "/timeout", "POST", {}, "buyer"));
+    } catch (err) {
+      $("stateLine").textContent = "Timeout refused: " + err.message;
+    }
   });
 }
 

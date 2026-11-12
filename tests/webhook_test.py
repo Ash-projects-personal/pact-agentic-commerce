@@ -81,7 +81,7 @@ def main():
 
     print("PART 2 configured and verified")
     SETTINGS.paypal_client_id = "test-id"
-    SETTINGS.paypal_client_secret = "test-secret"
+    SETTINGS.paypal_client_secret = "test"
     SETTINGS.paypal_webhook_id = "WH-TEST"
     calls = {}
 

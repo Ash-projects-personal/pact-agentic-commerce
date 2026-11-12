@@ -59,7 +59,7 @@
      3
     ],
     "match": true,
-    "ledger_events": 34
+    "ledger_events": 35
    },
    {
     "path": "landing honest",
@@ -78,7 +78,7 @@
      3
     ],
     "match": true,
-    "ledger_events": 34
+    "ledger_events": 35
    },
    {
     "path": "code task honest",
@@ -97,7 +97,7 @@
      3
     ],
     "match": true,
-    "ledger_events": 33
+    "ledger_events": 34
    },
    {
     "path": "research brief honest",
@@ -116,7 +116,7 @@
      3
     ],
     "match": true,
-    "ledger_events": 34
+    "ledger_events": 35
    },
    {
     "path": "listing honest",
@@ -135,7 +135,7 @@
      3
     ],
     "match": true,
-    "ledger_events": 34
+    "ledger_events": 35
    },
    {
     "path": "logo poor",
@@ -154,7 +154,7 @@
      1
     ],
     "match": true,
-    "ledger_events": 36
+    "ledger_events": 37
    },
    {
     "path": "landing poor",
@@ -173,26 +173,26 @@
      1
     ],
     "match": true,
-    "ledger_events": 36
+    "ledger_events": 37
    },
    {
     "path": "cheat recycled twice",
     "expected": [
-     "refunded",
-     "refunded",
-     "slashed",
-     -35,
+     "graded",
+     "partially_released",
+     "partially_slashed",
+     -18,
      1
     ],
     "got": [
-     "refunded",
-     "refunded",
-     "slashed",
-     -35,
+     "graded",
+     "partially_released",
+     "partially_slashed",
+     -18,
      1
     ],
     "match": true,
-    "ledger_events": 46
+    "ledger_events": 49
    },
    {
     "path": "cheat poor",
@@ -211,7 +211,7 @@
      1
     ],
     "match": true,
-    "ledger_events": 37
+    "ledger_events": 38
    },
    {
     "path": "walk away",
@@ -229,7 +229,7 @@
     "ledger_events": 7
    }
   ],
-  "total_ledger_events": 331
+  "total_ledger_events": 342
  },
  "E4_live_sandbox_evidence": {
   "date": "2026-10-22",

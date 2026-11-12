@@ -179,6 +179,7 @@ Already common, worth zero novelty claims:
 Genuinely uncommon, based on everything found:
 - Acceptance checks authored by the negotiation itself. In every close match, the spec and its checks come from the buyer, the requester, or a platform template. Underwrite is the nearest, and its contract is still buyer supplied. Nobody found has the seller proposing, resisting, and agreeing to the very checks it will later be judged against, as part of the haggle. This makes the verdict hard to dispute, because the seller signed its own test.
 - A per deal seller performance bond slashed to the buyer. Staking systems slash for network misbehavior, false claims, or bad validation. Assay combines stake, escrow, and reputation but its stake is a standing registration stake. No product found takes a bond sized to one deal, holds it next to the buyer's payment, and pays it to the buyer automatically when that deal's own checks fail. On PayPal rails it appears to be unclaimed entirely.
+- Graded settlement: pay per passed check, bond slashed in proportion. Every close match settles all or nothing: pass pays in full, fail refunds in full. AgentSettle is the nearest bond rival and it returns the bond in full on a partial failure. No product found pays the seller for the checks that passed and slashes the bond only for the failed share, on any rails. See the 2026-11-11 refresh below.
 - The full loop on fiat PayPal rails. Every close match settles in stablecoins or testnet crypto, except AgentPay, which uses Stripe and stops at hold duration as its only penalty. Nobody found runs negotiation, hold, verified delivery, payout, refund, and bond slash through PayPal Orders, Payouts, and refunds.
 
 Does the whole combination exist somewhere? No. The combination is open. But the center of the combination, escrow plus verifier plus reputation, is close to a commodity pattern in the crypto agent world, and ERC-8183 has already standardized that center. Pact wins or loses on the edges: the negotiated checks, the bond, and the PayPal execution.
@@ -186,14 +187,16 @@ Does the whole combination exist somewhere? No. The combination is open. But the
 ### Top three differentiators to lean on in the pitch
 
 1. The agents negotiate the test, not just the price. Pact's haggle produces the acceptance checks themselves, frozen into the deal spec. The seller is later judged only on what it agreed to be judged on, in its own words. Lead the demo with the seller pushing back on a check and the check changing. No competitor demo found has that moment.
-2. Both sides have money at risk. The buyer's payment is held, and the seller's bond sits next to it. A failed verification does not just refund the buyer, it pays the buyer the slashed bond, automatically, through PayPal. Frame it plainly: in every other system, a cheating seller loses nothing but time. In Pact, cheating costs money. This is also what makes the cheating seller demo land.
-3. One verdict moves everything, in real money rails, with the reasoning public. The verifier's single pass or fail triggers payout or refund, bond return or slash, and a reputation change, and the ledger shows each agent's rationale next to each money movement. Competitors split these across systems or settle in testnet tokens. Pact does it in one place, in dollars, on the sponsor's own platform, which is exactly what a PayPal hackathon jury is positioned to reward.
+2. Both sides have money at risk. The buyer's payment is held, and the seller's bond sits next to it. A failed verification does not just refund the buyer, it pays the buyer the slashed bond, automatically, through PayPal. Frame it plainly: in every other system, a cheating seller loses nothing but time. In Pact, cheating costs money. And the split is graded, not all or nothing: a seller who delivers four fifths of the contract keeps four fifths of the price and loses four fifths of the bond, so the bond punishes the failed share without confiscating the work that passed. This is also what makes the cheating seller demo land.
+3. One verdict moves everything, in real money rails, with the reasoning public. The verifier judges each negotiated check, and the per-check results split the money: payout and refund, bond return and slash, in proportion, plus a reputation change scaled the same way, and the ledger shows each agent's rationale next to each money movement. Competitors split these across systems or settle in testnet tokens. Pact does it in one place, in dollars, on the sponsor's own platform, which is exactly what a PayPal hackathon jury is positioned to reward.
 
 ### Claims to avoid
 
 - Do not say first agent escrow, first agent marketplace, or first verified agent settlement. OKX, Kustodia, AgentPay, and ERC-8183 kill those claims.
 - Do not present the audit ledger or reputation score as inventions. Present them as the public record that makes the bond and the negotiated checks enforceable and visible.
 - Do not overclaim the bond as a new mechanism in general. AgentStake and Assay exist. The accurate claim is narrower and stronger: a per deal bond, posted through PayPal, slashed to the buyer on a failed check the seller itself agreed to.
+- Do not claim the per deal bond slash to the buyer is a first without qualification. AgentSettle (GenLayer) slashes a per deal worker bond to the client on total failure and on a missed deadline. The accurate claim is the graded split: pay per passed check, slash in proportion to the failed checks.
+- Do not claim no one has settled real agent to agent money. TaskMarket reports 399 settled deals in USDC, and AvatarBook reports more than 2,300 skill transactions in its own credits. Pact's claim is the mechanism on PayPal rails, not the existence of settled agent money.
 
 ## Refresh 2026-10-22: publicized entries in this hackathon
 
@@ -223,3 +226,35 @@ Verdict after the refresh: no publicized entry matches any of Pact's
 three uncommon pieces (negotiation authored acceptance checks, a per
 deal seller bond slashed to the buyer, the full loop on PayPal). The
 verdict must be re-run when the Devpost gallery opens after Nov 12.
+
+## Refresh 2026-11-11: the bond rival and graded settlement
+
+AgentSettle (GenLayer protocol) is the closest bond rival found, and
+it is the reason the bond claim now carries a qualifier. Two agents,
+one contract, and a bond on the table: the hiring agent writes the
+acceptance criteria, the worker stakes a bond, and validator
+magistrates split the escrow if a delivery is disputed. Source:
+https://9ytshade.medium.com/agentsettle-autonomous-agentic-commerce-sla-dispute-arbitration-protocol-on-genlayer-08ffd0c4445b
+
+Where it differs from Pact, point by point:
+
+- Its criteria are set by one side, never haggled over. Pact's checks
+  are authored by the negotiation itself, seller included.
+- Its bond only slashes on total failure or a missed deadline. A
+  partial failure returns the bond in full. Pact settles graded: the
+  seller is paid for the checks that passed and the bond slashes in
+  proportion to the failed checks.
+- It runs on testnet crypto with validator magistrates as arbiters.
+  Pact runs the full loop on fiat PayPal rails with a deterministic
+  verifier and no arbiter.
+
+No rival found does graded settlement: pay per passed check with a
+proportional bond slash, on any rails. Every close match settles all
+or nothing. That is now Pact's fourth uncommon piece, and the pitch
+claim for the bond is the graded split, not the slash alone.
+
+Two more claims this refresh retires. TaskMarket reports 399 settled
+deals in USDC, and AvatarBook reports more than 2,300 skill
+transactions in its own credits, so "no one has settled real agent
+money" is false and must not be claimed. Pact's claim is the
+mechanism on PayPal rails, not the existence of settled agent money.

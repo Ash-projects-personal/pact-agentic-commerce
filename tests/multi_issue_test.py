@@ -84,10 +84,13 @@ def negotiate(client, multi_issue, scenario_id="logo_brand_kit"):
     return post(client, f"/api/deals/{deal['id']}/negotiate/run")
 
 
-def revision_rounds_to_refund(client, deal, quality="weak"):
-    """Pay once, then deliver weak and verify until the deal refunds.
+def revision_rounds_to_settlement(client, deal, quality="weak"):
+    """Pay once, then deliver weak and verify until the deal settles.
 
-    Returns the list of states seen after each verify call.
+    Returns the list of states seen after each verify call. The
+    terminal state is graded when some checks pass and refunded when
+    none pass: book_cover_design weak passes 2 of 5, so it settles
+    graded once the revision rounds are spent.
     """
     deal = post(client, f"/api/deals/{deal['id']}/pay")
     states = []
@@ -96,7 +99,7 @@ def revision_rounds_to_refund(client, deal, quality="weak"):
                     {"quality": quality})
         deal = post(client, f"/api/deals/{deal['id']}/verify")
         states.append(deal["state"])
-        if deal["state"] == "refunded":
+        if deal["state"] in ("refunded", "graded"):
             break
     return deal, states
 
@@ -190,13 +193,16 @@ def main():
         check(rounds_allowed >= 2,
               f"this deal negotiated {rounds_allowed} revision rounds, "
               f"enough to prove the counter works")
-        deal, states = revision_rounds_to_refund(client, deal)
-        check(deal["state"] == "refunded",
-              f"multi-issue deal refunds after its rounds (states seen: "
-              f"{states})")
+        deal, states = revision_rounds_to_settlement(client, deal)
+        check(deal["state"] == "graded",
+              f"multi-issue deal settles graded after its rounds "
+              f"(states seen: {states})")
+        check(deal["settlement"]["graded"]["passed"] == 2
+              and deal["settlement"]["graded"]["total"] == 5,
+              "graded split is 2 of 5 checks passed")
         check(states.count("revision") == rounds_allowed,
               f"exactly {rounds_allowed} revision rounds granted before "
-              f"the refund, not one and not unlimited")
+              f"the settlement, not one and not unlimited")
         exhausted = [e for e in deal["ledger"]
                      if e["event_type"] == "revisions_exhausted"]
         check(len(exhausted) == 1, "revisions_exhausted event recorded")
@@ -205,9 +211,9 @@ def main():
 
         # --- single-issue regression: exactly one revision round ---
         deal = negotiate(client, False, "book_cover_design")
-        deal, states = revision_rounds_to_refund(client, deal)
-        check(deal["state"] == "refunded",
-              "single-issue deal still refunds after its revision")
+        deal, states = revision_rounds_to_settlement(client, deal)
+        check(deal["state"] == "graded",
+              "single-issue deal still settles graded after its revision")
         check(states.count("revision") == 1,
               f"single-issue deal grants exactly one revision round "
               f"(states seen: {states})")

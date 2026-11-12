@@ -125,3 +125,37 @@ also has a plain table fallback if the CDN is ever unreachable.
 README.md, LICENSE (MIT, Ashish Rathnakar Shetty), requirements.txt,
 render.yaml, .env.example, .gitignore, the `pact/` package, the `mcp/`
 example config, and `tests/smoke_test.py`.
+
+## Update 2026-11-11: graded settlement and delivery timeout
+
+Settlement is no longer all or nothing. The verifier's per-check
+results now split the money: if N of M acceptance checks pass, the
+seller is paid N/M of the price, the buyer is refunded the rest, and
+the bond slashes (M-N)/M to the buyer. All pass is the old release in
+full; none pass is the old refund in full. The split is integer-cent
+math with round-half-even once and the remainder to the other side, so
+the four legs always sum exactly to price plus bond. Reputation on a
+graded deal is one delta: the passed share of the 6 point release gain
+minus the failed share of the 20 point slash hit, each rounded
+half-even. New terminal state `graded`, new endpoint
+behavior in `POST /api/deals/{id}/verify`, new module
+`pact/settlement.py`, new tests in `tests/graded_settlement_test.py`
+(12 tests, math plus end to end).
+
+Delivery timeout is a branch of the refund, not its own outcome. The
+clock starts at capture: 7 days on single-issue deals, the negotiated
+window on multi-issue deals. Past the deadline the buyer may call
+`POST /api/deals/{id}/timeout` for a full refund plus a full bond
+slash, ending refunded with the settlement path "timeout". The
+endpoint is valid only while no delivery has been submitted; a deal in
+revision cannot time out. There is no demo bypass: the deadline has to
+have passed.
+
+What changed in the evidence: the cheat scenario now settles graded
+1 of 5 (seller paid $36.19 of $180.96, buyer refunded $144.77,
+$28.95 of the $36.19 bond slashed, reputation 64 to 46). The E3
+settlement oracle stays at 10 paths: the cheat path expectation
+changed to the graded outcome and it matches 10/10. The Monte Carlo
+run was re-run under the new rules.
+The October 22 sandbox deals in the E4 table are a frozen record of
+settlements made under the old all-or-nothing rule and are unchanged.

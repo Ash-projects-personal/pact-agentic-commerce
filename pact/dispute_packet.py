@@ -153,10 +153,42 @@ def _section_money(deal, lines):
     if state == "released":
         lines.append("Outcome: the delivery passed verification. The price "
                      "was released to the seller and the bond was returned.")
+    elif state == "graded":
+        graded = (deal.get("settlement") or {}).get("graded") or {}
+        passed = graded.get("passed")
+        total = graded.get("total")
+        if passed is not None and total:
+            lines.append(
+                f"Outcome: graded settlement. Verification passed "
+                f"{passed} of {total} acceptance checks, so the seller "
+                f"was paid for the checks that passed, the buyer was "
+                f"refunded for the rest, and the bond was slashed in "
+                f"proportion to the failed checks.")
+            lines.append(
+                f"Price paid to seller: "
+                f"{money.dollars(graded.get('price_paid_c', 0))} "
+                f"{spec['currency']}. Price refunded to buyer: "
+                f"{money.dollars(graded.get('price_refunded_c', 0))} "
+                f"{spec['currency']}. Bond slashed to buyer: "
+                f"{money.dollars(graded.get('bond_slashed_c', 0))} "
+                f"{spec['currency']}. Bond returned to seller: "
+                f"{money.dollars(graded.get('bond_returned_c', 0))} "
+                f"{spec['currency']}.")
+        else:
+            lines.append("Outcome: graded settlement. The per-check "
+                         "breakdown was not recorded on this deal.")
     elif state == "refunded":
-        lines.append("Outcome: the delivery failed verification. The held "
-                     "price was refunded to the buyer and the bond was "
-                     "slashed to the buyer.")
+        if (deal.get("settlement") or {}).get("path") == "timeout":
+            lines.append(
+                f"Outcome: timed out. The seller never delivered by the "
+                f"agreed deadline "
+                f"({deal.get('delivery_deadline') or 'no deadline was '
+                  f'recorded'}), so the held price was refunded in full "
+                f"and the whole bond was slashed to the buyer.")
+        else:
+            lines.append("Outcome: the delivery failed verification. The held "
+                         "price was refunded to the buyer and the bond was "
+                         "slashed to the buyer.")
     elif state in ("paid_held", "delivered", "verifying", "revision"):
         lines.append("Outcome: not settled yet. The price is held and the "
                      "bond is posted while verification runs.")

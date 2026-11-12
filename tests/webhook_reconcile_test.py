@@ -499,7 +499,7 @@ def y6_live_unverified_event_not_reconciled():
         old_id, old_secret = (SETTINGS.paypal_client_id,
                               SETTINGS.paypal_client_secret)
         SETTINGS.paypal_client_id = "test-id"
-        SETTINGS.paypal_client_secret = "test-secret"
+        SETTINGS.paypal_client_secret = "test"
         try:
             resp = client.post(
                 "/webhooks/paypal",

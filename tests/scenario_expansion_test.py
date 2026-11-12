@@ -189,8 +189,8 @@ async def main():
         # The seller burns the one revision with the same weak work.
         deal = post(f"/api/deals/{deal['id']}/deliver", {"quality": "weak"})
         deal = post(f"/api/deals/{deal['id']}/verify")
-        check("weak book cover deal refunded after revision",
-              deal["state"] == "refunded", deal["state"])
+        check("weak book cover deal settles graded after revision",
+              deal["state"] == "graded", deal["state"])
 
     out_path = (Path(__file__).resolve().parent.parent
                 / "experiments" / "scenario_expansion_results.json")
